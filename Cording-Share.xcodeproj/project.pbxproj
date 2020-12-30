@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,7 +11,29 @@
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
 		3A75ED50259C3652009E990E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A75ED4F259C3652009E990E /* Assets.xcassets */; };
 		3A75ED53259C3652009E990E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A75ED52259C3652009E990E /* Preview Assets.xcassets */; };
+		3A75ED5D259C3791009E990E /* CodeMirror-SwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */; };
+		3A75ED5E259C3791009E990E /* CodeMirror-SwiftUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A75ED64259C37B5009E990E /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED63259C37B5009E990E /* NewPostView.swift */; };
+		3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */; };
+		3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F3259C505E0063D1D8 /* SignUpView.swift */; };
+		3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F9259C54C50063D1D8 /* CustomView.swift */; };
+		3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */; };
+		3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3A75ED5F259C3791009E990E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3A75ED5E259C3791009E990E /* CodeMirror-SwiftUI in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,6 +42,12 @@
 		3A75ED4F259C3652009E990E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A75ED52259C3652009E990E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3A75ED54259C3652009E990E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A75ED63259C37B5009E990E /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
+		3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		3ABC30F3259C505E0063D1D8 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		3ABC30F9259C54C50063D1D8 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
+		3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserViewModel.swift; sourceTree = "<group>"; };
+		3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A75ED5D259C3791009E990E /* CodeMirror-SwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +82,10 @@
 			isa = PBXGroup;
 			children = (
 				3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */,
+				3A75ED62259C37A5009E990E /* Model */,
+				3A75ED61259C379F009E990E /* ViewModel */,
+				3A75ED60259C379B009E990E /* View */,
+				3ABC30F8259C54B10063D1D8 /* Extension */,
 				3A75ED4D259C3651009E990E /* ContentView.swift */,
 				3A75ED4F259C3652009E990E /* Assets.xcassets */,
 				3A75ED54259C3652009E990E /* Info.plist */,
@@ -69,6 +102,48 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		3A75ED60259C379B009E990E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3ABC30F0259C4B790063D1D8 /* Authentification */,
+				3A75ED63259C37B5009E990E /* NewPostView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3A75ED61259C379F009E990E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3A75ED62259C37A5009E990E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3ABC30F0259C4B790063D1D8 /* Authentification */ = {
+			isa = PBXGroup;
+			children = (
+				3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */,
+				3ABC30F3259C505E0063D1D8 /* SignUpView.swift */,
+			);
+			path = Authentification;
+			sourceTree = "<group>";
+		};
+		3ABC30F8259C54B10063D1D8 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				3ABC30F9259C54C50063D1D8 /* CustomView.swift */,
+				3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,12 +154,16 @@
 				3A75ED44259C3651009E990E /* Sources */,
 				3A75ED45259C3651009E990E /* Frameworks */,
 				3A75ED46259C3651009E990E /* Resources */,
+				3A75ED5F259C3791009E990E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Cording-Share";
+			packageProductDependencies = (
+				3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */,
+			);
 			productName = "Cording-Share";
 			productReference = 3A75ED48259C3651009E990E /* Cording-Share.app */;
 			productType = "com.apple.product-type.application";
@@ -112,6 +191,9 @@
 				Base,
 			);
 			mainGroup = 3A75ED3F259C3651009E990E;
+			packageReferences = (
+				3A75ED5B259C3791009E990E /* XCRemoteSwiftPackageReference "CodeMirror-SwiftUI" */,
+			);
 			productRefGroup = 3A75ED49259C3651009E990E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,8 +220,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A75ED64259C37B5009E990E /* NewPostView.swift in Sources */,
+				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
+				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
 				3A75ED4E259C3651009E990E /* ContentView.swift in Sources */,
+				3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */,
+				3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */,
 				3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */,
+				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +416,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A75ED5B259C3791009E990E /* XCRemoteSwiftPackageReference "CodeMirror-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Pictarine/CodeMirror-SwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A75ED5B259C3791009E990E /* XCRemoteSwiftPackageReference "CodeMirror-SwiftUI" */;
+			productName = "CodeMirror-SwiftUI";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3A75ED40259C3651009E990E /* Project object */;
 }

@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+public var testMode = true
+
 @main
 struct Cording_ShareApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }
