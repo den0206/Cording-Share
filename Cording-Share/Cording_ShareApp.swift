@@ -6,14 +6,23 @@
 //
 
 import SwiftUI
+import Firebase
 
 public var testMode = true
 
 @main
 struct Cording_ShareApp: App {
+    
+    var userInfo = UserInfo()
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            RootView()
+                .environmentObject(userInfo)
         }
     }
 }

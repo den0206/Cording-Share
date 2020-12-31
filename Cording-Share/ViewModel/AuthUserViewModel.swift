@@ -29,7 +29,7 @@ struct AuthUserViewModel {
     var isSignupComplete : Bool {
         
         if testMode {
-            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) {
+            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || isEmpty(_field: password){
                 return false
             }
             

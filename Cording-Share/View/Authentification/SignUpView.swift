@@ -9,11 +9,15 @@ import SwiftUI
 
 struct SignUpView: View {
     
+    @EnvironmentObject var userInfo : UserInfo
     @Environment(\.presentationMode) var presentationMode
     
     @State private var user = AuthUserViewModel()
-    
     @State private var showPicker = false
+    
+    @State private var errorMessage = ""
+    @State private var showAlert = false
+    @State private var isLoading = false
     
     var body: some View {
         
@@ -23,7 +27,7 @@ struct SignUpView: View {
                 
                 if !user.selectedImage() {
                     Text(user.validImageText).font(.caption).foregroundColor(.red)
-                        .padding(.top,5)
+                        .padding(.top,10)
                 }
                 
                 Button(action: {showPicker = true}) {
@@ -40,7 +44,7 @@ struct SignUpView: View {
                     }
                   
                 }
-                .frame(width: 90, height: 90)
+                .frame(width: 140, height: 140)
                 .padding(.vertical, 15)
                 .sheet(isPresented: $showPicker) {
                     ImagePicker(image: $user.imageData)
@@ -73,7 +77,7 @@ struct SignUpView: View {
                     ValitationText(text: user.validConfirmPasswordText,confirm: !user.passwordMatch(_confirmPass: user.confirmPassword) )
                     
                     
-                    Button(action: {}) {
+                    Button(action: {registerUser()}) {
                         Text("Register")
                             .foregroundColor(.white)
                             .padding(.vertical,15)
@@ -84,8 +88,10 @@ struct SignUpView: View {
                     }
                     .disabled(!user.isSignupComplete)
                     .padding()
+                    .alert(isPresented: $showAlert, content: {
+                        Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                    })
                     
-                
                 }
                 
                 Spacer()
@@ -97,6 +103,33 @@ struct SignUpView: View {
                 Image(systemName: "xmark")
                     .foregroundColor(.black)
             }))
+        }
+        .Loading(isShowing: $isLoading)
+        .onTapGesture(perform: {
+            hideKeyBord()
+        })
+    }
+    
+    
+    //MARK: - create
+    
+    private func registerUser() {
+        
+        isLoading = true
+        
+        FBAuth.createUser(email: user.email, name: user.fullname, password: user.password, imageData: user.imageData) { (result) in
+
+            switch result {
+
+            case .success(let user):
+                self.userInfo.user = user
+            case .failure(let error):
+                errorMessage = error.localizedDescription
+                showAlert = true
+            }
+            
+            isLoading = false
+            
         }
     }
 }

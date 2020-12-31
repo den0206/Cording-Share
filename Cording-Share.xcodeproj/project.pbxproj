@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
 		3A75ED50259C3652009E990E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A75ED4F259C3652009E990E /* Assets.xcassets */; };
@@ -19,6 +20,14 @@
 		3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F9259C54C50063D1D8 /* CustomView.swift */; };
 		3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */; };
 		3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */; };
+		3AFED617259D93880048B807 /* FBAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED616259D93880048B807 /* FBAuth.swift */; };
+		3AFED619259D94180048B807 /* FBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED618259D94180048B807 /* FBUser.swift */; };
+		3AFED61B259D94390048B807 /* Constracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED61A259D94390048B807 /* Constracts.swift */; };
+		3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED648259D95E80048B807 /* FirebaseReference.swift */; };
+		3AFED64B259D977C0048B807 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED64A259D977C0048B807 /* Downloader.swift */; };
+		3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED64C259D9A200048B807 /* UserInfo.swift */; };
+		3AFED64F259D9D000048B807 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED64E259D9D000048B807 /* RootView.swift */; };
+		E53550388AFB7F5516BA183F /* Pods_Cording_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C954C640F55A0093472AC71 /* Pods_Cording_Share.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +45,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cording_ShareApp.swift; sourceTree = "<group>"; };
 		3A75ED4D259C3651009E990E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +58,16 @@
 		3ABC30F9259C54C50063D1D8 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserViewModel.swift; sourceTree = "<group>"; };
 		3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalExtensions.swift; sourceTree = "<group>"; };
+		3AFED616259D93880048B807 /* FBAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAuth.swift; sourceTree = "<group>"; };
+		3AFED618259D94180048B807 /* FBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUser.swift; sourceTree = "<group>"; };
+		3AFED61A259D94390048B807 /* Constracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constracts.swift; sourceTree = "<group>"; };
+		3AFED648259D95E80048B807 /* FirebaseReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseReference.swift; sourceTree = "<group>"; };
+		3AFED64A259D977C0048B807 /* Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
+		3AFED64C259D9A200048B807 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		3AFED64E259D9D000048B807 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		3C954C640F55A0093472AC71 /* Pods_Cording_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cording_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E7B8C602B9374A13F512F96 /* Pods-Cording-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cording-Share.debug.xcconfig"; path = "Target Support Files/Pods-Cording-Share/Pods-Cording-Share.debug.xcconfig"; sourceTree = "<group>"; };
+		8FAF6F4336648AC6A9E6D675 /* Pods-Cording-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cording-Share.release.xcconfig"; path = "Target Support Files/Pods-Cording-Share/Pods-Cording-Share.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A75ED5D259C3791009E990E /* CodeMirror-SwiftUI in Frameworks */,
+				E53550388AFB7F5516BA183F /* Pods_Cording_Share.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +88,8 @@
 			children = (
 				3A75ED4A259C3651009E990E /* Cording-Share */,
 				3A75ED49259C3651009E990E /* Products */,
+				FC073ED73CB5748295DACC74 /* Pods */,
+				BDC0EE118311DEBF62524291 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,10 +108,12 @@
 				3A75ED62259C37A5009E990E /* Model */,
 				3A75ED61259C379F009E990E /* ViewModel */,
 				3A75ED60259C379B009E990E /* View */,
+				3AFED615259D936D0048B807 /* Firebase */,
 				3ABC30F8259C54B10063D1D8 /* Extension */,
 				3A75ED4D259C3651009E990E /* ContentView.swift */,
 				3A75ED4F259C3652009E990E /* Assets.xcassets */,
 				3A75ED54259C3652009E990E /* Info.plist */,
+				3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */,
 				3A75ED51259C3652009E990E /* Preview Content */,
 			);
 			path = "Cording-Share";
@@ -105,6 +130,7 @@
 		3A75ED60259C379B009E990E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3AFED64E259D9D000048B807 /* RootView.swift */,
 				3ABC30F0259C4B790063D1D8 /* Authentification */,
 				3A75ED63259C37B5009E990E /* NewPostView.swift */,
 			);
@@ -114,6 +140,7 @@
 		3A75ED61259C379F009E990E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				3AFED64C259D9A200048B807 /* UserInfo.swift */,
 				3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */,
 			);
 			path = ViewModel;
@@ -122,6 +149,7 @@
 		3A75ED62259C37A5009E990E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3AFED618259D94180048B807 /* FBUser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -140,8 +168,36 @@
 			children = (
 				3ABC30F9259C54C50063D1D8 /* CustomView.swift */,
 				3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */,
+				3AFED61A259D94390048B807 /* Constracts.swift */,
+				3AFED648259D95E80048B807 /* FirebaseReference.swift */,
+				3AFED64A259D977C0048B807 /* Downloader.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		3AFED615259D936D0048B807 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				3AFED616259D93880048B807 /* FBAuth.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		BDC0EE118311DEBF62524291 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C954C640F55A0093472AC71 /* Pods_Cording_Share.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FC073ED73CB5748295DACC74 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5E7B8C602B9374A13F512F96 /* Pods-Cording-Share.debug.xcconfig */,
+				8FAF6F4336648AC6A9E6D675 /* Pods-Cording-Share.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,10 +207,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A75ED57259C3652009E990E /* Build configuration list for PBXNativeTarget "Cording-Share" */;
 			buildPhases = (
+				F77147E3AD08DB04AD784B53 /* [CP] Check Pods Manifest.lock */,
 				3A75ED44259C3651009E990E /* Sources */,
 				3A75ED45259C3651009E990E /* Frameworks */,
 				3A75ED46259C3651009E990E /* Resources */,
 				3A75ED5F259C3791009E990E /* Embed Frameworks */,
+				C2DAB1988EDACD7B942403BD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -209,25 +267,75 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A75ED53259C3652009E990E /* Preview Assets.xcassets in Resources */,
+				3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */,
 				3A75ED50259C3652009E990E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C2DAB1988EDACD7B942403BD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Cording-Share/Pods-Cording-Share-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Cording-Share/Pods-Cording-Share-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cording-Share/Pods-Cording-Share-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F77147E3AD08DB04AD784B53 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Cording-Share-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3A75ED44259C3651009E990E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFED617259D93880048B807 /* FBAuth.swift in Sources */,
 				3A75ED64259C37B5009E990E /* NewPostView.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
 				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
 				3A75ED4E259C3651009E990E /* ContentView.swift in Sources */,
 				3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */,
+				3AFED619259D94180048B807 /* FBUser.swift in Sources */,
 				3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */,
+				3AFED64B259D977C0048B807 /* Downloader.swift in Sources */,
 				3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */,
+				3AFED61B259D94390048B807 /* Constracts.swift in Sources */,
+				3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */,
+				3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */,
 				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,
+				3AFED64F259D9D000048B807 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +460,7 @@
 		};
 		3A75ED58259C3652009E990E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5E7B8C602B9374A13F512F96 /* Pods-Cording-Share.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -374,6 +483,7 @@
 		};
 		3A75ED59259C3652009E990E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FAF6F4336648AC6A9E6D675 /* Pods-Cording-Share.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

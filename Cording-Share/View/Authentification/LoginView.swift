@@ -41,7 +41,7 @@ struct LoginView: View {
                 }
             }
             .padding(.vertical)
-            .padding(.leading,10)
+            .padding(.trailing,10)
             
             VStack(spacing :10) {
                 
