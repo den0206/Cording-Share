@@ -9,7 +9,6 @@
 import FirebaseAuth
 
 struct FBAuth {
-    
     static func createUser(email : String, name : String,password : String,imageData : Data, completion : @escaping(Result<FBUser, Error>) -> Void) {
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
@@ -57,4 +56,45 @@ struct FBAuth {
             
         }
     }
+    
+    static func loginUser(email : String, password : String, completion :@escaping(Result<Bool, EmailAuthError>) -> Void) {
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            
+            var newError : NSError
+            
+            if let error = error {
+                newError = error as NSError
+                var emailError : EmailAuthError?
+                
+                switch newError.code {
+                
+                case 17009:
+                    emailError = .incorrectPassword
+                case 17008 :
+                    emailError = .invalidEmail
+                case 17011 :
+                    emailError = .accountDoesnotExist
+                default:
+                    emailError = .unknownError
+                }
+                
+                completion(.failure(emailError!))
+            } else {
+                completion(.success(true))
+            }
+        }
+        
+    }
+    
+    static func logOut(completion : @escaping(Result<Bool, Error>) -> Void) {
+        
+        do {
+            try Auth.auth().signOut()
+            completion(.success(true))
+        } catch let error {
+            completion(.failure(error))
+        }
+    }
+    
 }

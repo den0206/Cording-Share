@@ -20,13 +20,14 @@ struct AuthUserViewModel {
     
     var isLoginComplete : Bool {
         
-        if isEmpty(_field: email) || isEmpty(_field: password) {
+        if isEmpty(_field: email) || isEmpty(_field: password) ||  !isEmalValid(_email: email){
             return false
         }
         return true
     }
     
     var isSignupComplete : Bool {
+        
         
         if testMode {
             if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || isEmpty(_field: password){
@@ -63,6 +64,8 @@ struct AuthUserViewModel {
     }
     
     func passwordMatch(_confirmPass : String) -> Bool {
+        
+        guard !password.isEmpty else {return false}
         return _confirmPass == password
     }
     

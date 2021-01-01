@@ -21,7 +21,7 @@ struct RootView : View {
             }  else if userInfo.isUserauthenticated == .signOut {
                 LoginView()
             } else {
-                Text("Home")
+                MainTabView()
             }
         }
         .onAppear(perform: {

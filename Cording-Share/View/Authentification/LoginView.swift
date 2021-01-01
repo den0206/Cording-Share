@@ -20,11 +20,17 @@ struct LoginView: View {
     @State private var user = AuthUserViewModel()
     @State private var sheetType : loginviewSheet?
     
+    @State private var authError : EmailAuthError?
+    @State private var showAlert = false
+    @State private var isLoading = false
+    
     var body: some View {
         
-        VStack(spacing :20) {
+        VStack {
             
             Spacer()
+            
+            ValitationText(text: user.validEmailText, confirm: !user.validEmailText.isEmpty)
         
             CustomTextField(text: $user.email, placeholder: "Email", imageName: "envelope")
                 
@@ -37,7 +43,7 @@ struct LoginView: View {
                 
                 Button(action: {self.sheetType = .resetPassword}) {
                     Text("Reset Password")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.black)
                 }
             }
             .padding(.vertical)
@@ -45,7 +51,7 @@ struct LoginView: View {
             
             VStack(spacing :10) {
                 
-                Button(action: {}) {
+                Button(action: {loginUser()}) {
                     Text("Login")
                         .foregroundColor(.white)
                         .padding(.vertical,15)
@@ -55,8 +61,19 @@ struct LoginView: View {
                         .opacity(user.isLoginComplete ? 1 : 0.3)
                 }
                 .disabled(!user.isLoginComplete)
+                .alert(isPresented: $showAlert) { () -> Alert in
+                    Alert(title: Text("Error"), message: Text(authError?.localizedDescription ?? "UnknownError"), dismissButton: .default(Text("OK")) {
+                        /// reset
+                        if authError == .incorrectPassword {
+                            user.password = ""
+                        } else {
+                            user.email = ""
+                            user.password = ""
+                        }
+                    })
+                }
                 
-                Button(action: {self.sheetType = .signUp}) {
+                Button(action: {sheetType = .signUp}) {
                     Text("SignUp")
                         .foregroundColor(.white)
                         .padding(.vertical,15)
@@ -64,6 +81,7 @@ struct LoginView: View {
                         .background(Color.blue)
                         .cornerRadius(8)
                 }
+              
                 
             }
             .sheet(item: $sheetType) { (item) in
@@ -79,7 +97,32 @@ struct LoginView: View {
             
             Spacer()
         }
-        .background(Color(.systemGroupedBackground).ignoresSafeArea(.all, edges: .all) )
+        .background(Color(.systemGroupedBackground).ignoresSafeArea(.all, edges: .all))
+        .Loading(isShowing: $isLoading)
+        .onTapGesture(perform: {
+            hideKeyBord()
+        })
+        
+    }
+    
+    //MARK: - Login
+    
+    private func loginUser() {
+        isLoading = true
+        
+        FBAuth.loginUser(email: user.email, password: user.password) { (result) in
+            
+            switch result {
+            
+            case .success(_):
+                print("Success")
+            case .failure(let error):
+                authError = error
+                showAlert = true
+            }
+            
+            isLoading = false
+        }
     }
 }
 

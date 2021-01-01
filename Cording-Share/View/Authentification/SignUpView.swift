@@ -65,13 +65,13 @@ struct SignUpView: View {
                     ValitationText(text: user.validEmailText, confirm: !user.validEmailText.isEmpty)
                     
                     
-                    CustomTextField(text: $user.password, placeholder: "Password", imageName: "lock")
+                    CustomTextField(text: $user.password, placeholder: "Password", imageName: "lock",isSecure: true)
                     
                     
                     ValitationText(text: user.validPasswordText,confirm: !user.validPasswordText.isEmpty)
                     
                     
-                    CustomTextField(text: $user.confirmPassword, placeholder: "Password confirmation", imageName: "lock")
+                    CustomTextField(text: $user.confirmPassword, placeholder: "Password confirmation", imageName: "lock",isSecure: true)
                     
                     
                     ValitationText(text: user.validConfirmPasswordText,confirm: !user.passwordMatch(_confirmPass: user.confirmPassword) )
