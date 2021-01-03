@@ -26,10 +26,9 @@ final class UserInfo : ObservableObject {
     @AppStorage("themeIndex") var themeIndex : Int = 8
     @AppStorage("modeIndex") var modeIndex : Int = 0
     
+    var modes = CodeMode.codeModes
     
-    var modes = CodeMode.list()
-    
-    var mode : Mode {
+    var mode : CodeMode {
         return modes[modeIndex]
     }
     
@@ -55,5 +54,11 @@ final class UserInfo : ObservableObject {
             }
             self.isUserauthenticated = .signIn
         })
+    }
+    
+    //MARK: - Modes
+    
+    func setCodeMode(codeMode : CodeMode) {
+        self.modeIndex = modes.firstIndex(of: codeMode)!
     }
 }

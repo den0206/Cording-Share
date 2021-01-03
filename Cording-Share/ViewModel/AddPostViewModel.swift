@@ -12,6 +12,24 @@ final class AddPostViewModel : ObservableObject {
     @Published var text : String = ""
     @Published var showSideMenu = false
     @Published var fullScreen = false
+    @Published var showSelectView = false
+    
+    var buttonColor : Color {
+        if text.isEmpty {
+            return Color.gray
+        } else {
+            return Color.green
+        }
+    }
+    
+    func submitCode(userInfo : UserInfo) {
+        
+        guard let data = text.data(using: .utf8) else {return}
+      
+       print(String(data: data, encoding: .utf8)!)
+        
+        print(userInfo.mode,String(data: data, encoding: .utf8)!)
+    }
     
     func toggleSideMenu(userInfo : UserInfo) {
         

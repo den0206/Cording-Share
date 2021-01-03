@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */; };
 		3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelecteLanguageView.swift; sourceTree = "<group>"; };
 		3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cording_ShareApp.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */,
 				3AF9E381259EFE3A004FB2CF /* FeedView.swift */,
 				3A75ED63259C37B5009E990E /* AddPostView.swift */,
+				3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */,
 				3AFED61B259D94390048B807 /* Constracts.swift in Sources */,
 				3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */,
+				3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */,
 				3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */,
 				3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */,
 				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,

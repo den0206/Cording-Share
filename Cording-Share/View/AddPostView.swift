@@ -13,9 +13,7 @@ struct AddPostView: View {
     
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = AddPostViewModel()
-    
-    @State private var mode : CodeMode = CodeMode.swift
-    
+        
     var body: some View {
         
         if !vm.fullScreen {
@@ -26,10 +24,21 @@ struct AddPostView: View {
                         Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                             Image(systemName: "arrow.up.left.and.arrow.down.right")
                                 .font(.system(size: 24))
-                                .foregroundColor(.primary)
+                                
                         })
                         
                         Spacer()
+                        
+                        Text(userInfo.mode.rawValue)
+                            .fontWeight(.bold)
+                        
+                        
+                        Spacer()
+                        
+                        Button(action: {vm.showSelectView = true}) {
+                            Image(systemName: "chevron.left.slash.chevron.right")
+                               
+                        }
                         
                         Button(action: {
                             withAnimation(.spring()) {
@@ -38,35 +47,51 @@ struct AddPostView: View {
                         }, label: {
                             Image(systemName: "line.horizontal.3")
                                 .font(.system(size: 24))
-                                .foregroundColor(.primary)
                         })
                     }
                     .padding()
                     .padding(.top , 6)
+                    .foregroundColor(.primary)
                     .background(Color.clear)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    .sheet(isPresented: $vm.showSelectView) {
+                        SelecteLanguageView()
+                    }
+
                     
-                    CodeView(theme: userInfo.theme, code: $vm.text, mode: mode.mode(), fontSize: 12, showInvisibleCharacters: false, lineWrapping: false)
+                    CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
                 }
+                
+               
                 
                 /// Z2 (SideMenu)
                 
                 SideMenu(vm: vm)
                 
+                /// Z3
+                
+                if !vm.showSideMenu {
+                    VStack {
+                        Spacer()
+                       SubmitButton(vm: vm)
+                    }
+                }
+            
             }
             
         } else {
             
             ZStack {
                 
-                CodeView(theme: userInfo.theme, code: $vm.text, mode: mode.mode(), fontSize: 12, showInvisibleCharacters: false, lineWrapping: false)
+                CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode() , fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
                 
                 
                 VStack {
                     Spacer()
                     
                     HStack {
-                        
+                        Spacer()
+                        SubmitButton(vm: vm)
                         Spacer()
                         Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                             Image(systemName: "arrow.down.right.and.arrow.up.left")
@@ -88,6 +113,7 @@ struct NewPostView_Previews: PreviewProvider {
         AddPostView()
     }
 }
+
 
 
 //MARK: - sideMenu
@@ -123,12 +149,8 @@ struct SideMenu : View {
                 
                 VStack(spacing :4) {
                     
-                    Picker(selection: $userInfo.modeIndex, label: Text(""), content: {
-                        ForEach(0 ..< userInfo.modes.count) { i in
-                            
-                            Text("\(CodeMode.list()[userInfo.modeIndex])")
-                        }
-                    })
+
+                   
                     Text("Font Size")
                         .underline()
                     
@@ -147,7 +169,7 @@ struct SideMenu : View {
                         ForEach(0 ..< userInfo.themes.count ) { i in
                             Text("\(userInfo.themes[i].rawValue)")
                                 .foregroundColor(.black)
-                            
+
                         }
                     })
                     .labelsHidden()
@@ -173,11 +195,35 @@ struct SideMenu : View {
     }
 }
 
+//MARK: - Submit Button
+struct SubmitButton : View {
+    
+    @EnvironmentObject var userInfo : UserInfo
+    @StateObject var vm : AddPostViewModel
 
-//Button(action: {
-//                        guard let data = text.data(using: .utf8) else {return}
-//
-//                    print(String(data: data, encoding: .utf8)!)
-//                        }, label: {
-//                    /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-//                })
+    var body: some View {
+        
+        Button(action: {vm.submitCode(userInfo: userInfo)}) {
+            Text("Submit")
+                .foregroundColor(.white)
+                .padding(.vertical,15)
+                .frame(width: 150)
+                .background(vm.buttonColor)
+                .opacity(vm.text.isEmpty ? 0.3 : 1)
+                .cornerRadius(8)
+        }
+        .disabled(vm.text.isEmpty)
+        .padding()
+    }
+}
+
+
+
+extension CodeMode  {
+    static var codeModes : [CodeMode] {
+        return [.swift,.c,.go,.html,.java,.javascript,.objc,.perl,.php,.python,.r,.ruby,.rust]
+    }
+    
+    
+}
+
