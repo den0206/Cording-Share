@@ -13,18 +13,20 @@ struct AddPostView: View {
     
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = AddPostViewModel()
-        
+    
     var body: some View {
         
-        if !vm.fullScreen {
-            ZStack {
+        ZStack {
+            
+            if !vm.fullScreen {
+                
                 /// Z1
                 VStack {
                     HStack {
                         Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                             Image(systemName: "arrow.up.left.and.arrow.down.right")
                                 .font(.system(size: 24))
-                                
+                            
                         })
                         
                         Spacer()
@@ -37,7 +39,7 @@ struct AddPostView: View {
                         
                         Button(action: {vm.showSelectView = true}) {
                             Image(systemName: "chevron.left.slash.chevron.right")
-                               
+                            
                         }
                         
                         Button(action: {
@@ -57,12 +59,12 @@ struct AddPostView: View {
                     .sheet(isPresented: $vm.showSelectView) {
                         SelecteLanguageView()
                     }
-
+                    
                     
                     CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
                 }
                 
-               
+                
                 
                 /// Z2 (SideMenu)
                 
@@ -73,39 +75,51 @@ struct AddPostView: View {
                 if !vm.showSideMenu {
                     VStack {
                         Spacer()
-                       SubmitButton(vm: vm)
+                        SubmitButton(vm: vm, action: {vm.submitCode(userInfo: userInfo)})
                     }
                 }
-            
-            }
-            
-        } else {
-            
-            ZStack {
                 
+                
+                
+                
+            } else {
+                
+                /// Z1
                 CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode() , fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
                 
-                
+                /// Z2
                 VStack {
                     Spacer()
                     
                     HStack {
                         Spacer()
-                        SubmitButton(vm: vm)
+                        SubmitButton(vm: vm, action: {vm.submitCode(userInfo: userInfo)})
                         Spacer()
                         Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                             Image(systemName: "arrow.down.right.and.arrow.up.left")
-                               .font(.system(size: 24))
-                               .foregroundColor(.primary)
+                                .font(.system(size: 24))
+                                .foregroundColor(.primary)
                         })
                         .padding()
                     }
                 }
-               
+                
+                
             }
         }
-  
+        .Loading(isShowing: $vm.loading)
+        .alert(isPresented: $vm.showAlert) {
+            Alert(title: Text("Error"), message: Text(vm.errorMessage), dismissButton: .default(Text("Ok")))
+        }
+        
+        
+        
     }
+    
+    
+    
+    
+    
 }
 
 struct NewPostView_Previews: PreviewProvider {
@@ -149,8 +163,8 @@ struct SideMenu : View {
                 
                 VStack(spacing :4) {
                     
-
-                   
+                    
+                    
                     Text("Font Size")
                         .underline()
                     
@@ -169,7 +183,7 @@ struct SideMenu : View {
                         ForEach(0 ..< userInfo.themes.count ) { i in
                             Text("\(userInfo.themes[i].rawValue)")
                                 .foregroundColor(.black)
-
+                            
                         }
                     })
                     .labelsHidden()
@@ -200,10 +214,12 @@ struct SubmitButton : View {
     
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm : AddPostViewModel
-
+    
+    var action : () -> Void
+    
     var body: some View {
         
-        Button(action: {vm.submitCode(userInfo: userInfo)}) {
+        Button(action: {action()}) {
             Text("Submit")
                 .foregroundColor(.white)
                 .padding(.vertical,15)

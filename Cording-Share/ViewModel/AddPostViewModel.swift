@@ -14,6 +14,10 @@ final class AddPostViewModel : ObservableObject {
     @Published var fullScreen = false
     @Published var showSelectView = false
     
+    @Published var loading = false
+    @Published var showAlert = false
+    @Published var errorMessage = ""
+    
     var buttonColor : Color {
         if text.isEmpty {
             return Color.gray
@@ -23,12 +27,28 @@ final class AddPostViewModel : ObservableObject {
     }
     
     func submitCode(userInfo : UserInfo) {
-        
+        guard text != "" else {return}
         guard let data = text.data(using: .utf8) else {return}
-      
-       print(String(data: data, encoding: .utf8)!)
         
-        print(userInfo.mode,String(data: data, encoding: .utf8)!)
+        let userId = userInfo.user.uid
+        let lang = userInfo.mode
+        
+        loading = true
+        
+        FBPost.craeteNewPost(data: data, userId: userId, language: lang) { (result) in
+
+            switch result {
+
+            case .success(let bool):
+                print(bool)
+                self.text = ""
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+                self.showAlert = true
+            }
+            
+            self.loading = false
+        }
     }
     
     func toggleSideMenu(userInfo : UserInfo) {

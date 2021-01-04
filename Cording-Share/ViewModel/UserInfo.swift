@@ -17,6 +17,8 @@ final class UserInfo : ObservableObject {
     
     @Published var isUserauthenticated : AuthState = .undifined
     @Published var user : FBUser = .init(uid : "", name : "", email : "")
+    @Published var setCurrentUser = false
+
     
     @Published var tabIndex = 0
     @Published var showTab = true
@@ -52,7 +54,21 @@ final class UserInfo : ObservableObject {
                 self.isUserauthenticated = .signOut
                 return
             }
-            self.isUserauthenticated = .signIn
+            
+            FBAuth.fecthFBUser(uid: user.uid) { (result) in
+                switch result {
+                
+                case .success(let user):
+                    self.user = user
+                    
+                    self.isUserauthenticated = .signIn
+
+                case .failure(_):
+                    self.isUserauthenticated = .signOut
+                }
+            }
+            
+            
         })
     }
     

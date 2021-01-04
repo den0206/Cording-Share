@@ -9,6 +9,39 @@
 import FirebaseAuth
 
 struct FBAuth {
+    
+    static func fecthFBUser(uid : String, completion :  @escaping(Result<FBUser, Error>) -> Void) {
+        
+        let ref = FirebaseReference(.User).document(uid)
+        
+        ref.getDocument { (snapshot, error) in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                completion(.failure(FirestoreError.noDocumentSNapshot))
+                return
+            }
+            
+            guard let data = snapshot.data() else {
+                completion(.failure(FirestoreError.noSnapshotData))
+                return
+            }
+            
+            guard let user = FBUser(dic: data) else {
+                completion(.failure(FirestoreError.noUser))
+                return
+            }
+            
+            completion(.success(user))
+            
+        }
+        
+    }
+    
     static func createUser(email : String, name : String,password : String,imageData : Data, completion : @escaping(Result<FBUser, Error>) -> Void) {
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
