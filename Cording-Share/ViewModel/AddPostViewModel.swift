@@ -39,8 +39,8 @@ final class AddPostViewModel : ObservableObject {
 
             switch result {
 
-            case .success(let bool):
-                print(bool)
+            case .success(let post):
+                print(post)
                 self.text = ""
             case .failure(let error):
                 self.errorMessage = error.localizedDescription

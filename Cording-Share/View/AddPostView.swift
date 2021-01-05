@@ -111,9 +111,7 @@ struct AddPostView: View {
         .alert(isPresented: $vm.showAlert) {
             Alert(title: Text("Error"), message: Text(vm.errorMessage), dismissButton: .default(Text("Ok")))
         }
-        
-        
-        
+   
     }
     
     
@@ -235,11 +233,4 @@ struct SubmitButton : View {
 
 
 
-extension CodeMode  {
-    static var codeModes : [CodeMode] {
-        return [.swift,.c,.go,.html,.java,.javascript,.objc,.perl,.php,.python,.r,.ruby,.rust]
-    }
-    
-    
-}
 

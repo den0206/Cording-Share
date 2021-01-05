@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FeedView: View {
     
+    @EnvironmentObject var userInfo : UserInfo
+
     @StateObject var vm = FeedViewModel()
     
     var body: some View {
@@ -18,21 +20,18 @@ struct FeedView: View {
             VStack {
                 
                 Text("Feed")
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                 
             }
-            .sheet(isPresented: $vm.showAddView, content: {
-                AddPostView()
+            .alert(isPresented: $vm.showalert, content: {
+                
+                Alert(title: Text("Error"), message: Text(vm.errorMessage), dismissButton: .default(Text("OK")))
             })
-            /// navigation Property
-            
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: Button(action: {vm.showAddView = true}, label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 30))
-                    .foregroundColor(.black)
-                   
-            }))
+            .onAppear {
+                vm.fetchPosts(userId: userInfo.user.uid)
+            }
+           
+        
         }
        
     }
