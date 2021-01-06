@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import CodeMirror_SwiftUI
 
 struct Post : Identifiable{
@@ -76,6 +77,15 @@ extension CodeMode  {
         return [.swift,.c,.go,.html,.java,.javascript,.objc,.perl,.php,.python,.r,.ruby,.rust]
     }
     
+//    var image : Image {
+//        switch self {
+//        case .swift:
+//            return Image("swift")
+//        default:
+//            return Image("")
+//        }
+//    }
     
 }
+
 

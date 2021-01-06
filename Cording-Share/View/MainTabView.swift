@@ -32,7 +32,6 @@ struct MainTabView: View {
             }
         }
         .edgesIgnoringSafeArea(.all)
-        .preferredColorScheme(.dark)
     }
 }
 

@@ -17,13 +17,14 @@ struct RootView : View {
         Group {
             if userInfo.isUserauthenticated == .undifined {
                 ProgressView("Loading...")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.primary)
             }  else if userInfo.isUserauthenticated == .signOut {
                 LoginView()
             } else {
                 MainTabView()
             }
         }
+        .preferredColorScheme(.dark)
         .onAppear(perform: {
             userInfo.configureStateDidChange()
         })

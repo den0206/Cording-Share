@@ -89,7 +89,7 @@ struct SignUpView: View {
                     .disabled(!user.isSignupComplete)
                     .padding()
                     .alert(isPresented: $showAlert, content: {
-                        Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                        errorAlert(message: errorMessage)
                     })
                     
                 }
