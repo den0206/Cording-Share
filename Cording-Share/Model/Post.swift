@@ -16,12 +16,22 @@ struct Post : Identifiable{
     var userId : String
     var lang : CodeMode
     var sorceUrl : URL?
+    var description : String = "Description"
+    var user : FBUser?
+    var liked : Bool = false
     
     var codeBlock : String {
         
         guard let url = sorceUrl else {return "No Code"}
         
-        return try! String(contentsOf: url)
+        do {
+            let str = try String(contentsOf: url)
+            return str
+         
+        } catch {
+            return "Can't Compile"
+        }
+        
     }
     
     init(dic : [String : Any]) {
@@ -77,14 +87,18 @@ extension CodeMode  {
         return [.swift,.c,.go,.html,.java,.javascript,.objc,.perl,.php,.python,.r,.ruby,.rust]
     }
     
-//    var image : Image {
-//        switch self {
-//        case .swift:
-//            return Image("swift")
-//        default:
-//            return Image("")
-//        }
-//    }
+    var image : Image {
+        switch self {
+        case .swift:
+            return Image("Swift")
+        case .python :
+            return Image("Python")
+        case .ruby :
+            return Image("Ruby")
+        default:
+            return Image("")
+        }
+    }
     
 }
 

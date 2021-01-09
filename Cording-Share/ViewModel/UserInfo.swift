@@ -23,6 +23,8 @@ final class UserInfo : ObservableObject {
     @Published var tabIndex = 0
     @Published var showTab = true
     
+    @Published var showHUD = false
+    
     
     @AppStorage("fontSize") var fontSize : Int = 10
     @AppStorage("themeIndex") var themeIndex : Int = 8
@@ -77,4 +79,12 @@ final class UserInfo : ObservableObject {
     func setCodeMode(codeMode : CodeMode) {
         self.modeIndex = modes.firstIndex(of: codeMode)!
     }
+    
+    //MARK: - HUd $ Loading
+    
+    func copyText(text : String) {
+        UIPasteboard.general.string = text
+        showHUD = true
+    }
+    
 }

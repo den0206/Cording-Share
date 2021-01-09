@@ -31,6 +31,7 @@ struct MainTabView: View {
                     .animation(.spring())
             }
         }
+        .showHUD(isShowing: $userInfo.showHUD)
         .edgesIgnoringSafeArea(.all)
     }
 }

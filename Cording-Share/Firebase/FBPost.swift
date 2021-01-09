@@ -85,4 +85,19 @@ extension FBPost {
             completion(.success(posts))
         }
     }
+    
+    static func getPostUser(post : Post, completion : @escaping(Result<FBUser, Error>) -> Void) {
+        
+        let userID = post.userId
+        
+        FBAuth.fecthFBUser(uid: userID) { (result) in
+            switch result {
+            
+            case .success(let user):
+                completion(.success(user))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

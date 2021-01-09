@@ -5,7 +5,8 @@
 //  Created by 酒井ゆうき on 2021/01/01.
 //
 
-import Combine
+
+import SwiftUI
 
 final class FeedViewModel : ObservableObject {
     
