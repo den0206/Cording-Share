@@ -17,12 +17,12 @@ final class UserInfo : ObservableObject {
     
     @Published var isUserauthenticated : AuthState = .undifined
     @Published var user : FBUser = .init(uid : "", name : "", email : "")
-    @Published var setCurrentUser = false
 
     
     @Published var tabIndex = 0
     @Published var showTab = true
     
+    @Published var loading = false
     @Published var showHUD = false
     
     
@@ -62,7 +62,6 @@ final class UserInfo : ObservableObject {
                 
                 case .success(let user):
                     self.user = user
-                    
                     self.isUserauthenticated = .signIn
 
                 case .failure(_):

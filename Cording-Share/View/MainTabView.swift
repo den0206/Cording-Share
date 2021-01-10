@@ -19,6 +19,8 @@ struct MainTabView: View {
                     FeedView()
                 case 1 :
                     AddPostView()
+                case 2 :
+                    UserEditView()
                 default:
                     Color.white
                     Text("No View")
@@ -31,6 +33,7 @@ struct MainTabView: View {
                     .animation(.spring())
             }
         }
+        .Loading(isShowing: $userInfo.loading)
         .showHUD(isShowing: $userInfo.showHUD)
         .edgesIgnoringSafeArea(.all)
     }
@@ -53,11 +56,11 @@ struct CustomTab : View {
             
             Spacer(minLength : 15)
             
-            tabButton(function: {index = 1}, systemImageName: "list.number", title: "Code List", number: 1, index: index)
+            tabButton(function: {index = 1}, systemImageName: "chevron.left.slash.chevron.right", title: " Post", number: 1, index: index)
 
             Spacer(minLength: 15)
             
-            tabButton(function: {index = 2}, systemImageName: "chevron.left.slash.chevron.right", title: "Source", number: 2, index: index)
+            tabButton(function: {index = 2}, systemImageName: "gearshape", title: "Setting", number: 2, index: index)
         }
         .padding(.top,-10)
         .padding(.horizontal,25)

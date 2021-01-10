@@ -15,7 +15,6 @@ final class AddPostViewModel : ObservableObject {
     @Published var fullScreen = false
     @Published var showSelectView = false
     
-    @Published var loading = false
     @Published var showAlert = false
     @Published var alert : Alert = Alert(title: Text(""))
     
@@ -35,7 +34,7 @@ final class AddPostViewModel : ObservableObject {
     func submitCode(userInfo : UserInfo) {
         
         guard description != "" else {
-            alert = Alert(title: Text("説明欄が空欄です"), message: Text("送信致しますか?"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .default(Text("PUSH"), action: {
+            alert = Alert(title: Text("説明欄が空欄です"), message: Text("送信しますか?"), primaryButton: .cancel(Text("キャンセル")), secondaryButton: .default(Text("PUSH"), action: {
                 self.pushCode(userInfo: userInfo)
             }))
             
@@ -53,15 +52,13 @@ final class AddPostViewModel : ObservableObject {
         let userId = userInfo.user.uid
         let lang = userInfo.mode
         
-        print(description)
-        loading = true
+        userInfo.loading = true
 
         FBPost.craeteNewPost(data: data, userId: userId, language: lang,description: description) { (result) in
 
             switch result {
 
             case .success(let post):
-                print(post)
                 self.text = ""
                 self.description = ""
                 
@@ -71,7 +68,7 @@ final class AddPostViewModel : ObservableObject {
                 self.showAlert = true
             }
 
-            self.loading = false
+            userInfo.loading = false
         }
     }
     

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CodeMirror_SwiftUI
-
 
 struct AddPostView: View {
     
@@ -62,7 +60,8 @@ struct AddPostView: View {
                         }
                         
                         
-                        CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
+                        ExampleView(code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize)
+                    
                     }
                     
                     
@@ -91,7 +90,7 @@ struct AddPostView: View {
                 } else {
                     
                     /// Z1
-                    CodeView(theme: userInfo.theme, code: $vm.text, mode: userInfo.mode.mode() , fontSize: userInfo.fontSize, showInvisibleCharacters: false, lineWrapping: false)
+                    ExampleView(code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize)
                     
                     /// Z2
                     VStack {
@@ -115,7 +114,6 @@ struct AddPostView: View {
                     
                 }
             }
-            .Loading(isShowing: $vm.loading)
             .alert(isPresented: $vm.showAlert) {
                 vm.alert
             }

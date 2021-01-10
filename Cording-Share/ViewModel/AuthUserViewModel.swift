@@ -16,7 +16,7 @@ struct AuthUserViewModel {
     var confirmPassword = ""
     var imageData : Data = .init(count: 0)
     
-//    var currentUser : FBUser?
+    var currentUser : FBUser?
     
     var isLoginComplete : Bool {
         
@@ -45,17 +45,21 @@ struct AuthUserViewModel {
         
     }
     
-//    var didChangeStatus : Bool {
-//
-//        guard let currentUser = currentUser else {return false}
-//
-//        if currentUser.name != fullname || currentUser.email != email  || !(self.imageData == .init(count :0)){
-//            return true
-//        }
-//
-//        return false
-//    }
-//
+    var didChangeStatus : Bool {
+
+        guard let currentUser = currentUser else {return false}
+        
+        guard !isEmpty(_field: fullname) && !isEmpty(_field: email) && isEmalValid(_email: email) else {
+            return false
+        }
+        
+        if currentUser.name != fullname || currentUser.email != email  || !(self.imageData == .init(count :0))  {
+            return true
+        }
+
+        return false
+    }
+
     
     //MARK: - validation
     

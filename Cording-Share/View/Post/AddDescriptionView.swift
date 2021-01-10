@@ -44,7 +44,7 @@ struct AddDescriptionView: View {
                         .placeholder{
                             Rectangle().fill(Color.gray)
                         }
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: 30, height: 30)
                         .clipShape(Circle())
                     
@@ -97,10 +97,8 @@ struct PushButton : View {
                 .foregroundColor(.white)
                 .frame(width: 55, height: 55)
                 .background(vm.buttonColor)
-//                .opacity(vm.description.isEmpty ? 0.3 : 1)
                 .clipShape(Circle())
         }
-//        .disabled(vm.description.isEmpty)
         .padding()
         
         

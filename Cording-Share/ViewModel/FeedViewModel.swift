@@ -22,7 +22,6 @@ final class FeedViewModel : ObservableObject {
             
             case .success(let posts):
                 self.posts = posts
-                print(posts[1].codeBlock)
             case .failure(let error):
                 print(error.localizedDescription)
                 self.errorMessage = error.localizedDescription

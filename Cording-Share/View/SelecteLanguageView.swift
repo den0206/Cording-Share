@@ -53,7 +53,7 @@ struct ModeCell : View {
         }) {
             VStack {
                 HStack {
-                    Text("∙\(codeMode.rawValue)")
+                    Text("∙ \(codeMode.rawValue)")
                         .font(.headline)
                         .padding(.leading,10)
                     

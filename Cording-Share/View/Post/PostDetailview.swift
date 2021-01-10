@@ -35,11 +35,15 @@ struct PostDetailview: View {
                             .placeholder{
                                 Rectangle().fill(Color.gray)
                             }
-                            .scaledToFit()
+                            .scaledToFill()
                             .frame(width: 30, height: 30)
                             .clipShape(Circle())
                         
                         Spacer()
+                        
+                        Button(action: {vm.fullScreenMode()}) {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        }
                         
                         /// lang Image
                         vm.post.lang.image
@@ -47,12 +51,10 @@ struct PostDetailview: View {
                             .scaledToFit()
                             .frame(width: 30, height: 30)
                             .clipShape(Circle())
-                        
-                        Button(action: {vm.fullScreenMode()}) {
-                            Image(systemName: "arrow.up.left.and.arrow.down.right")
-                        }
+               
                     }
-                    .padding()
+                    .padding(.top)
+                    .padding(.horizontal)
                  
                     
                     HStack {
@@ -73,12 +75,32 @@ struct PostDetailview: View {
                     }
                     .padding()
                    
-
-                    ExampleView(loading: $vm.loading, code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                    GeometryReader { geo in
                         
-
-
+                        VStack {
+                            ExampleView(code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                                .frame(height: (geo.size.height / 3) * 2)
+                            
+                            Divider()
+                                .background(Color.primary)
+                            
+                            ScrollView(showsIndicators: true) {
+                                
+                                Text(vm.post.description)
+                                    .font(.subheadline)
+                                    .foregroundColor(Color.primary)
+                                    .multilineTextAlignment(.leading)
+                                    .padding()
+                            }
+                            
+                        }
+                      
+                    }
+                    
+                   
+                    
                     Spacer()
+
                 }
                 
             
@@ -86,7 +108,7 @@ struct PostDetailview: View {
                 ZStack {
                     
                     /// Z1
-                    ExampleView(loading: $vm.loading, code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                    ExampleView(code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
                     
                     /// Z2
                     VStack {

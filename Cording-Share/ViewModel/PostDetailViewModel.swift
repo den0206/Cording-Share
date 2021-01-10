@@ -14,7 +14,6 @@ final class PostDetailViewModel : ObservableObject{
     @Published var errorMessage = ""
     @Published var showALert = false
     
-    @Published var loading = true
     @Published var fullScreen = false
 
     init(post : Post) {
