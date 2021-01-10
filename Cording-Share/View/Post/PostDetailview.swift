@@ -55,12 +55,27 @@ struct PostDetailview: View {
                     .padding()
                  
                     
-                    if vm.post.user != nil {
-                        Text(vm.post.user!.name)
+                    HStack {
+                        Spacer()
+                        
+                        if vm.post.user != nil {
+                            Text(vm.post.user!.name)
 
+                        }
+                        
+                        Spacer()
+                        
+                        Button(action: {userInfo.copyText(text: vm.post.codeBlock)}) {
+                            Image(systemName: "paperclip")
+                                .font(.system(size: 22, weight: .regular))
+                        }
+                        
                     }
+                    .padding()
+                   
 
                     ExampleView(loading: $vm.loading, code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                        
 
 
                     Spacer()
@@ -114,5 +129,7 @@ struct PostDetailview: View {
             
             
         }
+        
+        .navigationBarHidden(true)
     }
 }

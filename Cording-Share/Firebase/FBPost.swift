@@ -10,7 +10,7 @@ import CodeMirror_SwiftUI
 
 struct FBPost {
     
-    static func craeteNewPost(data : Data, userId : String, language : CodeMode, completion : @escaping(Result<Post, Error>) -> Void) {
+    static func craeteNewPost(data : Data, userId : String, language : CodeMode, description : String ,completion : @escaping(Result<Post, Error>) -> Void) {
         
         let postId = UUID().uuidString
     
@@ -23,13 +23,18 @@ struct FBPost {
             
             case .success(let codeUrl):
                 
-                let data = [PostKey.postId : postId,
+                var data = [PostKey.postId : postId,
                             PostKey.userID : userId,
                             PostKey.codeUrl : codeUrl,
                             PostKey.language : language.rawValue,
                             PostKey.date : Timestamp(date: Date())
                             
                 ] as [String : Any]
+                
+                
+                if description != "" {
+                    data[PostKey.description] = description
+                }
                 
                 FirebaseReference(.User).document(userId).collection(PostKey.posts).document(postId).setData(data) { (error) in
                     

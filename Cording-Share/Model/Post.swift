@@ -16,7 +16,7 @@ struct Post : Identifiable{
     var userId : String
     var lang : CodeMode
     var sorceUrl : URL?
-    var description : String = "Description"
+    var description : String 
     var user : FBUser?
     var liked : Bool = false
     
@@ -38,13 +38,16 @@ struct Post : Identifiable{
         
         let id = dic[PostKey.postId] as? String ?? ""
         let userId = dic[PostKey.userID] as? String ?? ""
+        let desc = dic[PostKey.description] as? String ?? "No Description"
         
         if let url = dic[PostKey.codeUrl] as? String {
             self.sorceUrl = URL(string: url)
         }
         
+        
         self.id = id
         self.userId = userId
+        self.description = desc
         
         let strValue = dic[PostKey.language] as? String ?? ""
         
