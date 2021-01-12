@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CodeMirror_SwiftUI
+import Firebase
 
 struct Post : Identifiable{
     
@@ -18,6 +19,8 @@ struct Post : Identifiable{
     var sorceUrl : URL?
     var description : String 
     var user : FBUser?
+    let timestamp : Timestamp
+    
     var liked : Bool = false
     
     var codeBlock : String {
@@ -34,20 +37,24 @@ struct Post : Identifiable{
         
     }
     
+    //MARK: - init
+    
     init(dic : [String : Any]) {
         
         let id = dic[PostKey.postId] as? String ?? ""
         let userId = dic[PostKey.userID] as? String ?? ""
         let desc = dic[PostKey.description] as? String ?? "No Description"
+        let timestamp = dic[PostKey.date] as? Timestamp ?? Timestamp(date: Date())
+    
+        self.id = id
+        self.userId = userId
+        self.description = desc
+        self.timestamp = timestamp
         
         if let url = dic[PostKey.codeUrl] as? String {
             self.sorceUrl = URL(string: url)
         }
         
-        
-        self.id = id
-        self.userId = userId
-        self.description = desc
         
         let strValue = dic[PostKey.language] as? String ?? ""
         
@@ -80,6 +87,24 @@ struct Post : Identifiable{
         default:
             lang = .csharp
         }
+    }
+    
+    //MARK: - TimestampString
+    
+    var timestampString: String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .abbreviated
+        return formatter.string(from: timestamp.dateValue(), to: Date()) ?? ""
+    }
+    
+    var detailedTimestampString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd · h:mm a"
+        return formatter.string(from: timestamp.dateValue())
+        
+//        "h:mm a · MM/dd/yyyy"
     }
     
     

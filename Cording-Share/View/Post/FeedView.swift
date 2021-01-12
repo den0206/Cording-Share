@@ -64,12 +64,6 @@ struct PostCell : View {
             
             HStack {
                 
-                post.lang.image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
-                
                 Spacer()
                 
                 NavigationLink(destination:  PostDetailview(vm: PostDetailViewModel(post: post))) {
@@ -81,11 +75,15 @@ struct PostCell : View {
             }
             .padding()
             
-            ExampleView(code: .constant(post.codeBlock), mode: post.lang.mode(), fontSize: 12)
+            ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
                 .frame( height: 150)
             
             
             HStack(spacing :15) {
+                
+                Text(post.timestampString)
+                    .foregroundColor(.primary)
+                
                 Spacer()
                 
                 Image(systemName: "paperclip")

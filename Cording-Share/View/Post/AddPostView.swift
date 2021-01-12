@@ -30,10 +30,9 @@ struct AddPostView: View {
                             
                             Spacer()
                             
-                            Text(userInfo.mode.rawValue)
-                                .fontWeight(.bold)
                             
-                            
+                            TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
+                           
                             Spacer()
                             
                             Button(action: {vm.showSelectView = true}) {
@@ -60,7 +59,7 @@ struct AddPostView: View {
                         }
                         
                         
-                        ExampleView(code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize)
+                        ExampleView(code: $vm.text, lang: userInfo.mode, fontSize: userInfo.fontSize,withImage : false)
                     
                     }
                     
@@ -90,7 +89,7 @@ struct AddPostView: View {
                 } else {
                     
                     /// Z1
-                    ExampleView(code: $vm.text, mode: userInfo.mode.mode(), fontSize: userInfo.fontSize)
+                    ExampleView(code: $vm.text, lang: userInfo.mode, fontSize: userInfo.fontSize,withImage : false)
                     
                     /// Z2
                     VStack {

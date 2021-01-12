@@ -45,12 +45,6 @@ struct PostDetailview: View {
                             Image(systemName: "arrow.up.left.and.arrow.down.right")
                         }
                         
-                        /// lang Image
-                        vm.post.lang.image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .clipShape(Circle())
                
                     }
                     .padding(.top)
@@ -60,10 +54,8 @@ struct PostDetailview: View {
                     HStack {
                         Spacer()
                         
-                        if vm.post.user != nil {
-                            Text(vm.post.user!.name)
-
-                        }
+                        /// datail
+                        Text(vm.post.detailedTimestampString)
                         
                         Spacer()
                         
@@ -78,7 +70,7 @@ struct PostDetailview: View {
                     GeometryReader { geo in
                         
                         VStack {
-                            ExampleView(code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                            ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang, fontSize: userInfo.fontSize)
                                 .frame(height: (geo.size.height / 3) * 2)
                             
                             Divider()
@@ -108,7 +100,7 @@ struct PostDetailview: View {
                 ZStack {
                     
                     /// Z1
-                    ExampleView(code: .constant(vm.post.codeBlock), mode: vm.post.lang.mode(), fontSize: userInfo.fontSize)
+                    ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang, fontSize: userInfo.fontSize)
                     
                     /// Z2
                     VStack {

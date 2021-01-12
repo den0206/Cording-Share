@@ -20,19 +20,9 @@ struct AddDescriptionView: View {
             /// Z1
             VStack {
                 
-                Label {
-                    Text(userInfo.mode.rawValue)
-                        .font(.title2)
-                } icon: {
-                    userInfo.mode.image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 35, height: 35)
-                        .clipShape(Circle())
-                }
-                .padding(.top,5)
-                
-                
+                TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
+                    .padding(.top,5)
+             
                 
                 Divider()
                     .background(Color.primary)
