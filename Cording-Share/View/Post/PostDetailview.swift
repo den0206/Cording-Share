@@ -22,9 +22,7 @@ struct PostDetailview: View {
             if !vm.fullScreen {
                 
                 VStack {
-                    
                     HStack {
-                        
                         Button(action: {presentationMode.wrappedValue.dismiss()}) {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.primary)
@@ -41,6 +39,8 @@ struct PostDetailview: View {
                         
                         Spacer()
                         
+                     
+                        
                         Button(action: {vm.fullScreenMode()}) {
                             Image(systemName: "arrow.up.left.and.arrow.down.right")
                         }
@@ -52,25 +52,36 @@ struct PostDetailview: View {
                  
                     
                     HStack {
-                        Spacer()
-                        
-                        /// datail
-                        Text(vm.post.detailedTimestampString)
-                        
-                        Spacer()
                         
                         Button(action: {userInfo.copyText(text: vm.post.codeBlock)}) {
                             Image(systemName: "paperclip")
                                 .font(.system(size: 22, weight: .regular))
                         }
                         
+                        if vm.post.isCurrentUser {
+                            Spacer()
+                            
+                            CustomDetailButton(title: "Edit", disable: true, action: {vm.showEdit = true})
+                                .fullScreenCover(isPresented: $vm.showEdit) {
+                                    EditPostView(post: vm.post).environmentObject(self.userInfo)
+                                }
+                            
+                            CustomDetailButton(title: "Delete", disable: true, backColor: .red, action: {print("Delete")})
+                        }
+                        
+                        Spacer()
+                        
+                        /// datail
+                        Text(vm.post.detailedTimestampString)
+                            .font(.caption2)
+                                            
                     }
                     .padding()
                    
                     GeometryReader { geo in
                         
                         VStack {
-                            ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang, fontSize: userInfo.fontSize)
+                            ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang)
                                 .frame(height: (geo.size.height / 3) * 2)
                             
                             Divider()
@@ -100,7 +111,7 @@ struct PostDetailview: View {
                 ZStack {
                     
                     /// Z1
-                    ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang, fontSize: userInfo.fontSize)
+                    ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang,withImage :false)
                     
                     /// Z2
                     VStack {

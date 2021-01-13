@@ -18,6 +18,8 @@ final class AddPostViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var alert : Alert = Alert(title: Text(""))
     
+    var currentPost : Post?
+    
     var buttonColor : Color {
         if text.isEmpty {
             return Color.gray
@@ -26,10 +28,24 @@ final class AddPostViewModel : ObservableObject {
         }
     }
     
-    func commitCode() {
-        guard text != "" else {return}
+    var didChangeStatus : Bool {
+
+        guard let currentPost = currentPost else {return false}
+        
+        guard !isEmpty(_field: text) else {
+            return false
+        }
+        
+        if currentPost.codeBlock != text {
+            return true
+        }
+        
+        return false
+
     }
     
+  
+    //MARK: - Functions
     
     func submitCode(userInfo : UserInfo) {
         
@@ -61,7 +77,7 @@ final class AddPostViewModel : ObservableObject {
             case .success(let post):
                 self.text = ""
                 self.description = ""
-                
+                print(post)
                 userInfo.tabIndex = 0
             case .failure(let error):
                 self.alert = errorAlert(message: error.localizedDescription)

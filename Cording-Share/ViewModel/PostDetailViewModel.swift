@@ -13,6 +13,7 @@ final class PostDetailViewModel : ObservableObject{
     
     @Published var errorMessage = ""
     @Published var showALert = false
+    @Published var showEdit = false
     
     @Published var fullScreen = false
 

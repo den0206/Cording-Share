@@ -23,6 +23,10 @@ struct Post : Identifiable{
     
     var liked : Bool = false
     
+    var isCurrentUser : Bool{
+        return userId == Auth.auth().currentUser?.uid
+    }
+    
     var codeBlock : String {
         
         guard let url = sorceUrl else {return "No Code"}
@@ -58,35 +62,8 @@ struct Post : Identifiable{
         
         let strValue = dic[PostKey.language] as? String ?? ""
         
-        switch strValue {
+        lang = encodeLang(strValue: strValue)
         
-        case "swift":
-            lang = .swift
-        case "c" :
-            lang = .c
-        case "html" :
-            lang = .html
-        case "java" :
-            lang = .java
-        case "javascript" :
-            lang = .javascript
-        case "objc" :
-            lang = .objc
-        case "perl" :
-            lang = .perl
-        case "php" :
-            lang = .php
-        case "python" :
-            lang = .python
-        case "r" :
-            lang = .r
-        case "ruby" :
-            lang = .ruby
-        case "rust" :
-            lang = .rust
-        default:
-            lang = .csharp
-        }
     }
     
     //MARK: - TimestampString
@@ -97,6 +74,10 @@ struct Post : Identifiable{
         formatter.maximumUnitCount = 1
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: timestamp.dateValue(), to: Date()) ?? ""
+    }
+    
+    var tmstring : String {
+        return timeElapsed(date: timestamp.dateValue())
     }
     
     var detailedTimestampString: String {
@@ -128,6 +109,44 @@ extension CodeMode  {
         }
     }
     
+    
+}
+
+fileprivate func encodeLang(strValue : String) -> CodeMode {
+    
+    var lang : CodeMode
+    
+    switch strValue {
+    
+    case "swift":
+        lang = .swift
+    case "c" :
+        lang = .c
+    case "html" :
+        lang = .html
+    case "java" :
+        lang = .java
+    case "javascript" :
+        lang = .javascript
+    case "objc" :
+        lang = .objc
+    case "perl" :
+        lang = .perl
+    case "php" :
+        lang = .php
+    case "python" :
+        lang = .python
+    case "r" :
+        lang = .r
+    case "ruby" :
+        lang = .ruby
+    case "rust" :
+        lang = .rust
+    default:
+        lang = .csharp
+    }
+    
+    return lang
 }
 
 

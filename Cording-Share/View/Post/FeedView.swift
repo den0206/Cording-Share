@@ -81,17 +81,6 @@ struct PostCell : View {
             
             HStack(spacing :15) {
                 
-                Text(post.timestampString)
-                    .foregroundColor(.primary)
-                
-                Spacer()
-                
-                Image(systemName: "paperclip")
-                    .font(.system(size: 22, weight: .regular))
-                    .onTapGesture {
-                        userInfo.copyText(text: post.codeBlock)
-                    }
-                
                 Image(systemName: "chevron.down")
                     .rotationEffect(.degrees(isExpand ? -180 : 0))
                     .font(.system(size: 22, weight: .regular))
@@ -102,6 +91,17 @@ struct PostCell : View {
                         }
                     }
                 
+                Image(systemName: "paperclip")
+                    .font(.system(size: 22, weight: .regular))
+                    .onTapGesture {
+                        userInfo.copyText(text: post.codeBlock)
+                    }
+            
+                Spacer()
+                
+                Text(post.tmstring)
+                    .font(.caption2)
+            
             }
             .padding()
             
