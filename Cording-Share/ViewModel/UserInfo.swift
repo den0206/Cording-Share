@@ -25,6 +25,8 @@ final class UserInfo : ObservableObject {
     @Published var loading = false
     @Published var showHUD = false
     
+    @Published var MSGPushNav = false
+    
     
     @AppStorage("fontSize") var fontSize : Int = 10
     @AppStorage("themeIndex") var themeIndex : Int = 8

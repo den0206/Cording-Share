@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct RecentsView: View {
+    @EnvironmentObject var userInfo : UserInfo
+
     var body: some View {
         NavigationView {
             
             VStack {
-                Text("Recents")
+                
+                NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav) {
+                    Text("Recents")
+                }
+              
                 
                 Spacer()
             }

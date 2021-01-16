@@ -22,8 +22,7 @@ struct Cording_ShareApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            RootView()
-            MainTabView()
+            RootView()
                 .environmentObject(userInfo)
         }
     }

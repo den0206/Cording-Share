@@ -30,6 +30,9 @@
 		3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABDF09625AF3DA600D8113F /* EditPostView.swift */; };
 		3AC0D10825A49FF700B84475 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0D10725A49FF700B84475 /* Post.swift */; };
 		3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */; };
+		3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC316E325B2C4FA00ADD668 /* Recent.swift */; };
+		3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */; };
+		3AC4451E25B29C23003822A3 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4451D25B29C23003822A3 /* MessageView.swift */; };
 		3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */; };
 		3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */; };
 		3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E381259EFE3A004FB2CF /* FeedView.swift */; };
@@ -83,6 +86,9 @@
 		3ABDF09625AF3DA600D8113F /* EditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPostView.swift; sourceTree = "<group>"; };
 		3AC0D10725A49FF700B84475 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDescriptionView.swift; sourceTree = "<group>"; };
+		3AC316E325B2C4FA00ADD668 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
+		3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
+		3AC4451D25B29C23003822A3 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
 		3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		3AF9E381259EFE3A004FB2CF /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -188,6 +194,7 @@
 				3AF9E383259EFF8E004FB2CF /* FeedViewModel.swift */,
 				3AF9E385259F0537004FB2CF /* AddPostViewModel.swift */,
 				3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */,
+				3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -197,6 +204,7 @@
 			children = (
 				3AFED618259D94180048B807 /* FBUser.swift */,
 				3AC0D10725A49FF700B84475 /* Post.swift */,
+				3AC316E325B2C4FA00ADD668 /* Recent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -217,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				3ABA761325B28A5000B7C42A /* RecentsView.swift */,
+				3AC4451D25B29C23003822A3 /* MessageView.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -395,9 +404,11 @@
 				3ABA761425B28A5000B7C42A /* RecentsView.swift in Sources */,
 				3AB5E852259DB508004069E8 /* CustomError.swift in Sources */,
 				3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */,
+				3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
 				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
 				3A75ED4E259C3651009E990E /* ContentView.swift in Sources */,
+				3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */,
 				3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */,
 				3AFED619259D94180048B807 /* FBUser.swift in Sources */,
 				3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */,
@@ -408,6 +419,7 @@
 				3AFED64B259D977C0048B807 /* Downloader.swift in Sources */,
 				3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */,
 				3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */,
+				3AC4451E25B29C23003822A3 /* MessageView.swift in Sources */,
 				3AFED61B259D94390048B807 /* Constracts.swift in Sources */,
 				3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */,
 				3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */,

@@ -78,7 +78,7 @@ final class AddPostViewModel : ObservableObject {
                 self.text = ""
                 self.description = ""
                 print(post)
-                userInfo.tabIndex = 0
+                userInfo.tabIndex = 1
             case .failure(let error):
                 self.alert = errorAlert(message: error.localizedDescription)
                 self.showAlert = true

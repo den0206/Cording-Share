@@ -10,37 +10,41 @@ import SwiftUI
 struct FeedView: View {
     
     @EnvironmentObject var userInfo : UserInfo
-    
     @StateObject var vm = FeedViewModel()
     
     var body: some View {
         
         NavigationView {
             
-            ScrollView {
-               VStack {
-                    ForEach(0 ..< vm.posts.count , id : \.self) { i in
-                        
+    
+                List(0 ..< vm.posts.count , id : \.self)  { i in
+                    
+                    NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: vm.posts[i]))) {
                         PostCell(post: vm.posts[i])
                     }
-          
+                  
                 }
-            }
-            .onAppear {
-                vm.fetchPosts(userId: userInfo.user.uid)
-            }
-            .alert(isPresented: $vm.showalert, content: {
-                errorAlert(message: vm.errorMessage)
-            })
-            /// navigation Propety
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarHidden(true)
+                .listStyle(PlainListStyle())
+
+                /// navigation Propety
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(true)
+           
+        }
+        .onAppear {
+            vm.fetchPosts(userId: userInfo.user.uid)
         }
         
-      
+        .alert(isPresented: $vm.showalert, content: {
+            errorAlert(message: vm.errorMessage)
+        })
+       
     }
     
+    
 }
+
+
 
 
 struct FeedView_Previews: PreviewProvider {
@@ -61,22 +65,9 @@ struct PostCell : View {
     var body: some View {
         
         VStack {
-            
-            HStack {
-                
-                Spacer()
-                
-                NavigationLink(destination:  PostDetailview(vm: PostDetailViewModel(post: post))) {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 22, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-                
-            }
-            .padding()
-            
             ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
                 .frame( height: 150)
+                .disabled(true)
             
             
             HStack(spacing :15) {
@@ -96,12 +87,12 @@ struct PostCell : View {
                     .onTapGesture {
                         userInfo.copyText(text: post.codeBlock)
                     }
-            
+                
                 Spacer()
                 
                 Text(post.tmstring)
                     .font(.caption2)
-            
+                
             }
             .padding()
             
@@ -113,9 +104,6 @@ struct PostCell : View {
                     .padding(.trailing, 32)
             }
             
-            
-            Divider()
-                .background(Color.primary)
             
         }
         

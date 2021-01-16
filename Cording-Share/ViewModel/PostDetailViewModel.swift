@@ -15,9 +15,11 @@ final class PostDetailViewModel : ObservableObject{
     
     @Published var alert = Alert(title: Text(""))
     @Published var fullScreen = false
+    @Published var showProfile = false
 
     init(post : Post) {
         self.post = post
+        getPostUser()
     }
     
     

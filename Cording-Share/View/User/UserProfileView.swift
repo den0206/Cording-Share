@@ -10,17 +10,36 @@ import SDWebImageSwiftUI
 
 struct UserProfileView: View {
     
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var userInfo : UserInfo
-    let user : FBUser
     
-   
+    @StateObject var vm : UserProfileViewModel
+    var isSheet : Bool = false
+    
     var body: some View {
         
-        NavigationView {
-            
+        if vm.user == nil {
+            ProgressView("Loading...")
+                .foregroundColor(.primary)
+        } else {
+            NavigationView {
+                
                 VStack(spacing : 8) {
                     
-                    WebImage(url: user.avaterUrl)
+                    if isSheet {
+                        HStack {
+                            
+                            Button(action: {presentationMode.wrappedValue.dismiss()}) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            Spacer()
+                        }.padding()
+                        
+                    }
+                  
+                    WebImage(url: vm.user!.avaterUrl)
                         .resizable()
                         .placeholder{
                             Circle().fill(Color.gray)
@@ -30,12 +49,48 @@ struct UserProfileView: View {
                         .frame(width: 120, height: 120)
                         .clipShape(Circle())
                     
-                    Text(user.name)
+                    Text(vm.user!.name)
                         .font(.system(size: 16,weight : .semibold))
                     
                     
-                    ProfileActionButtonView(isCurrentUser: user.isCurrentUser)
-                      
+                    if vm.user!.isCurrentUser {
+                        NavigationLink(destination: UserEditView()) {
+                            Text("EditProfile")
+                                .frame(width: 240, height: 40)
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(20)
+                        }
+                        
+                    } else {
+                        HStack {
+                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                                Text("Follow")
+                                    .frame(width: 150, height: 40)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                            })
+                            .cornerRadius(20)
+                            
+                            Button(action: {
+                                
+                                vm.startPrivateChat(userInfo: userInfo)
+//                                DispatchQueue.main.async {
+//                                    userInfo.tabIndex = 2
+//                                    userInfo.MSGPushNav = true
+//                                }
+                                
+                            }, label: {
+                                Text("Message")
+                                    .frame(width: 150, height: 40)
+                                    .background(Color.purple)
+                                    .foregroundColor(.white)
+                            })
+                            .cornerRadius(20)
+                        }
+                        
+                    }
+                    
                     Divider()
                         .background(Color.primary)
                     
@@ -44,15 +99,18 @@ struct UserProfileView: View {
                 .padding()
                 
                 .navigationBarHidden(true)
+
+                
+            }
+         
                 .navigationBarTitleDisplayMode(.inline)
-        }
+                .navigationBarHidden(true)
         
+        }
         
     }
     
-    
 }
-
 struct ProfileActionButtonView: View {
     
     let isCurrentUser : Bool
@@ -67,7 +125,7 @@ struct ProfileActionButtonView: View {
                     .foregroundColor(.white)
                     .cornerRadius(20)
             }
-        
+            
         } else {
             HStack {
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
@@ -95,8 +153,10 @@ struct ProfileActionButtonView: View {
 
 struct UserProfileView_Previews: PreviewProvider {
     
-
+    
     static var previews: some View {
-        UserProfileView(user: FBUser(uid: "", name: "", email: ""))
+        UserProfileView(vm: UserProfileViewModel(user: FBUser(uid: "", name: "", email: "")))
     }
 }
+
+

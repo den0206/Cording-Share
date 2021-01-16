@@ -77,7 +77,11 @@ struct SignUpView: View {
                     ValitationText(text: user.validConfirmPasswordText,confirm: !user.passwordMatch(_confirmPass: user.confirmPassword) )
                     
                     
-                    Button(action: {registerUser()}) {
+                    Button(action: {
+                        registerUser()
+                        presentationMode.wrappedValue.dismiss()
+                        
+                    }) {
                         Text("Register")
                             .foregroundColor(.white)
                             .padding(.vertical,15)
@@ -124,6 +128,7 @@ struct SignUpView: View {
 
             case .success(let user):
                 self.userInfo.user = user
+                self.userInfo.isUserauthenticated = .signIn
             case .failure(let error):
                 errorMessage = error.localizedDescription
                 showAlert = true

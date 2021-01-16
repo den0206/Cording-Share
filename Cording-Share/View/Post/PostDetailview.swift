@@ -32,14 +32,29 @@ struct PostDetailview: View {
                                     .foregroundColor(.primary)
                             }
                             
-                            WebImage(url: vm.post.user?.avaterUrl)
-                                .resizable()
-                                .placeholder{
-                                    Rectangle().fill(Color.gray)
-                                }
-                                .scaledToFill()
-                                .frame(width: 30, height: 30)
-                                .clipShape(Circle())
+                            
+                            NavigationLink(destination: UserProfileView(vm: UserProfileViewModel(user: vm.post.user),isSheet : true))
+                            {
+                                WebImage(url: vm.post.user?.avaterUrl)
+                                    .resizable()
+                                    .placeholder{
+                                        Rectangle().fill(Color.gray)
+                                    }
+                                    .scaledToFill()
+                                    .frame(width: 30, height: 30)
+                                    .clipShape(Circle())
+                                   
+                            }
+                            
+                            if vm.post.isCurrentUser {
+                                Spacer()
+                                
+                                CustomDetailButton(title: "Edit", disable: true, action: {print("Edit")})
+                                    
+                                
+                                CustomDetailButton(title: "Delete", disable: true, backColor: .red, action: {vm.showDeleteAlert(userInfo: userInfo)})
+                            }
+                  
                             
                             Spacer()
                             
@@ -62,14 +77,7 @@ struct PostDetailview: View {
                                     .font(.system(size: 22, weight: .regular))
                             }
                             
-                            if vm.post.isCurrentUser {
-                                Spacer()
-                                
-                                CustomDetailButton(title: "Edit", disable: true, action: {print("Edit")})
-                                    
-                                
-                                CustomDetailButton(title: "Delete", disable: true, backColor: .red, action: {vm.showDeleteAlert(userInfo: userInfo)})
-                            }
+                         
                             
                             Spacer()
                             
@@ -144,7 +152,7 @@ struct PostDetailview: View {
                     userInfo.showTab = false
                     
                 }
-                vm.getPostUser()
+            
             }
             .onDisappear {
                 hideKeyBord()

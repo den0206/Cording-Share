@@ -16,13 +16,13 @@ struct MainTabView: View {
             ZStack {
                 switch userInfo.tabIndex {
                 case 0 :
-                    FeedView()
-                case 1 :
                     AddPostView()
+                case 1 :
+                    FeedView()
                 case 2 :
                     RecentsView()
                 case 3 :
-                    UserProfileView(user: userInfo.user)
+                    UserProfileView(vm : UserProfileViewModel(user: userInfo.user))
                 default:
                     Color.secondary.colorInvert()
                     Text("No View")
@@ -53,25 +53,34 @@ struct CustomTab : View {
     
     var body: some View {
         
-        HStack {
-            tabButton(function: {index = 0}, systemImageName: "doc.richtext", title: "View", number: 0, index: index)
-            
-            Spacer(minLength : 15)
-            
-            tabButton(function: {index = 1}, systemImageName: "chevron.left.slash.chevron.right", title: " Post", number: 1, index: index)
+        VStack {
+            Divider()
+                .background(Color.primary)
+            HStack {
+                
+                
+                tabButton(function: {index = 0}, systemImageName: "chevron.left.slash.chevron.right", title: " Post", number: 0, index: index)
+                
+                
+                Spacer(minLength : 15)
+                
+                tabButton(function: {index = 1}, systemImageName: "doc.richtext", title: "View", number: 1, index: index)
+                
 
-            Spacer(minLength: 15)
-            
-            tabButton(function: {index = 2}, systemImageName: "message.circle", title: "Message", number: 2, index: index)
-            
-            Spacer(minLength : 15)
-            
-            tabButton(function: {index = 3}, systemImageName: "person.crop.circle", title: "Profile", number: 3, index: index)
+                Spacer(minLength: 15)
+                
+                tabButton(function: {index = 2}, systemImageName: "message.circle", title: "Message", number: 2, index: index)
+                
+                Spacer(minLength : 15)
+                
+                tabButton(function: {index = 3}, systemImageName: "person.crop.circle", title: "Profile", number: 3, index: index)
 
+            }
+            .padding(.top,-10)
+            .padding(.horizontal,25)
         }
-        .padding(.top,-10)
-        .padding(.horizontal,25)
-        .background(Color(.systemGroupedBackground))
+        
+//        .background(Color(.systemGroupedBackground))
         
     }
 }
