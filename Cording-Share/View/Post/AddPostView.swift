@@ -23,6 +23,7 @@ struct AddPostView: View {
                     /// Z1
                     VStack {
                         HStack {
+                            
                             Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                                 Image(systemName: "arrow.up.left.and.arrow.down.right")
                                     .font(.system(size: 24))
@@ -128,12 +129,6 @@ struct AddPostView: View {
     
     
     
-}
-
-struct NewPostView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddPostView()
-    }
 }
 
 

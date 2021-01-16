@@ -99,11 +99,12 @@ struct SignUpView: View {
             })
             /// navigation Property
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+            .navigationBarItems(leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
                 Image(systemName: "xmark")
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
             }))
         }
+        .preferredColorScheme(.dark)
         .Loading(isShowing: $isLoading)
         .onTapGesture(perform: {
             hideKeyBord()

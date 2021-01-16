@@ -132,7 +132,7 @@ struct EditPostView: View {
                 vm.alert
             }
             .onAppear(perform: {
-                vm.currentPost = post
+                vm.editPost = post
             })
             
             .navigationBarTitleDisplayMode(.inline)

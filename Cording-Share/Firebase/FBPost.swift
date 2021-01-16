@@ -5,7 +5,7 @@
 //  Created by 酒井ゆうき on 2021/01/03.
 //
 
-import FirebaseFirestore
+import Firebase
 import CodeMirror_SwiftUI
 
 struct FBPost {
@@ -53,6 +53,36 @@ struct FBPost {
             }
         }
        
+    }
+    
+    static func deleteItem(post : Post, usetId : String,completion :@escaping(Result<Bool, Error>) -> Void) {
+        
+        guard post.userId == usetId else {completion(.failure(FirestoreError.noUser))
+            return
+        }
+        
+        let strogeRef = Storage.storage().reference()
+        
+        FirebaseReference(.User).document(usetId).collection(PostKey.posts)
+            .document(post.id).delete { (error) in
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                strogeRef.child("sources").child(usetId).child("\(post.id).txt").delete { (error) in
+                    
+                    if let error = error{
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    completion(.success(true))
+                }
+            }
+        
+        
     }
 }
 

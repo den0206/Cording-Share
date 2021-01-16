@@ -20,9 +20,11 @@ struct MainTabView: View {
                 case 1 :
                     AddPostView()
                 case 2 :
-                    UserEditView()
+                    RecentsView()
+                case 3 :
+                    UserProfileView(user: userInfo.user)
                 default:
-                    Color.white
+                    Color.secondary.colorInvert()
                     Text("No View")
                 }
             }
@@ -60,7 +62,12 @@ struct CustomTab : View {
 
             Spacer(minLength: 15)
             
-            tabButton(function: {index = 2}, systemImageName: "gearshape", title: "Setting", number: 2, index: index)
+            tabButton(function: {index = 2}, systemImageName: "message.circle", title: "Message", number: 2, index: index)
+            
+            Spacer(minLength : 15)
+            
+            tabButton(function: {index = 3}, systemImageName: "person.crop.circle", title: "Profile", number: 3, index: index)
+
         }
         .padding(.top,-10)
         .padding(.horizontal,25)
@@ -103,3 +110,6 @@ struct tabButton : View {
         }
     }
 }
+
+
+//systemImageName: "gearshape",

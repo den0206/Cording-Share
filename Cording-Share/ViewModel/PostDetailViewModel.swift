@@ -11,10 +11,9 @@ final class PostDetailViewModel : ObservableObject{
     
     var post : Post
     
-    @Published var errorMessage = ""
     @Published var showALert = false
-    @Published var showEdit = false
     
+    @Published var alert = Alert(title: Text(""))
     @Published var fullScreen = false
 
     init(post : Post) {
@@ -29,7 +28,7 @@ final class PostDetailViewModel : ObservableObject{
             case .success(let user):
                 self.post.user = user
             case .failure(let error):
-                self.errorMessage = error.localizedDescription
+                self.alert = errorAlert(message: error.localizedDescription)
                 self.showALert = true
             }
         }
@@ -56,5 +55,34 @@ final class PostDetailViewModel : ObservableObject{
         }
         
         fullScreen.toggle()
+    }
+    
+    //MARK: - Edit & Delete Post
+    
+    func showDeleteAlert(userInfo : UserInfo){
+        alert = Alert(title: Text("確認"), message: Text("Postを削除してもよろしいですか？"), primaryButton: .cancel(), secondaryButton: .default(Text("削除"), action: {
+            
+            self.deletePost(userInfo: userInfo)
+        }))
+        
+        showALert = true
+    }
+    
+    func deletePost(userInfo : UserInfo) {
+        
+        userInfo.loading = true
+        
+        FBPost.deleteItem(post: post, usetId: userInfo.user.uid) { (result) in
+            
+            switch result {
+            
+            case .success(let bool):
+                print("Success\(bool)")
+            case .failure(let error):
+                self.alert = errorAlert(message: error.localizedDescription)
+            }
+            
+            userInfo.loading = false
+        }
     }
 }

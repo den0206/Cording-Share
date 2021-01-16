@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */; };
 		3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */; };
+		3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A720C2425B0923A00714CB0 /* UserProfileView.swift */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
 		3A75ED50259C3652009E990E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A75ED4F259C3652009E990E /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 		3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292C25A9403400CA332B /* PostDetailview.swift */; };
 		3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */; };
 		3AB5E852259DB508004069E8 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5E851259DB508004069E8 /* CustomError.swift */; };
+		3ABA761425B28A5000B7C42A /* RecentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA761325B28A5000B7C42A /* RecentsView.swift */; };
 		3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */; };
 		3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F3259C505E0063D1D8 /* SignUpView.swift */; };
 		3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F9259C54C50063D1D8 /* CustomView.swift */; };
@@ -60,6 +62,7 @@
 /* Begin PBXFileReference section */
 		3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelecteLanguageView.swift; sourceTree = "<group>"; };
 		3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3A720C2425B0923A00714CB0 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cording_ShareApp.swift; sourceTree = "<group>"; };
 		3A75ED4D259C3651009E990E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		3AA5292C25A9403400CA332B /* PostDetailview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailview.swift; sourceTree = "<group>"; };
 		3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		3AB5E851259DB508004069E8 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		3ABA761325B28A5000B7C42A /* RecentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsView.swift; sourceTree = "<group>"; };
 		3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3ABC30F3259C505E0063D1D8 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3ABC30F9259C54C50063D1D8 /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
@@ -109,6 +113,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A720C2625B0924500714CB0 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3A720C2425B0923A00714CB0 /* UserProfileView.swift */,
+				3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		3A75ED3F259C3651009E990E = {
 			isa = PBXGroup;
 			children = (
@@ -160,7 +173,8 @@
 				3AFED64E259D9D000048B807 /* RootView.swift */,
 				3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */,
 				3AA5292B25A9401B00CA332B /* Post */,
-				3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */,
+				3A720C2625B0924500714CB0 /* User */,
+				3ABA761225B28A3600B7C42A /* Message */,
 				3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */,
 			);
 			path = View;
@@ -197,6 +211,14 @@
 				3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		3ABA761225B28A3600B7C42A /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				3ABA761325B28A5000B7C42A /* RecentsView.swift */,
+			);
+			path = Message;
 			sourceTree = "<group>";
 		};
 		3ABC30F0259C4B790063D1D8 /* Authentification */ = {
@@ -370,6 +392,7 @@
 			files = (
 				3AF9E384259EFF8E004FB2CF /* FeedViewModel.swift in Sources */,
 				3AFED617259D93880048B807 /* FBAuth.swift in Sources */,
+				3ABA761425B28A5000B7C42A /* RecentsView.swift in Sources */,
 				3AB5E852259DB508004069E8 /* CustomError.swift in Sources */,
 				3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
@@ -393,6 +416,7 @@
 				3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */,
 				3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */,
 				3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */,
+				3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */,
 				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,
 				3AFED64F259D9D000048B807 /* RootView.swift in Sources */,
 				3A77699225A208CE004CC715 /* FBPost.swift in Sources */,

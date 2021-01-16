@@ -12,6 +12,7 @@ import CodeMirror_SwiftUI
 struct UserEditView: View {
   
     @EnvironmentObject var userInfo : UserInfo
+    @Environment(\.presentationMode) var presentationMode
     @State private var user = AuthUserViewModel()
     
     @State private var showPicker = false
@@ -26,9 +27,18 @@ struct UserEditView: View {
         
             ScrollView {
                 
+                HStack {
+                    Button(action: {presentationMode.wrappedValue.dismiss()}) {
+                        Image(systemName: "arrowshape.turn.up.backward")
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Spacer()
+                }
+                .padding()
+                
                 Spacer().frame(height: 30)
-                
-                
+             
                 Button(action: {showPicker.toggle()}) {
                     
                     if  user.imageData.count != 0 {
@@ -92,6 +102,7 @@ struct UserEditView: View {
                                 self.user.currentUser = user
                                 
                             case .failure(let error):
+                                print(error.localizedDescription)
                                 alert = errorAlert(message: error.localizedDescription)
                             }
                             
@@ -111,12 +122,16 @@ struct UserEditView: View {
                 Spacer()
                 
             }
+            .preferredColorScheme(.dark)
             .onAppear {
                 user.currentUser = userInfo.user
             }
             .alert(isPresented: $showAlert, content: {
                 alert
             })
+        
+            .navigationBarHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
 
     }
     

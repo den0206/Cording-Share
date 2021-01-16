@@ -18,7 +18,7 @@ final class AddPostViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var alert : Alert = Alert(title: Text(""))
     
-    var currentPost : Post?
+    var editPost : Post?
     
     var buttonColor : Color {
         if text.isEmpty {
@@ -30,13 +30,13 @@ final class AddPostViewModel : ObservableObject {
     
     var didChangeStatus : Bool {
 
-        guard let currentPost = currentPost else {return false}
+        guard let editPost = editPost else {return false}
         
         guard !isEmpty(_field: text) else {
             return false
         }
         
-        if currentPost.codeBlock != text {
+        if editPost.codeBlock != text {
             return true
         }
         

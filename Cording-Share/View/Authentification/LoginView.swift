@@ -33,6 +33,7 @@ struct LoginView: View {
             ValitationText(text: user.validEmailText, confirm: !user.validEmailText.isEmpty)
         
             CustomTextField(text: $user.email, placeholder: "Email", imageName: "envelope")
+                .padding(.bottom,8)
                 
             CustomTextField(text: $user.password, placeholder: "password", imageName: "lock", isSecure: true)
             
