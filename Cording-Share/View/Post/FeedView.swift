@@ -25,6 +25,7 @@ struct FeedView: View {
                   
                 }
                 .listStyle(PlainListStyle())
+                .padding(.top,10)
 
                 /// navigation Propety
                 .navigationBarTitleDisplayMode(.inline)
@@ -34,7 +35,6 @@ struct FeedView: View {
         .onAppear {
             vm.fetchPosts(userId: userInfo.user.uid)
         }
-        
         .alert(isPresented: $vm.showalert, content: {
             errorAlert(message: vm.errorMessage)
         })
@@ -58,17 +58,17 @@ struct FeedView_Previews: PreviewProvider {
 struct PostCell : View {
     
     @EnvironmentObject var userInfo : UserInfo
-    @State private var isExpand = false
+    @State private var isExpand = true
     
     var  post : Post
     
     var body: some View {
         
         VStack {
-            ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
-                .frame( height: 150)
-                .disabled(true)
-            
+//            ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
+//                .frame( height: 150)
+//                .disabled(true)
+//
             
             HStack(spacing :15) {
                 

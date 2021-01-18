@@ -19,7 +19,6 @@ final class PostDetailViewModel : ObservableObject{
 
     init(post : Post) {
         self.post = post
-        getPostUser()
     }
     
     

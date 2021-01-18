@@ -21,6 +21,16 @@ final class UserProfileViewModel : ObservableObject {
     func startPrivateChat(userInfo : UserInfo) {
         guard !user.isCurrentUser else {return}
         
-        print(userInfo.user.uid, user.uid)
+        let currentUID = userInfo.user.uid
+        let user2Id = user.uid
+        
+        Recent.createPrivateChat(currentUID: currentUID, user2ID: user2Id,users: [userInfo.user, user]) { (chatRoomId) in
+            userInfo.chatRoomId = chatRoomId
+            userInfo.withUser = self.user
+            userInfo.tabIndex = 2
+            userInfo.MSGPushNav = true
+
+        }
+        
     }
 }

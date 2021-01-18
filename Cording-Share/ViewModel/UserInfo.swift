@@ -26,6 +26,8 @@ final class UserInfo : ObservableObject {
     @Published var showHUD = false
     
     @Published var MSGPushNav = false
+    @Published var chatRoomId = ""
+    @Published var withUser : FBUser = .init(uid : "", name : "", email : "")
     
     
     @AppStorage("fontSize") var fontSize : Int = 10

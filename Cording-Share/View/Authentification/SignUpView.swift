@@ -134,6 +134,7 @@ struct SignUpView: View {
                 showAlert = true
             }
             
+            presentationMode.wrappedValue.dismiss()
             isLoading = false
             
         }

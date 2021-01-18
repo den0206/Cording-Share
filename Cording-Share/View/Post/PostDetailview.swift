@@ -152,7 +152,11 @@ struct PostDetailview: View {
                     userInfo.showTab = false
                     
                 }
-            
+                
+                if vm.post.user == nil {
+                    print("call")
+                    vm.getPostUser()
+                }
             }
             .onDisappear {
                 hideKeyBord()

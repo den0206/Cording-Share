@@ -12,6 +12,7 @@ struct FBAuth {
     
     static func fecthFBUser(uid : String, completion :  @escaping(Result<FBUser, Error>) -> Void) {
         
+
         let ref = FirebaseReference(.User).document(uid)
         
         ref.getDocument { (snapshot, error) in

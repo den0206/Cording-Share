@@ -18,6 +18,7 @@
 		3A75ED5E259C3791009E990E /* CodeMirror-SwiftUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED63259C37B5009E990E /* AddPostView.swift */; };
 		3A77699225A208CE004CC715 /* FBPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77699125A208CE004CC715 /* FBPost.swift */; };
+		3A96DEBC25B3F34B006293FF /* Reachbility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A96DEBB25B3F34B006293FF /* Reachbility.swift */; };
 		3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292C25A9403400CA332B /* PostDetailview.swift */; };
 		3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */; };
 		3AB5E852259DB508004069E8 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5E851259DB508004069E8 /* CustomError.swift */; };
@@ -28,11 +29,14 @@
 		3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */; };
 		3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */; };
 		3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABDF09625AF3DA600D8113F /* EditPostView.swift */; };
+		3ABE4E6E25B40A19006ADCB7 /* RecentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */; };
+		3ABE4E7025B40EDB006ADCB7 /* FBMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE4E6F25B40EDB006ADCB7 /* FBMessage.swift */; };
 		3AC0D10825A49FF700B84475 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0D10725A49FF700B84475 /* Post.swift */; };
 		3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */; };
 		3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC316E325B2C4FA00ADD668 /* Recent.swift */; };
 		3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */; };
 		3AC4451E25B29C23003822A3 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4451D25B29C23003822A3 /* MessageView.swift */; };
+		3AC57C5025B5514000775C22 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC57C4F25B5514000775C22 /* MessageViewModel.swift */; };
 		3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */; };
 		3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */; };
 		3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E381259EFE3A004FB2CF /* FeedView.swift */; };
@@ -74,6 +78,7 @@
 		3A75ED54259C3652009E990E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A75ED63259C37B5009E990E /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		3A77699125A208CE004CC715 /* FBPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBPost.swift; sourceTree = "<group>"; };
+		3A96DEBB25B3F34B006293FF /* Reachbility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachbility.swift; sourceTree = "<group>"; };
 		3AA5292C25A9403400CA332B /* PostDetailview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailview.swift; sourceTree = "<group>"; };
 		3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		3AB5E851259DB508004069E8 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
@@ -84,11 +89,14 @@
 		3ABC30FB259C56260063D1D8 /* AuthUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserViewModel.swift; sourceTree = "<group>"; };
 		3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalExtensions.swift; sourceTree = "<group>"; };
 		3ABDF09625AF3DA600D8113F /* EditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPostView.swift; sourceTree = "<group>"; };
+		3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsViewModel.swift; sourceTree = "<group>"; };
+		3ABE4E6F25B40EDB006ADCB7 /* FBMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBMessage.swift; sourceTree = "<group>"; };
 		3AC0D10725A49FF700B84475 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDescriptionView.swift; sourceTree = "<group>"; };
 		3AC316E325B2C4FA00ADD668 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
 		3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		3AC4451D25B29C23003822A3 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		3AC57C4F25B5514000775C22 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
 		3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		3AF9E381259EFE3A004FB2CF /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -195,6 +203,8 @@
 				3AF9E385259F0537004FB2CF /* AddPostViewModel.swift */,
 				3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */,
 				3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */,
+				3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */,
+				3AC57C4F25B5514000775C22 /* MessageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -248,6 +258,7 @@
 				3AFED648259D95E80048B807 /* FirebaseReference.swift */,
 				3AFED64A259D977C0048B807 /* Downloader.swift */,
 				3AB5E851259DB508004069E8 /* CustomError.swift */,
+				3A96DEBB25B3F34B006293FF /* Reachbility.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -257,6 +268,7 @@
 			children = (
 				3AFED616259D93880048B807 /* FBAuth.swift */,
 				3A77699125A208CE004CC715 /* FBPost.swift */,
+				3ABE4E6F25B40EDB006ADCB7 /* FBMessage.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -411,12 +423,14 @@
 				3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */,
 				3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */,
 				3AFED619259D94180048B807 /* FBUser.swift in Sources */,
+				3AC57C5025B5514000775C22 /* MessageViewModel.swift in Sources */,
 				3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */,
 				3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */,
 				3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */,
 				3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */,
 				3AC0D10825A49FF700B84475 /* Post.swift in Sources */,
 				3AFED64B259D977C0048B807 /* Downloader.swift in Sources */,
+				3A96DEBC25B3F34B006293FF /* Reachbility.swift in Sources */,
 				3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */,
 				3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */,
 				3AC4451E25B29C23003822A3 /* MessageView.swift in Sources */,
@@ -425,9 +439,11 @@
 				3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */,
 				3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */,
 				3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */,
+				3ABE4E7025B40EDB006ADCB7 /* FBMessage.swift in Sources */,
 				3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */,
 				3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */,
 				3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */,
+				3ABE4E6E25B40A19006ADCB7 /* RecentsViewModel.swift in Sources */,
 				3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */,
 				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,
 				3AFED64F259D9D000048B807 /* RootView.swift in Sources */,

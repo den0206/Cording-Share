@@ -117,6 +117,7 @@ struct LoginView: View {
             
             case .success(_):
                 print("Success")
+     
             case .failure(let error):
                 authError = error
                 showAlert = true
