@@ -56,7 +56,6 @@ final class RecentsViewModel : ObservableObject {
                         recent.withUser = user
                         
                         self.recents.append(recent)
-                        print(self.recents.count)
                     case .failure(let error):
                         self.errorMessage = error.localizedDescription
                     }

@@ -9,5 +9,8 @@ import Foundation
 
 struct FBMessage {
     
+    static func SendTextMessage(currentUser : FBUser, text : String?) {
+        
+    }
   
 }
