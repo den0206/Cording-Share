@@ -15,14 +15,34 @@ final class MessageViewModel : ObservableObject {
     @Published var codeText = ""
     @Published var loading = false
     
+    @Published var reachLast = false {
+        didSet {
+            print(reachLast)
+        }
+    }
+    @Published var lastDoc : DocumentSnapshot?
+    
     @Published var errorMessage = ""
     @Published var fullScreen = false
+    
+    let limit = 9
     
     //MARK: - fetch
     
     func loadMessage(chatRoomId : String,currentUser : FBUser) {
         
-        FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: RecentKey.date, descending: false).addSnapshotListener { (snapshot, error) in
+        guard !reachLast else {return}
+        loading = true
+        
+        var ref : Query!
+        
+        if lastDoc == nil {
+            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: RecentKey.date, descending: false).limit(to: limit)
+        } else {
+            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: RecentKey.date, descending: false).start(afterDocument: lastDoc!).limit(to: limit)
+        }
+        
+        ref.addSnapshotListener { (snapshot, error) in
             
             if let error = error {
                 print(error.localizedDescription)
@@ -30,7 +50,12 @@ final class MessageViewModel : ObservableObject {
             }
             
             guard let snapshot = snapshot else {return}
-            guard !snapshot.isEmpty else {print("Empty");return}
+            guard !snapshot.isEmpty else {
+                self.reachLast = true
+                self.loading = false
+                return
+                
+            }
             
             snapshot.documentChanges.forEach { (doc) in
                 
@@ -40,14 +65,19 @@ final class MessageViewModel : ObservableObject {
                     
                     let message = Message(dic: doc.document.data())
                     self.messages.append(message)
-                    print(self.messages.count)
                     
                 default :
                     print("NO Message")
-                    return
                 }
             }
             
+
+            if self.messages.count < 9 {
+                self.reachLast = true
+            }
+
+            self.lastDoc = snapshot.documents.last
+            self.loading = false
             
         }
         
@@ -116,6 +146,9 @@ final class MessageViewModel : ObservableObject {
                     FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
                 }
                 
+                /// reset
+                self.codeText = ""
+                self.text = ""
                 
             case .failure(let error):
                 self.errorMessage = error.localizedDescription

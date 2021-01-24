@@ -34,22 +34,32 @@ struct MessageView: View {
                 
                 /// Z1
                 ScrollView {
+                    
+                    if vm.loading {
+                        ProgressView()
+                    }
+                    
                     ScrollViewReader { reader in
                         
-                        ForEach(0 ..< vm.messages.count, id : \.self) { i in
-                            MessageCell(message: vm.messages[i], currentUser: userInfo.user, withUser: withUser)
-                                .onAppear {
-                                    if vm.messages[i].id == self.vm.messages.last?.id {
-                                        print("call")
-                                        reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
-                                        
+                        LazyVStack {
+                            
+                            ForEach(0 ..< vm.messages.count, id : \.self) { i in
+                                MessageCell(message: vm.messages[i], currentUser: userInfo.user, withUser: withUser)
+                                    .onAppear {
+                                        if vm.messages[i].id == vm.messages.first?.id {
+                                            /// pgaintion
+                                            print("first")
+                                            vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+                                        }
                                     }
-                                }
+                            }
+                          
                         }
                         .onChange(of: vm.messages) { (value) in
                             /// scroll to bottom get New Chat
                             reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
                         }
+                       
                     }
                 }
                 .padding(.vertical)
@@ -78,9 +88,9 @@ struct MessageView: View {
                     userInfo.showTab = false
                 }, content: {
                     MessageCodeView(vm: vm).environmentObject(userInfo)
-
+                    
                 })
-                
+            
             
         }
         .onAppear(perform: {
@@ -117,9 +127,14 @@ struct MessageView: View {
 
 struct MessageCell : View {
     
+    @EnvironmentObject var userInfo : UserInfo
+    
     let message : Message
     let currentUser : FBUser
     let withUser : FBUser
+    
+    @State private var isExpanding = false
+    @State private var showDetail = false
     
     var isCurrentUser : Bool {
         return message.userID == currentUser.uid
@@ -150,14 +165,65 @@ struct MessageCell : View {
                         .background(isCurrentUser ? Color.green : Color.gray)
                         .clipShape(BubbleShape(myMessage: isCurrentUser))
                 case .code :
-                    Text("\(message.codeUrl!.absoluteString), \(message.lang!.rawValue)")
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
+                    
+                    ZStack(alignment: .topTrailing) {
+                        
+                        if !isExpanding {
+                            
+                            Button(action: {isExpanding = true}) {
+                                
+                                TextIconView(text: "Code Preview", image: Image(systemName: "chevron.left.slash.chevron.right"),font: .caption2,size: 20)
+                                    .foregroundColor(.primary)
+                            }
+                        } else {
+                            /// Z1
+                            ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
+                                .frame( height: 150)
+                                .onTapGesture {
+                                    showDetail = true
+                                }
+                            
+                            /// Z2
+                            Button(action: {isExpanding = false}) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                            }
+                            
+                            
+                        }
+                    }
+                    .padding()
+                    .background(isCurrentUser ? Color.green : Color.gray)
+                    .clipShape(BubbleShape(myMessage: isCurrentUser))
+                    .sheet(isPresented: $showDetail) {
+                        
+                        /// detail code View
+                        VStack {
+                            HStack {
+                                Button(action: {showDetail = false}) {
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.white)
+                                        .padding(5)
+                                }
+                                
+                                Spacer()
+                            }
+                            
+                            ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
+                                .onTapGesture {
+                                    showDetail = true
+                                }
+                            
+                        }
                         .padding()
-                        .background(isCurrentUser ? Color.green : Color.gray)
-                        .clipShape(BubbleShape(myMessage: isCurrentUser))
+                        .preferredColorScheme(.dark)
+                        .environmentObject(userInfo)
+                        
+                    }
+                    
                 }
-             
+                
                 
                 Text(message.tmstring)
                     .font(.caption2)

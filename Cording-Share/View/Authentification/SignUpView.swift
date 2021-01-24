@@ -79,7 +79,6 @@ struct SignUpView: View {
                     
                     Button(action: {
                         registerUser()
-                        presentationMode.wrappedValue.dismiss()
                         
                     }) {
                         Text("Register")
@@ -120,6 +119,12 @@ struct SignUpView: View {
     
     private func registerUser() {
         
+        guard Reachabilty.HasConnection() else {
+            errorMessage = "No Internet"
+            showAlert = true
+            return
+        }
+       
         isLoading = true
         
         FBAuth.createUser(email: user.email, name: user.fullname, password: user.password, imageData: user.imageData) { (result) in

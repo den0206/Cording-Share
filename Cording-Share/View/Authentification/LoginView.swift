@@ -21,6 +21,8 @@ struct LoginView: View {
     @State private var sheetType : loginviewSheet?
     
     @State private var authError : EmailAuthError?
+    /// for not internet
+    @State private var errorMessage = ""
     @State private var showAlert = false
     @State private var isLoading = false
     
@@ -109,6 +111,14 @@ struct LoginView: View {
     //MARK: - Login
     
     private func loginUser() {
+        
+        guard Reachabilty.HasConnection() else {
+            errorMessage = "No Internet"
+            showAlert = true
+            return
+        }
+       
+        
         isLoading = true
         
         FBAuth.loginUser(email: user.email, password: user.password) { (result) in
