@@ -88,7 +88,11 @@ struct EditPostView: View {
                             
                             HStack {
                                 Spacer()
-                                CommitButton(vm: vm)
+                                NavigationLink(destination: AddDescriptionView(vm: vm)) {
+                                    CommitButton(text: $vm.text)
+                                }
+                                .disabled(vm.text.isEmpty)
+                                .padding()
                                 Text(vm.didChangeStatus.description)
                             }
                           
@@ -113,8 +117,13 @@ struct EditPostView: View {
                         HStack {
                             
                             Spacer()
-                            CommitButton(vm: vm)
-                         
+                            
+                            NavigationLink(destination: AddDescriptionView(vm: vm)) {
+                                CommitButton(text: $vm.text)
+                            }
+                            .disabled(vm.text.isEmpty)
+                            .padding()
+                            
                             Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                                 Image(systemName: "arrow.down.right.and.arrow.up.left")
                                     .font(.system(size: 24))

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeMirror_SwiftUI
 import Firebase
 
 struct Message : Identifiable,Equatable{
@@ -18,13 +19,30 @@ struct Message : Identifiable,Equatable{
     var userID : String
     var text : String
     var date : Timestamp
-    
     var type : MessageType
+
     
+    var lang : CodeMode?
+    var codeUrl : URL?
+    var codeBlock : String {
+        
+        guard let url = codeUrl else {return "No Code"}
+        
+        do {
+            let str = try String(contentsOf: url)
+            return str
+         
+        } catch {
+            return "Can't Compile"
+        }
+        
+    }
+   
     var tmstring : String {
         return timeElapsed(date: date.dateValue())
     }
     
+    //MARK: - init
     init(dic : [String : Any]) {
         
         self.id = dic[MessageKey.messageId] as? String ?? ""
@@ -43,6 +61,15 @@ struct Message : Identifiable,Equatable{
         default:
             type = .text
         }
+        
+        if let codeUrl = dic[MessageKey.codeUrl] as? String {
+            self.codeUrl = URL(string: codeUrl)
+        }
+        
+        if let langValue = dic[MessageKey.language] as? String {
+            self.lang = encodeLang(strValue: langValue)
+        }
+        
     }
     
    

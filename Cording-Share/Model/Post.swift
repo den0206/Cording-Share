@@ -112,7 +112,7 @@ extension CodeMode  {
     
 }
 
-fileprivate func encodeLang(strValue : String) -> CodeMode {
+func encodeLang(strValue : String) -> CodeMode {
     
     var lang : CodeMode
     

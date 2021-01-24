@@ -72,10 +72,15 @@ struct MessageView: View {
                 buttonAction: {
                     showSheet = true
                 }
-                .sheet(isPresented: $showSheet, content: {
-                    MessageCodeView(vm: vm).environmentObject(userInfo)
-                })
                 .animation(.default)
+                .fullScreenCover(isPresented: $showSheet, onDismiss: {
+                    vm.codeText = ""
+                    userInfo.showTab = false
+                }, content: {
+                    MessageCodeView(vm: vm).environmentObject(userInfo)
+
+                })
+                
             
         }
         .onAppear(perform: {
@@ -145,7 +150,12 @@ struct MessageCell : View {
                         .background(isCurrentUser ? Color.green : Color.gray)
                         .clipShape(BubbleShape(myMessage: isCurrentUser))
                 case .code :
-                    Text("Code")
+                    Text("\(message.codeUrl!.absoluteString), \(message.lang!.rawValue)")
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(isCurrentUser ? Color.green : Color.gray)
+                        .clipShape(BubbleShape(myMessage: isCurrentUser))
                 }
              
                 

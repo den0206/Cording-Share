@@ -79,7 +79,12 @@ struct AddPostView: View {
                             
                             HStack {
                                 Spacer()
-                                CommitButton(vm: vm)
+                                NavigationLink(destination: AddDescriptionView(vm: vm)) {
+                                    CommitButton(text: $vm.text)
+                                }
+                                .disabled(vm.text.isEmpty)
+                                .padding()
+                            
                             }
                           
                         }
@@ -100,7 +105,14 @@ struct AddPostView: View {
                         HStack {
                             
                             Spacer()
-                            CommitButton(vm: vm)
+                            
+                            NavigationLink(destination: AddDescriptionView(vm: vm)) {
+                                CommitButton(text: $vm.text)
+                            }
+                            .disabled(vm.text.isEmpty)
+                            .padding()
+                        
+                          
                          
                             Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
                                 Image(systemName: "arrow.down.right.and.arrow.up.left")
@@ -214,23 +226,27 @@ struct SideMenu : View {
 struct CommitButton : View {
     
     @EnvironmentObject var userInfo : UserInfo
-    @StateObject var vm : AddPostViewModel
+    @Binding var text : String
     
+    var buttonColor : Color {
+        if text.isEmpty {
+            return Color.gray
+        } else {
+            return Color.green
+        }
+    }
     
     var body: some View {
       
-            NavigationLink(destination: AddDescriptionView(vm: vm)) {
                 Text("Commit")
                     .font(.caption2)
                     .foregroundColor(.white)
                     .frame(width: 55, height: 55)
-                    .background(vm.buttonColor)
-                    .opacity(vm.text.isEmpty ? 0.3 : 1)
+                    .background(buttonColor)
+                    .opacity(text.isEmpty ? 0.3 : 1)
                     .clipShape(Circle())
-            }
-            .disabled(vm.text.isEmpty)
-            .padding()
-        
+            
+            
        
                 
     }

@@ -5,13 +5,18 @@
 //  Created by 酒井ゆうき on 2021/01/18.
 //
 
-import Combine
+import SwiftUI
 import Firebase
 
 final class MessageViewModel : ObservableObject {
     
     @Published var messages = [Message]()
     @Published var text = ""
+    @Published var codeText = ""
+    @Published var loading = false
+    
+    @Published var errorMessage = ""
+    @Published var fullScreen = false
     
     //MARK: - fetch
     
@@ -74,6 +79,85 @@ final class MessageViewModel : ObservableObject {
         /// reset
         text = ""
         
+    }
+    
+    func sendCodeMessage(chatRoomId : String,userInfo : UserInfo, withUser : FBUser, completion : @escaping() -> Void) {
+        
+        guard codeText != "" else {return}
+        guard let data = codeText.data(using: .utf8) else {return}
+        
+        let currentUser = userInfo.user
+        let lang = userInfo.mode
+        
+        
+        let messageID = UUID().uuidString
+        let users = [currentUser,withUser]
+        
+        let fileName = "sources/" + "\(currentUser.uid)/" + messageID + ".txt"
+        
+        /// upload txt file
+        
+        loading = true
+        
+        saveFileFirestore(data: data, fileName: fileName) { (result) in
+            switch result {
+            
+            case .success(let codeUrl):
+                
+                let data = [MessageKey.codeUrl : codeUrl,
+                            MessageKey.language : lang.rawValue,
+                            MessageKey.messageId : messageID,
+                            MessageKey.chatRoomId : chatRoomId,
+                            MessageKey.userID : currentUser.uid,
+                            MessageKey.messageType : MessageKey.CodeType,
+                            MessageKey.date : Timestamp(date: Date()) ] as [String : Any]
+                
+                users.forEach { (user) in
+                    FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
+                }
+                
+                
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+            
+            completion()
+
+            self.loading = false
+        }
+    }
+    
+    
+    //MARK: - UI
+    
+    func fullScreenMode(userInfo : UserInfo) {
+        
+        switch fullScreen {
+        
+        case true:
+            DispatchQueue.main.async {
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                UINavigationController.attemptRotationToDeviceOrientation()
+                
+                withAnimation(.spring()) {
+                    userInfo.showTab = true
+                }
+               
+            }
+        case false:
+            DispatchQueue.main.async {
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+                UINavigationController.attemptRotationToDeviceOrientation()
+                
+                withAnimation(.spring()) {
+                    userInfo.showTab = false
+                }
+            }
+        }
+        
+        fullScreen.toggle()
     }
    
 }

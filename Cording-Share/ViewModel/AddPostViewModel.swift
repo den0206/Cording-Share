@@ -123,7 +123,5 @@ final class AddPostViewModel : ObservableObject {
         
         fullScreen.toggle()
     }
-    
-    
-    
+
 }
