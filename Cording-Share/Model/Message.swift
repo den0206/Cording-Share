@@ -18,6 +18,7 @@ struct Message : Identifiable,Equatable{
     var id : String
     var userID : String
     var text : String
+    var chatRoomId : String
     var date : Timestamp
     var type : MessageType
 
@@ -47,6 +48,7 @@ struct Message : Identifiable,Equatable{
         
         self.id = dic[MessageKey.messageId] as? String ?? ""
         self.userID = dic[MessageKey.userID] as? String ?? ""
+        self.chatRoomId = dic[MessageKey.chatRoomId] as? String ?? ""
         self.date = dic[MessageKey.date] as? Timestamp ?? Timestamp(date: Date())
         
         self.text = dic[MessageKey.text] as? String ?? ""

@@ -44,7 +44,7 @@ struct MessageView: View {
                         LazyVStack {
                             
                             ForEach(0 ..< vm.messages.count, id : \.self) { i in
-                                MessageCell(message: vm.messages[i], currentUser: userInfo.user, withUser: withUser)
+                                MessageCell(vm: vm, message: vm.messages[i], currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if vm.messages[i].id == vm.messages.first?.id {
                                             /// pgaintion
@@ -102,6 +102,10 @@ struct MessageView: View {
             userInfo.showTab = true
             
         }
+        .showHUD(isShowing: $vm.showHUD, Text("削除しました"))
+        .alert(isPresented: $vm.showAlert, content: {
+            errorAlert(message: vm.errorMessage)
+        })
         
         //MARK: - Navigation Prorety
         .navigationBarTitle(withUser.name)
@@ -128,6 +132,7 @@ struct MessageView: View {
 struct MessageCell : View {
     
     @EnvironmentObject var userInfo : UserInfo
+    @StateObject var vm : MessageViewModel
     
     let message : Message
     let currentUser : FBUser
@@ -164,6 +169,7 @@ struct MessageCell : View {
                         .padding()
                         .background(isCurrentUser ? Color.green : Color.gray)
                         .clipShape(BubbleShape(myMessage: isCurrentUser))
+                    
                 case .code :
                     
                     ZStack(alignment: .topTrailing) {
@@ -179,16 +185,20 @@ struct MessageCell : View {
                             /// Z1
                             ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
                                 .frame( height: 150)
-                                .onTapGesture {
-                                    showDetail = true
-                                }
                             
                             /// Z2
-                            Button(action: {isExpanding = false}) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.white)
-                                    .padding(5)
+                            HStack {
+                                Button(action: {showDetail = true}) {
+                                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                }
+                                
+                                Button(action: {isExpanding = false}) {
+                                    Image(systemName: "xmark")
+                                }
                             }
+                            .foregroundColor(.white)
+                            .padding(5)
+                          
                             
                             
                         }
@@ -224,12 +234,42 @@ struct MessageCell : View {
                     
                 }
                 
-                
                 Text(message.tmstring)
                     .font(.caption2)
                     .foregroundColor(.primary)
                     .padding(!isCurrentUser ? .trailing : .leading, 10)
             }
+            .contextMenu {
+                
+                Button(action: {
+                    switch message.type {
+                    
+                    case .text:
+                        userInfo.copyText(text: message.text)
+                    case .code:
+                        userInfo.copyText(text: message.codeBlock)
+                    }
+                    
+                }) {
+                    Text("Copy")
+                    Image(systemName:"paperclip")
+                }
+                
+                if isCurrentUser {
+                    Button(action: {
+                        /// delete
+                        vm.deleteMessage(message: message, userInfo: userInfo, withUser: withUser)
+                    }) {
+                        Text("Delete")
+                            .foregroundColor(.red)
+                        Image(systemName: "trash")
+                    }
+                }
+             
+                
+              
+            }
+           
             
             if isCurrentUser {
                 WebImage(url: currentUser.avaterUrl)

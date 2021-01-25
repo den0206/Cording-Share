@@ -13,7 +13,9 @@ final class MessageViewModel : ObservableObject {
     @Published var messages = [Message]()
     @Published var text = ""
     @Published var codeText = ""
+    
     @Published var loading = false
+    @Published var showHUD = false
     
     @Published var reachLast = false {
         didSet {
@@ -22,7 +24,13 @@ final class MessageViewModel : ObservableObject {
     }
     @Published var lastDoc : DocumentSnapshot?
     
-    @Published var errorMessage = ""
+    @Published var errorMessage = "" {
+        didSet {
+            showAlert = true
+        }
+    }
+    
+    @Published var showAlert = false
     @Published var fullScreen = false
     
     let limit = 9
@@ -66,16 +74,20 @@ final class MessageViewModel : ObservableObject {
                     let message = Message(dic: doc.document.data())
                     self.messages.append(message)
                     
+//                case .removed :
+//                    let message = Message(dic: doc.document.data())
+//                    self.messages.remove(at: messages.firstIndex(of: message)!)
+                    
                 default :
                     print("NO Message")
                 }
             }
             
-
+            
             if self.messages.count < 9 {
                 self.reachLast = true
             }
-
+            
             self.lastDoc = snapshot.documents.last
             self.loading = false
             
@@ -155,11 +167,51 @@ final class MessageViewModel : ObservableObject {
             }
             
             completion()
-
+            
             self.loading = false
         }
     }
     
+    
+    //MARK: - delete Message
+    
+    func deleteMessage(message : Message, userInfo : UserInfo, withUser : FBUser) {
+        
+        let currentUser = userInfo.user
+        guard Reachabilty.HasConnection() else {
+            errorMessage = "No Internet"
+            return
+            
+        }
+        guard message.userID == currentUser.uid else {return}
+        
+        let index = messages.firstIndex(of: message)!
+        
+        let users = [currentUser,withUser]
+        
+        users.forEach { (user) in
+            FirebaseReference(.Message).document(user.uid).collection(message.chatRoomId).document(message.id).delete()
+        }
+        
+        if message.type == .code {
+            let ref = Storage.storage().reference()
+            
+            ref.child("sources").child(currentUser.uid).child("\(message.id).txt").delete { (error) in
+                
+                if let error = error {
+                    self.errorMessage = error.localizedDescription
+                    return
+                }
+                
+                self.messages.remove(at: index)
+                self.showHUD = true
+            }
+        } else {
+            messages.remove(at: index)
+            showHUD = true
+        }
+        
+    }
     
     //MARK: - UI
     
@@ -176,7 +228,7 @@ final class MessageViewModel : ObservableObject {
                 withAnimation(.spring()) {
                     userInfo.showTab = true
                 }
-               
+                
             }
         case false:
             DispatchQueue.main.async {
@@ -192,5 +244,5 @@ final class MessageViewModel : ObservableObject {
         
         fullScreen.toggle()
     }
-   
+    
 }
