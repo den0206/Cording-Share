@@ -15,22 +15,26 @@ struct FeedView: View {
     var body: some View {
         
         NavigationView {
-            
-    
-                List(0 ..< vm.posts.count , id : \.self)  { i in
-                    
-                    NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: vm.posts[i]))) {
-                        PostCell(post: vm.posts[i])
+            ScrollView {
+                LazyVStack {
+                    ForEach(vm.posts)  { post in
+                        
+                        NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
+                            
+                            PostCell(post: post)
+                        }
+                        
                     }
-                  
+                    .listStyle(PlainListStyle())
+                    .padding(.top,10)
+                    
                 }
-                .listStyle(PlainListStyle())
-                .padding(.top,10)
-
-                /// navigation Propety
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarHidden(true)
-           
+            }
+            
+            /// navigation Propety
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
+            
         }
         .onAppear {
             vm.fetchPosts(userId: userInfo.user.uid)
@@ -38,7 +42,7 @@ struct FeedView: View {
         .alert(isPresented: $vm.showalert, content: {
             errorAlert(message: vm.errorMessage)
         })
-       
+        
     }
     
     
@@ -58,17 +62,27 @@ struct FeedView_Previews: PreviewProvider {
 struct PostCell : View {
     
     @EnvironmentObject var userInfo : UserInfo
-    @State private var isExpand = true
+    @State private var isExpand = false
     
     var  post : Post
     
     var body: some View {
         
         VStack {
-//            ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
-//                .frame( height: 150)
-//                .disabled(true)
-//
+            
+            Text(post.description)
+                .font(.subheadline)
+                .foregroundColor(Color.primary)
+                .multilineTextAlignment(.leading)
+                .padding(.trailing, 32)
+            
+            if isExpand {
+                
+                ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
+                    .frame( height: 150)
+                    .disabled(true)
+                
+            }
             
             HStack(spacing :15) {
                 
@@ -96,13 +110,6 @@ struct PostCell : View {
             }
             .padding()
             
-            if isExpand {
-                Text(post.description)
-                    .font(.subheadline)
-                    .foregroundColor(Color.primary)
-                    .multilineTextAlignment(.leading)
-                    .padding(.trailing, 32)
-            }
             
             
         }

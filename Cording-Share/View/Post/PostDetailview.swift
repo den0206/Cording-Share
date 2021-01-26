@@ -16,13 +16,13 @@ struct PostDetailview: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var userInfo : UserInfo
-
+  
     @StateObject var vm : PostDetailViewModel
+    @State private var showCodeView = false
     
     var body: some View {
     
             ZStack {
-                
                 if !vm.fullScreen {
                     
                     VStack {
@@ -91,9 +91,13 @@ struct PostDetailview: View {
                         GeometryReader { geo in
                             
                             VStack {
-                                ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang)
-                                    .frame(height: (geo.size.height / 3) * 2)
                                 
+                                if showCodeView {
+                                    /// avoid delay navigation
+                                    ExampleView(code: .constant(vm.post.codeBlock), lang: vm.post.lang)
+                                        .frame(height: (geo.size.height / 3) * 2)
+                                }
+                               
                                 Divider()
                                     .background(Color.primary)
                                 
@@ -156,6 +160,11 @@ struct PostDetailview: View {
                 if vm.post.user == nil {
                     print("call")
                     vm.getPostUser()
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    showCodeView = true
+
                 }
             }
             .onDisappear {

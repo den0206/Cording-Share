@@ -17,14 +17,10 @@ final class MessageViewModel : ObservableObject {
     @Published var loading = false
     @Published var showHUD = false
     
-    @Published var reachLast = false {
-        didSet {
-            print(reachLast)
-        }
-    }
+    @Published var reachLast = false
     @Published var lastDoc : DocumentSnapshot?
     
-    @Published var errorMessage = "" {
+    @Published var alert = Alert(title: Text("")) {
         didSet {
             showAlert = true
         }
@@ -53,7 +49,7 @@ final class MessageViewModel : ObservableObject {
         ref.addSnapshotListener { (snapshot, error) in
             
             if let error = error {
-                print(error.localizedDescription)
+                self.alert = errorAlert(message: error.localizedDescription)
                 return
             }
             
@@ -77,7 +73,7 @@ final class MessageViewModel : ObservableObject {
 //                case .removed :
 //                    let message = Message(dic: doc.document.data())
 //                    self.messages.remove(at: messages.firstIndex(of: message)!)
-                    
+//
                 default :
                     print("NO Message")
                 }
@@ -163,7 +159,8 @@ final class MessageViewModel : ObservableObject {
                 self.text = ""
                 
             case .failure(let error):
-                self.errorMessage = error.localizedDescription
+                self.alert = errorAlert(message: error.localizedDescription)
+                
             }
             
             completion()
@@ -175,17 +172,27 @@ final class MessageViewModel : ObservableObject {
     
     //MARK: - delete Message
     
+    func showDeleteALert(message : Message, userInfo : UserInfo, withUser : FBUser) {
+        
+        alert = Alert(title: Text("確認"), message: Text("削除しますか？"), primaryButton: .cancel(), secondaryButton: .destructive(Text("削除"), action: {
+            
+            self.deleteMessage(message: message, userInfo: userInfo, withUser: withUser)
+            
+            
+        }))
+    }
+    
     func deleteMessage(message : Message, userInfo : UserInfo, withUser : FBUser) {
         
         let currentUser = userInfo.user
         guard Reachabilty.HasConnection() else {
-            errorMessage = "No Internet"
+            self.alert = errorAlert(message: "No Internet")
             return
             
         }
+        
         guard message.userID == currentUser.uid else {return}
         
-        let index = messages.firstIndex(of: message)!
         
         let users = [currentUser,withUser]
         
@@ -199,16 +206,18 @@ final class MessageViewModel : ObservableObject {
             ref.child("sources").child(currentUser.uid).child("\(message.id).txt").delete { (error) in
                 
                 if let error = error {
-                    self.errorMessage = error.localizedDescription
+                    self.alert = errorAlert(message: error.localizedDescription)
                     return
                 }
                 
-                self.messages.remove(at: index)
-                self.showHUD = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.messages.remove(value: message)
+                }
             }
         } else {
-            messages.remove(at: index)
-            showHUD = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.messages.remove(value: message)
+            }
         }
         
     }

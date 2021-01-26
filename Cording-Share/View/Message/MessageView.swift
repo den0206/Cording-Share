@@ -43,23 +43,24 @@ struct MessageView: View {
                         
                         LazyVStack {
                             
-                            ForEach(0 ..< vm.messages.count, id : \.self) { i in
-                                MessageCell(vm: vm, message: vm.messages[i], currentUser: userInfo.user, withUser: withUser)
+                            ForEach(vm.messages) { message in
+                                MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
-                                        if vm.messages[i].id == vm.messages.first?.id {
+                                        if message.id == vm.messages.first?.id {
                                             /// pgaintion
                                             print("first")
                                             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
                                         }
                                     }
+                                    
                             }
-                          
+                            
                         }
                         .onChange(of: vm.messages) { (value) in
                             /// scroll to bottom get New Chat
                             reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
                         }
-                       
+                        
                     }
                 }
                 .padding(.vertical)
@@ -104,7 +105,7 @@ struct MessageView: View {
         }
         .showHUD(isShowing: $vm.showHUD, Text("削除しました"))
         .alert(isPresented: $vm.showAlert, content: {
-            errorAlert(message: vm.errorMessage)
+            vm.alert
         })
         
         //MARK: - Navigation Prorety
@@ -166,6 +167,7 @@ struct MessageCell : View {
                     Text(message.text)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
+//                        .blur(radius: 3.0)
                         .padding()
                         .background(isCurrentUser ? Color.green : Color.gray)
                         .clipShape(BubbleShape(myMessage: isCurrentUser))
@@ -198,7 +200,7 @@ struct MessageCell : View {
                             }
                             .foregroundColor(.white)
                             .padding(5)
-                          
+                            
                             
                             
                         }
@@ -242,12 +244,15 @@ struct MessageCell : View {
             .contextMenu {
                 
                 Button(action: {
-                    switch message.type {
-                    
-                    case .text:
-                        userInfo.copyText(text: message.text)
-                    case .code:
-                        userInfo.copyText(text: message.codeBlock)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        
+                        switch message.type {
+                        
+                        case .text:
+                            userInfo.copyText(text: message.text)
+                        case .code:
+                            userInfo.copyText(text: message.codeBlock)
+                        }
                     }
                     
                 }) {
@@ -258,18 +263,18 @@ struct MessageCell : View {
                 if isCurrentUser {
                     Button(action: {
                         /// delete
-                        vm.deleteMessage(message: message, userInfo: userInfo, withUser: withUser)
+                        vm.showDeleteALert(message: message, userInfo: userInfo, withUser: withUser)
                     }) {
                         Text("Delete")
                             .foregroundColor(.red)
                         Image(systemName: "trash")
                     }
                 }
-             
                 
-              
+                
+                
             }
-           
+            
             
             if isCurrentUser {
                 WebImage(url: currentUser.avaterUrl)
