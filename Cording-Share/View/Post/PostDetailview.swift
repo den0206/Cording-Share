@@ -174,6 +174,8 @@ struct PostDetailview: View {
                     userInfo.showTab = true
                 }
                 
+                showCodeView = false
+                
                 
             }
             

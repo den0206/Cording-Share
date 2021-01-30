@@ -23,13 +23,13 @@ struct RecentsView: View {
                 
                 
                 
-                List(0 ..< vm.recents.count, id : \.self) { i in
+                List(vm.recents) { recent in
                     
                     Button(action: {
-                            userInfo.chatRoomId = vm.recents[i].chatRoomId
-                            userInfo.withUser = vm.recents[i].withUser
+                            userInfo.chatRoomId = recent.chatRoomId
+                            userInfo.withUser = recent.withUser
                             userInfo.MSGPushNav = true}) {
-                        RecentCell(recent: vm.recents[i])
+                        RecentCell(recent:recent)
                         
                     }
                     

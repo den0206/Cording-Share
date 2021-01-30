@@ -22,6 +22,12 @@ struct FeedView: View {
                         NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
                             
                             PostCell(post: post)
+                                .onAppear {
+                                    if post.id == vm.posts.last?.id {
+                                        print(vm.reachLast)
+                                        vm.fetchPost()
+                                    }
+                                }
                         }
                         
                     }
@@ -37,7 +43,7 @@ struct FeedView: View {
             
         }
         .onAppear {
-            vm.fetchPosts(userId: userInfo.user.uid)
+            vm.fetchPost()
         }
         .alert(isPresented: $vm.showalert, content: {
             errorAlert(message: vm.errorMessage)
@@ -69,40 +75,17 @@ struct PostCell : View {
     var body: some View {
         
         VStack {
-            
-            Text(post.description)
-                .font(.subheadline)
-                .foregroundColor(Color.primary)
-                .multilineTextAlignment(.leading)
-                .padding(.trailing, 32)
-            
-            if isExpand {
+        
+            HStack {
+                if !isExpand {
+                post.lang.image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+                }
                 
-                ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
-                    .frame( height: 150)
-                    .disabled(true)
-                
-            }
-            
-            HStack(spacing :15) {
-                
-                Image(systemName: "chevron.down")
-                    .rotationEffect(.degrees(isExpand ? -180 : 0))
-                    .font(.system(size: 22, weight: .regular))
-                    .foregroundColor(.primary)
-                    .onTapGesture {
-                        withAnimation(.spring()) {
-                            isExpand.toggle()
-                        }
-                    }
-                
-                Image(systemName: "paperclip")
-                    .font(.system(size: 22, weight: .regular))
-                    .onTapGesture {
-                        userInfo.copyText(text: post.codeBlock)
-                    }
-                
-                Spacer()
+                 Spacer()
                 
                 Text(post.tmstring)
                     .font(.caption2)
@@ -111,12 +94,58 @@ struct PostCell : View {
             .padding()
             
             
-            
-        }
+            if isExpand {
         
+                ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
+                    .frame( height: 150)
+                    .disabled(true)
+                    .padding()
+        
+            }
+            
+            Text(post.description)
+                .font(.subheadline)
+                .foregroundColor(Color.primary)
+                .multilineTextAlignment(.leading)
+                .padding(.trailing, 32)
+                .padding(.top)
+            
+        
+            HStack(spacing :15) {
+        
+                Image(systemName: "chevron.left.slash.chevron.right")
+                    .rotationEffect(.degrees(isExpand ? 0: -180))
+                    .font(.system(size: 18, weight: .regular))
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            isExpand.toggle()
+                        }
+                    }
+        
+                Image(systemName: "paperclip")
+                    .font(.system(size: 18, weight: .regular))
+                    .onTapGesture {
+                        userInfo.copyText(text: post.codeBlock)
+                    }
+        
+                Spacer()
+        
+        
+            }
+            .padding()
+            
+            
+           
+        
+        }
+        .background(Color.primary.opacity(0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+        .padding()
         .padding(.horizontal,12)
         .foregroundColor(.primary)
-        
+      
         
     }
 }
+
+

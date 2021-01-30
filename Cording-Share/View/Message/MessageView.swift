@@ -48,17 +48,25 @@ struct MessageView: View {
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
                                             /// pgaintion
-                                            print("first")
+                                            print("append")
                                             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+                                            
                                         }
+                                      
+
                                     }
                                     
                             }
                             
                         }
+                        
                         .onChange(of: vm.messages) { (value) in
                             /// scroll to bottom get New Chat
+                            
                             reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
+                            
+                            
+                            
                         }
                         
                     }
@@ -96,14 +104,12 @@ struct MessageView: View {
         }
         .onAppear(perform: {
             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
-            
             userInfo.showTab = false
         })
         .onDisappear {
             userInfo.showTab = true
             
         }
-        .showHUD(isShowing: $vm.showHUD, Text("削除しました"))
         .alert(isPresented: $vm.showAlert, content: {
             vm.alert
         })
@@ -285,6 +291,9 @@ struct MessageCell : View {
                 Spacer()
             }
             
+        }
+        .onDisappear{
+            isExpanding = false
         }
         .padding(.horizontal,15)
         .id(message.id)
