@@ -15,6 +15,7 @@ struct MessageView: View {
     @StateObject var vm = MessageViewModel()
     @State private var isEditing = false
     @State private var showSheet = false
+    @State private var firstAppear = true
     
     var chatRoomId : String {
         return userInfo.chatRoomId
@@ -31,13 +32,17 @@ struct MessageView: View {
         VStack {
             
             ZStack {
-                
+            
                 /// Z1
                 ScrollView {
                     
                     if vm.loading {
                         ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
+                            .scaleEffect(1.5, anchor: .center)
+                            .padding()
                     }
+                    
                     
                     ScrollViewReader { reader in
                         
@@ -48,25 +53,32 @@ struct MessageView: View {
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
                                             /// pgaintion
-                                            print("append")
-                                            vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
-                                            
+                                            if !firstAppear {
+                                              
+                                                vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user) { (message) in
+                                                    print(message.text)
+                                                    print("call")
+                                                    reader.scrollTo(message.id,anchor : .top)
+                                                }
+                                                
+                                            } else {
+                                                reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
+                                                firstAppear = false
+                                            }
+                                           
                                         }
-                                      
-
+                                     
                                     }
-                                    
                             }
                             
                         }
-                        
-                        .onChange(of: vm.messages) { (value) in
+
+                        .onChange(of: vm.listenNewChat) { (value) in
                             /// scroll to bottom get New Chat
-                            
-                            reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
-                            
-                            
-                            
+                                print("morer")
+                                reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
+
+
                         }
                         
                     }
@@ -107,6 +119,8 @@ struct MessageView: View {
             userInfo.showTab = false
         })
         .onDisappear {
+            print("remove")
+            vm.listner?.remove()
             userInfo.showTab = true
             
         }
@@ -191,12 +205,21 @@ struct MessageCell : View {
                             }
                         } else {
                             /// Z1
+                            
+                            if !showDetail {
                             ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
                                 .frame( height: 150)
+                            }
                             
                             /// Z2
                             HStack {
-                                Button(action: {showDetail = true}) {
+                                Button(action: {
+                                    withAnimation(Animation.spring()) {
+                                        showDetail = true
+                                    }
+                                        
+                                    
+                                }) {
                                     Image(systemName: "arrow.up.left.and.arrow.down.right")
                                 }
                                 
@@ -214,28 +237,10 @@ struct MessageCell : View {
                     .padding()
                     .background(isCurrentUser ? Color.green : Color.gray)
                     .clipShape(BubbleShape(myMessage: isCurrentUser))
-                    .sheet(isPresented: $showDetail) {
+                    .fullScreenCover(isPresented: $showDetail){
                         
                         /// detail code View
-                        VStack {
-                            HStack {
-                                Button(action: {showDetail = false}) {
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.white)
-                                        .padding(5)
-                                }
-                                
-                                Spacer()
-                            }
-                            
-                            ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
-                                .onTapGesture {
-                                    showDetail = true
-                                }
-                            
-                        }
-                        .padding()
-                        .preferredColorScheme(.dark)
+                       DetailCodeView(message: message, showDetail: $showDetail)
                         .environmentObject(userInfo)
                         
                     }
@@ -346,5 +351,37 @@ struct MGTextfield : View {
             
         }
         .padding(.bottom, 5)
+    }
+}
+
+
+struct DetailCodeView : View {
+    
+    let message : Message
+    @Binding var showDetail : Bool
+    
+    var body: some View {
+        
+        VStack {
+            HStack {
+                Button(action: {showDetail = false}) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.white)
+                        
+                }
+                
+                Spacer()
+                
+                
+            }
+            .padding()
+        
+            ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
+            
+               
+        }
+        .preferredColorScheme(.dark)
+        
+        
     }
 }

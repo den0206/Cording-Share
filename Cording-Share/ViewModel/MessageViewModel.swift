@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+
 final class MessageViewModel : ObservableObject {
     
     @Published var messages = [Message]() {
@@ -19,10 +20,10 @@ final class MessageViewModel : ObservableObject {
     
     @Published var text = ""
     @Published var codeText = ""
-    @Published var firstLoad = true
     
     @Published var loading = false
     @Published var showHUD = false
+    @Published var listenNewChat = false
     
     @Published var reachLast = false
     @Published var lastDoc : DocumentSnapshot?
@@ -36,23 +37,26 @@ final class MessageViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var fullScreen = false
     
-    let limit = 5
+    var listner : ListenerRegistration?
+    let limit = 10
     
+   
     //MARK: - fetch
     
-    func loadMessage(chatRoomId : String,currentUser : FBUser) {
+    func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
         
-        guard !reachLast else {return}
-        loading = true
+        guard !reachLast && !loading else {return}
         
         var ref : Query!
         
         if lastDoc == nil {
             ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: MessageKey.date, descending: true).limit(to: limit)
         } else {
-            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: MessageKey.date, descending: true).start(afterDocument: lastDoc!).limit(to: limit)
+            loading = true
+            
+            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: MessageKey.date, descending: true).start(afterDocument: self.lastDoc!).limit(to: self.limit)
+            
         }
-        
         
         
         ref.getDocuments { (snapshot, error) in
@@ -64,60 +68,40 @@ final class MessageViewModel : ObservableObject {
             guard let snapshot = snapshot else {return}
             guard !snapshot.isEmpty else {
                 self.reachLast = true
-                self.loading = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.loading = false
+                }
                 return
                 
             }
             
             if self.lastDoc == nil {
                 self.messages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
+                self.lastDoc = snapshot.documents.last
             } else {
-                self.messages.insert(contentsOf: snapshot.documents.map({Message(dic: $0.data())}).reversed(), at: 0)
+                let moreMessages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
+                
+                if moreMessages.count < self.limit {
+                    self.reachLast = true
+                }
+                
+                self.lastDoc = snapshot.documents.last
+               
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    if completion != nil {
+                        completion!(self.messages[3])
+                        self.loading = false
+                    }
+                    self.messages.insert(contentsOf: moreMessages, at: 0)
+                    
+                }
+               
+               
             }
             
             self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
-            
-
-            //            snapshot.documentChanges.forEach { (doc) in
-            //
-            //                switch doc.type {
-            //
-            //                case .added :
-            //                    let message = Message(dic: doc.document.data())
-            //
-            //                    if !self.messages.contains(message) {
-            //
-            //                        self.messages.append(message)
-            //
-            //                        if self.messages.count % self.limit == 0 {
-            //                            print("load")
-            //                        }
-            //
-            //                    }
-            //                case .modified :
-            //                    print("edit")
-            //
-            //                case .removed :
-            //                    let message = Message(dic: doc.document.data())
-            //
-            //                    if !doc.document.metadata.hasPendingWrites {
-            //                        print("delete")
-            //                        self.messages.remove(value: message)
-            //                    }
-            //
-            //                default :
-            //                    print("NO Message")
-            //                }
-            //
-            //            }
-            
-            
-            self.lastDoc = snapshot.documents.last
-            
-            
-            self.loading = false
-            
-            
+        
+           
             
         }
         
@@ -125,13 +109,11 @@ final class MessageViewModel : ObservableObject {
     
     func listenNewChat(chatRoomId : String,currentUser : FBUser) {
         
-        print("call")
         if messages.count > 0 {
             let lastMessage = messages.last
-            print(lastMessage?.text)
             let lastTime = lastMessage!.date
             
-            FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime).addSnapshotListener { (snapshot, error) in
+           listner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime).addSnapshotListener { (snapshot, error) in
                 
                 if let error = error {
                     self.alert = errorAlert(message: error.localizedDescription)
@@ -150,6 +132,7 @@ final class MessageViewModel : ObservableObject {
                         
                         if !self.messages.contains(message) {
                             self.messages.append(message)
+                            self.listenNewChat.toggle()
 
                         }
                         
@@ -159,11 +142,7 @@ final class MessageViewModel : ObservableObject {
                 }
             }
         }
-        
-        
-        
-        
-        
+ 
     }
     
     //MARK: - Send
@@ -171,26 +150,25 @@ final class MessageViewModel : ObservableObject {
     func sendTextMessage(chatRoomId : String,currentUser : FBUser,withUser : FBUser) {
         
         guard text != "" else {return}
+        guard let ecrypText = CryptoAES.shared.ecrypt(text: text) else {return}
         
         let messageID = UUID().uuidString
         let users = [currentUser,withUser]
-        
-        let data = [MessageKey.text : text,
+
+        let data = [MessageKey.text : ecrypText,
                     MessageKey.messageId : messageID,
                     MessageKey.chatRoomId : chatRoomId,
                     MessageKey.userID : currentUser.uid,
                     MessageKey.messageType : MessageKey.TextType,
                     MessageKey.date : Timestamp(date: Date())
         ] as [String : Any]
-        
-        
+
+
         users.forEach { (user) in
             FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
         }
         
-        //                messages.append(Message(dic: data))
-        
-        /// reset
+//        /// reset
         text = ""
         
     }
@@ -230,7 +208,7 @@ final class MessageViewModel : ObservableObject {
                     FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
                 }
                 
-                //                                self.messages.append(Message(dic: data))
+                
                 /// reset
                 self.codeText = ""
                 self.text = ""
@@ -297,39 +275,74 @@ final class MessageViewModel : ObservableObject {
         }
     }
     
-    //MARK: - UI
-    
+//    MARK: - UI
+
     func fullScreenMode(userInfo : UserInfo) {
         
         switch fullScreen {
-        
+
         case true:
             DispatchQueue.main.async {
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
                 UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
                 UINavigationController.attemptRotationToDeviceOrientation()
-                
+
                 withAnimation(.spring()) {
                     userInfo.showTab = true
                 }
-                
+
             }
         case false:
             DispatchQueue.main.async {
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
                 UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
                 UINavigationController.attemptRotationToDeviceOrientation()
-                
+
                 withAnimation(.spring()) {
                     userInfo.showTab = false
                 }
             }
         }
-        
+
         fullScreen.toggle()
     }
-    
+
 }
+
+
+//            snapshot.documentChanges.forEach { (doc) in
+//
+//                switch doc.type {
+//
+//                case .added :
+//                    let message = Message(dic: doc.document.data())
+//
+//                    if !self.messages.contains(message) {
+//
+//                        self.messages.append(message)
+//
+//                        if self.messages.count % self.limit == 0 {
+//                            print("load")
+//                        }
+//
+//                    }
+//                case .modified :
+//                    print("edit")
+//
+//                case .removed :
+//                    let message = Message(dic: doc.document.data())
+//
+//                    if !doc.document.metadata.hasPendingWrites {
+//                        print("delete")
+//                        self.messages.remove(value: message)
+//                    }
+//
+//                default :
+//                    print("NO Message")
+//                }
+//
+//            }
+
 
 
 
