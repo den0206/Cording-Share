@@ -50,8 +50,10 @@ struct MessageView: View {
                         
                         LazyVStack {
                             
-                            ForEach(vm.messages) { message in
-                                MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
+                            ForEach(0 ..< vm.messages.count, id : \.self) { i in
+                                let message = vm.messages[i]
+                                
+                                MessageCell(vm: vm, message:$vm.messages[i], currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
                                             /// pgaintion
@@ -115,12 +117,13 @@ struct MessageView: View {
             
         }
         .onAppear(perform: {
+            vm.addSgatusListner(chatRoomId: chatRoomId, currentUser: userInfo.user)
             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
             userInfo.showTab = false
         })
         .onDisappear {
             print("remove")
-            vm.listner?.remove()
+            vm.removeListner()
             userInfo.showTab = true
             
         }
@@ -155,7 +158,7 @@ struct MessageCell : View {
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm : MessageViewModel
     
-    let message : Message
+    @Binding var message : Message
     let currentUser : FBUser
     let withUser : FBUser
     
@@ -247,6 +250,13 @@ struct MessageCell : View {
                     
                 }
                 
+                
+                if message.read {
+                    Text("Read")
+                        .font(.caption2)
+                        .foregroundColor(.primary)
+                }
+                
                 Text(message.tmstring)
                     .font(.caption2)
                     .foregroundColor(.primary)
@@ -281,9 +291,7 @@ struct MessageCell : View {
                         Image(systemName: "trash")
                     }
                 }
-                
-                
-                
+             
             }
             
             
@@ -297,6 +305,16 @@ struct MessageCell : View {
             }
             
         }
+        .onAppear(perform: {
+            if !message.read && !isCurrentUser {
+                
+                print("Reda")
+                vm.updateMessage(message: message, chatRoomId: userInfo.chatRoomId, withUser: withUser)
+                
+                message.read = true
+            }
+            
+        })
         .onDisappear{
             isExpanding = false
         }

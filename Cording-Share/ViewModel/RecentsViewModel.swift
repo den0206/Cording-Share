@@ -27,7 +27,9 @@ final class RecentsViewModel : ObservableObject {
 //            return
 //        }
         
-        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).order(by: RecentKey.date, descending: true).addSnapshotListener { (snapshot, error) in
+        recents.removeAll()
+        
+        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).order(by: RecentKey.date, descending: true).getDocuments { (snapshot, error) in
             
             if let error = error {
                 self.errorMessage = error.localizedDescription
@@ -42,11 +44,10 @@ final class RecentsViewModel : ObservableObject {
             }
             
             snapshot.documents.forEach { (doc) in
-                
                 var recent = Recent(dic: doc.data())
                 
                 let witUserID = recent.withUserId
-           
+                
                 FBAuth.fecthFBUser(uid: witUserID) { (result) in
                     switch result {
                     
@@ -58,11 +59,41 @@ final class RecentsViewModel : ObservableObject {
                         self.errorMessage = error.localizedDescription
                     }
                 }
+             
             }
-            
+        
         }
         
     }
 }
 
 
+
+
+//snapshot.documentChanges.forEach { (doc) in
+//
+//    var recent = Recent(dic: doc.document.data())
+//
+//
+//    switch doc.type {
+//    case .added:
+//        let witUserID = recent.withUserId
+//
+//        FBAuth.fecthFBUser(uid: witUserID) { (result) in
+//            switch result {
+//
+//            case .success(let user):
+//                recent.withUser = user
+//
+//                self.recents.append(recent)
+//            case .failure(let error):
+//                self.errorMessage = error.localizedDescription
+//            }
+//        }
+//    case .modified:
+//        print("edit")
+//    default :
+//        print("Default")
+//    }
+//
+//}

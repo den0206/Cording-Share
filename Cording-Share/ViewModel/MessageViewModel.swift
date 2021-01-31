@@ -38,11 +38,38 @@ final class MessageViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var fullScreen = false
     
-    var listner : ListenerRegistration?
+    var newChatlistner : ListenerRegistration?
+    var statusListner : ListenerRegistration?
     let limit = 10
     
    
     //MARK: - fetch
+    
+    func addSgatusListner(chatRoomId : String,currentUser : FBUser) {
+        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).addSnapshotListener({ (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            if !snapshot.isEmpty {
+                snapshot.documentChanges.forEach { (diff) in
+                    
+                    if diff.type == .modified {
+                        
+                        let editedMessage = Message(dic: diff.document.data())
+                        
+                        for i in 0 ..< self.messages.count {
+                            let temp = self.messages[i]
+                            
+                            if editedMessage.id == temp.id {
+                                self.messages[i] = editedMessage
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        })
+    }
     
     func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
         
@@ -78,6 +105,7 @@ final class MessageViewModel : ObservableObject {
             
             if self.lastDoc == nil {
                 self.messages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
+                
                 self.lastDoc = snapshot.documents.last
             } else {
                 let moreMessages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
@@ -97,10 +125,23 @@ final class MessageViewModel : ObservableObject {
                     
                 }
             }
+
+
             
             self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
         
            
+            
+        }
+        
+    }
+    
+    func updateMessage(message : Message,chatRoomId : String,withUser : FBUser) {
+        
+        if !message.read {
+            let value = [MessageKey.read : true]
+            
+            FirebaseReference(.Message).document(withUser.uid).collection(chatRoomId).document(message.id).updateData(value)
             
         }
         
@@ -112,7 +153,7 @@ final class MessageViewModel : ObservableObject {
             let lastMessage = messages.last
             let lastTime = lastMessage!.date
             
-           listner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime).addSnapshotListener { (snapshot, error) in
+           newChatlistner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime).addSnapshotListener { (snapshot, error) in
                 
                 if let error = error {
                     self.alert = errorAlert(message: error.localizedDescription)
@@ -281,6 +322,11 @@ final class MessageViewModel : ObservableObject {
                 self.messages.remove(value: message)
             }
         }
+    }
+    
+    func removeListner() {
+        newChatlistner?.remove()
+        statusListner?.remove()
     }
     
 //    MARK: - UI

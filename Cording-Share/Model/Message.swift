@@ -22,6 +22,8 @@ struct Message : Identifiable,Equatable{
     var date : Timestamp
     var type : MessageType
     
+    var read : Bool
+    
 
     var lang : CodeMode?
     var codeUrl : URL?
@@ -51,8 +53,12 @@ struct Message : Identifiable,Equatable{
         self.chatRoomId = dic[MessageKey.chatRoomId] as? String ?? ""
         self.date = dic[MessageKey.date] as? Timestamp ?? Timestamp(date: Date())
         
-//        self.text = dic[MessageKey.text] as? String ?? ""
-        
+        if let read = dic[MessageKey.read] as? Bool {
+            self.read = read
+        } else {
+            self.read = false
+        }
+
         if let baseText = dic[MessageKey.text] as? String {
          self.text = CryptoAES.shared.decypt(baseText: baseText)
         } else {
