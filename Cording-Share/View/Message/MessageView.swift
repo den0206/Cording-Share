@@ -36,11 +36,13 @@ struct MessageView: View {
                 /// Z1
                 ScrollView {
                     
+                    
                     if vm.loading {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
                             .scaleEffect(1.5, anchor: .center)
                             .padding()
+                            .transition(AnyTransition.fade(duration: 0.5))
                     }
                     
                     
@@ -56,8 +58,6 @@ struct MessageView: View {
                                             if !firstAppear {
                                               
                                                 vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user) { (message) in
-                                                    print(message.text)
-                                                    print("call")
                                                     reader.scrollTo(message.id,anchor : .top)
                                                 }
                                                 
@@ -161,7 +161,7 @@ struct MessageCell : View {
     
     @State private var isExpanding = false
     @State private var showDetail = false
-    
+
     var isCurrentUser : Bool {
         return message.userID == currentUser.uid
     }
@@ -207,7 +207,7 @@ struct MessageCell : View {
                             /// Z1
                             
                             if !showDetail {
-                            ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
+                                ExampleView(code: .constant(message.codeBlock), lang: message.lang!,tintColor : .white)
                                 .frame( height: 150)
                             }
                             
@@ -237,7 +237,7 @@ struct MessageCell : View {
                     .padding()
                     .background(isCurrentUser ? Color.green : Color.gray)
                     .clipShape(BubbleShape(myMessage: isCurrentUser))
-                    .fullScreenCover(isPresented: $showDetail){
+                    .fullScreenCover(isPresented: $showDetail) {
                         
                         /// detail code View
                        DetailCodeView(message: message, showDetail: $showDetail)
@@ -302,6 +302,8 @@ struct MessageCell : View {
         }
         .padding(.horizontal,15)
         .id(message.id)
+        .transition(AnyTransition.opacity.animation(.linear(duration: 0.7)))
+        
     }
 }
 
@@ -369,19 +371,14 @@ struct DetailCodeView : View {
                         .foregroundColor(.white)
                         
                 }
-                
                 Spacer()
-                
-                
             }
             .padding()
         
             ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
-            
-               
+           
         }
         .preferredColorScheme(.dark)
-        
-        
+       
     }
 }

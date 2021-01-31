@@ -31,7 +31,6 @@ struct FeedView: View {
                         }
                         
                     }
-                    .listStyle(PlainListStyle())
                     .padding(.top,10)
                     
                 }
@@ -133,11 +132,9 @@ struct PostCell : View {
         
             }
             .padding()
-            
-            
            
-        
         }
+       
         .background(Color.primary.opacity(0.2))
         .clipShape(RoundedRectangle(cornerRadius: 18))
         .padding()

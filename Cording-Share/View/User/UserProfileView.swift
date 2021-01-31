@@ -20,7 +20,10 @@ struct UserProfileView: View {
         
         if vm.user == nil {
             ProgressView("Loading...")
-                .foregroundColor(.primary)
+                .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
+                .foregroundColor(.green)
+                .padding()
+                .transition(AnyTransition.fade(duration: 0.5))
         } else {
             NavigationView {
                 
@@ -75,10 +78,7 @@ struct UserProfileView: View {
                             Button(action: {
                                 
                                 vm.startPrivateChat(userInfo: userInfo)
-//                                DispatchQueue.main.async {
-//                                    userInfo.tabIndex = 2
-//                                    userInfo.MSGPushNav = true
-//                                }
+
                                 
                             }, label: {
                                 Text("Message")

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import AudioToolbox
 
 
 final class MessageViewModel : ObservableObject {
@@ -87,7 +88,7 @@ final class MessageViewModel : ObservableObject {
                 
                 self.lastDoc = snapshot.documents.last
                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     if completion != nil {
                         completion!(self.messages[3])
                         self.loading = false
@@ -95,8 +96,6 @@ final class MessageViewModel : ObservableObject {
                     self.messages.insert(contentsOf: moreMessages, at: 0)
                     
                 }
-               
-               
             }
             
             self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
@@ -131,6 +130,10 @@ final class MessageViewModel : ObservableObject {
                         let message = Message(dic: doc.document.data())
                         
                         if !self.messages.contains(message) {
+                            
+                            let soundIdRing: SystemSoundID = 1007
+                            AudioServicesPlaySystemSound(soundIdRing)
+                            
                             self.messages.append(message)
                             self.listenNewChat.toggle()
 
@@ -168,9 +171,12 @@ final class MessageViewModel : ObservableObject {
             FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
         }
         
-//        /// reset
-        text = ""
         
+        /// last Message
+        Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: text, currentUser: currentUser)
+
+        text = ""
+    
     }
     
     func sendCodeMessage(chatRoomId : String,userInfo : UserInfo, withUser : FBUser, completion : @escaping() -> Void) {
@@ -181,6 +187,7 @@ final class MessageViewModel : ObservableObject {
         let currentUser = userInfo.user
         let lang = userInfo.mode
         
+        let lastMessage = "[Code/]"
         
         let messageID = UUID().uuidString
         let users = [currentUser,withUser]
@@ -208,6 +215,8 @@ final class MessageViewModel : ObservableObject {
                     FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
                 }
                 
+                Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: lastMessage, currentUser: currentUser)
+//
                 
                 /// reset
                 self.codeText = ""
@@ -219,7 +228,6 @@ final class MessageViewModel : ObservableObject {
             }
             
             completion()
-            
             self.loading = false
         }
     }

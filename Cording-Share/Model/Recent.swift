@@ -101,6 +101,41 @@ struct Recent : Identifiable {
     
     }
     
+    static func updateRecentCounter(chatRoomID :String , lastMessage : String,currentUser : FBUser) {
+        
+        FirebaseReference(.Recent).whereField(RecentKey.chatRoomId, isEqualTo: chatRoomID).getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            guard !snapshot.isEmpty else {return}
+        
+            snapshot.documents.forEach { (doc) in
+                
+                let recent = doc.data()
+                
+                updateRecentToFireStore(recent: recent, currentUser: currentUser, lastMessage: lastMessage)
+                
+            }
+            
+        }
+    }
+   
+}
+
+fileprivate func updateRecentToFireStore(recent : Dictionary<String, Any>, currentUser : FBUser,lastMessage : String) {
+    
+    let date = Timestamp(date: Date())
+    var counter = recent[RecentKey.counter] as! Int
+    
+    // except currentUser Counter
+    if recent[RecentKey.userId] as! String != currentUser.uid {
+        counter += 1
+    }
+    
+    let values = [RecentKey.lastMessage : lastMessage,
+                  RecentKey.counter: counter,
+                  RecentKey.date : date] as [String : Any]
+    
+    FirebaseReference(.Recent).document(recent[RecentKey.recentID] as! String).updateData(values)
 }
 
 

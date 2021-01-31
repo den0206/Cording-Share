@@ -20,7 +20,7 @@ struct MainTabView: View {
                 case 1 :
                     FeedView()
                 case 2 :
-                    RecentsView(vm: RecentsViewModel(userInfo: userInfo))
+                    RecentsView()
                 case 3 :
                     UserProfileView(vm : UserProfileViewModel(user: userInfo.user))
                 default:

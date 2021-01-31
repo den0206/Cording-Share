@@ -12,17 +12,15 @@ import Firebase
 struct RecentsView: View {
     
     @EnvironmentObject var userInfo : UserInfo
-    @StateObject var vm : RecentsViewModel
-    
+    @StateObject var vm = RecentsViewModel()
+    @State private var firstLoad = true
     
     var body: some View {
         NavigationView {
             
             VStack {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
-                
-                
-                
+        
                 List(vm.recents) { recent in
                     
                     Button(action: {
@@ -40,6 +38,13 @@ struct RecentsView: View {
             .alert(isPresented: $vm.showALert, content: {
                 errorAlert(message: vm.errorMessage)
             })
+            .onAppear(perform: {
+                if firstLoad {
+                    vm.fetchRecents(userInfo: userInfo)
+                    firstLoad = false
+                }
+            })
+           
             
             .navigationBarTitle(Text("Messages"))
             .navigationBarTitleDisplayMode(.inline)

@@ -17,7 +17,11 @@ struct RootView : View {
         Group {
             if userInfo.isUserauthenticated == .undifined {
                 ProgressView("Loading...")
-                    .foregroundColor(.primary)
+                    .foregroundColor(.green)
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
+                 
+                    .padding()
+                    .transition(AnyTransition.fade(duration: 0.5))
             }  else if userInfo.isUserauthenticated == .signOut {
                 LoginView()
             } else {

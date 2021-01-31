@@ -6,6 +6,7 @@
 //
 
 import Combine
+import FirebaseFirestore
 
 final class RecentsViewModel : ObservableObject {
     
@@ -18,9 +19,6 @@ final class RecentsViewModel : ObservableObject {
         }
     }
     
-    init(userInfo : UserInfo) {
-        fetchRecents(userInfo: userInfo)
-    }
     
     func fetchRecents(userInfo : UserInfo) {
         
@@ -43,12 +41,12 @@ final class RecentsViewModel : ObservableObject {
                 
             }
             
-            snapshot.documentChanges.forEach { (diff) in
+            snapshot.documents.forEach { (doc) in
                 
-                var recent = Recent(dic: diff.document.data())
+                var recent = Recent(dic: doc.data())
                 
                 let witUserID = recent.withUserId
-                
+           
                 FBAuth.fecthFBUser(uid: witUserID) { (result) in
                     switch result {
                     
