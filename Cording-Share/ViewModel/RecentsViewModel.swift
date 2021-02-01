@@ -27,9 +27,9 @@ final class RecentsViewModel : ObservableObject {
 //            return
 //        }
         
-        recents.removeAll()
+//        recents.removeAll()
         
-        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).order(by: RecentKey.date, descending: true).getDocuments { (snapshot, error) in
+        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).order(by: RecentKey.date, descending: false).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
                 self.errorMessage = error.localizedDescription
@@ -43,57 +43,74 @@ final class RecentsViewModel : ObservableObject {
                 
             }
             
-            snapshot.documents.forEach { (doc) in
-                var recent = Recent(dic: doc.data())
-                
-                let witUserID = recent.withUserId
-                
-                FBAuth.fecthFBUser(uid: witUserID) { (result) in
-                    switch result {
-                    
-                    case .success(let user):
-                        recent.withUser = user
-                        
-                        self.recents.append(recent)
-                    case .failure(let error):
-                        self.errorMessage = error.localizedDescription
+            snapshot.documentChanges.forEach { (doc) in
+            
+                var recent = Recent(dic: doc.document.data())
+            
+            
+                switch doc.type {
+                case .added:
+                    let witUserID = recent.withUserId
+            
+                    FBAuth.fecthFBUser(uid: witUserID) { (result) in
+                        switch result {
+            
+                        case .success(let user):
+                            recent.withUser = user
+            
+                            self.recents.append(recent)
+                        case .failure(let error):
+                            self.errorMessage = error.localizedDescription
+                        }
                     }
+                case .modified:
+                    for i in 0 ..< self.recents.count {
+                        
+                        let tempRecent = self.recents[i]
+                        
+                        if recent.id == tempRecent.id {
+                            
+                            recent.withUser = tempRecent.withUser
+                            
+                            self.recents[i] = recent
+                            
+                        }
+                    }
+                default :
+                    print("Default")
                 }
-             
+            
             }
+
+            
+            
+            
+
         
         }
         
     }
 }
 
-
-
-
-//snapshot.documentChanges.forEach { (doc) in
+//            snapshot.documents.forEach { (doc) in
+//                var recent = Recent(dic: doc.data())
 //
-//    var recent = Recent(dic: doc.document.data())
+//                let witUserID = recent.withUserId
 //
+//                FBAuth.fecthFBUser(uid: witUserID) { (result) in
+//                    switch result {
 //
-//    switch doc.type {
-//    case .added:
-//        let witUserID = recent.withUserId
+//                    case .success(let user):
+//                        recent.withUser = user
 //
-//        FBAuth.fecthFBUser(uid: witUserID) { (result) in
-//            switch result {
+//                        self.recents.append(recent)
+//                    case .failure(let error):
+//                        self.errorMessage = error.localizedDescription
+//                    }
+//                }
 //
-//            case .success(let user):
-//                recent.withUser = user
-//
-//                self.recents.append(recent)
-//            case .failure(let error):
-//                self.errorMessage = error.localizedDescription
 //            }
-//        }
-//    case .modified:
-//        print("edit")
-//    default :
-//        print("Default")
-//    }
-//
-//}
+
+
+
+

@@ -42,34 +42,9 @@ final class MessageViewModel : ObservableObject {
     var statusListner : ListenerRegistration?
     let limit = 10
     
+    
    
     //MARK: - fetch
-    
-    func addSgatusListner(chatRoomId : String,currentUser : FBUser) {
-        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).addSnapshotListener({ (snapshot, error) in
-            
-            guard let snapshot = snapshot else {return}
-            
-            if !snapshot.isEmpty {
-                snapshot.documentChanges.forEach { (diff) in
-                    
-                    if diff.type == .modified {
-                        
-                        let editedMessage = Message(dic: diff.document.data())
-                        
-                        for i in 0 ..< self.messages.count {
-                            let temp = self.messages[i]
-                            
-                            if editedMessage.id == temp.id {
-                                self.messages[i] = editedMessage
-                            }
-                            
-                        }
-                    }
-                }
-            }
-        })
-    }
     
     func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
         
@@ -136,18 +111,65 @@ final class MessageViewModel : ObservableObject {
         
     }
     
-    func updateMessage(message : Message,chatRoomId : String,withUser : FBUser) {
+    func updateMessage(message : Message,chatRoomId : String,users : [FBUser]) {
         
         if !message.read {
             let value = [MessageKey.read : true]
             
-            FirebaseReference(.Message).document(withUser.uid).collection(chatRoomId).document(message.id).updateData(value)
+            users.forEach { (user) in
+                FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(message.id).updateData(value)
+            }
             
+                        
         }
         
     }
     
+    func addStausListner(chatRoomId : String,currentUser : FBUser) {
+        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.read, isNotEqualTo: true).addSnapshotListener({ (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+
+            if !snapshot.isEmpty {
+                
+                snapshot.documentChanges.forEach { (diff) in
+                    
+                    switch diff.type {
+                    case .added :
+                        print("add")
+                    
+                    case .modified :
+                        let editedMessage = Message(dic: diff.document.data())
+                        
+                        for i in 0 ..< self.messages.count {
+                            let temp = self.messages[i]
+                            
+                            if editedMessage.id == temp.id {
+                                self.messages[i] = editedMessage
+                                self.messages[i].read = true
+                            }
+                            
+                        }
+    
+                    case .removed:
+                     print("remove")
+                    
+                    }
+                    
+                  
+                    
+                }
+            } else {
+                print("all read")
+                
+            }
+        })
+    }
+    
     func listenNewChat(chatRoomId : String,currentUser : FBUser) {
+        
+        
+        var ref :  var ref : Query!
         
         if messages.count > 0 {
             let lastMessage = messages.last
@@ -167,19 +189,34 @@ final class MessageViewModel : ObservableObject {
                     switch doc.type {
                     
                     case .added:
-                        print("all")
                         let message = Message(dic: doc.document.data())
                         
                         if !self.messages.contains(message) {
                             
-                            let soundIdRing: SystemSoundID = 1007
-                            AudioServicesPlaySystemSound(soundIdRing)
-                            
+                            if message.userID != currentUser.uid {
+                                let soundIdRing: SystemSoundID = 1007
+                                AudioServicesPlaySystemSound(soundIdRing)
+                                
+                            }
                             self.messages.append(message)
                             self.listenNewChat.toggle()
 
                         }
                         
+                    case .modified :
+                        let editedMessage = Message(dic: doc.document.data())
+                        
+                        for i in 0 ..< self.messages.count {
+                            let temp = self.messages[i]
+                            
+                            if editedMessage.id == temp.id {
+                                self.messages[i] = editedMessage
+                            }
+                            
+                        }
+                    
+                    case .removed :
+                        print("Remove")
                     default :
                         print("NO")
                     }
@@ -204,6 +241,7 @@ final class MessageViewModel : ObservableObject {
                     MessageKey.chatRoomId : chatRoomId,
                     MessageKey.userID : currentUser.uid,
                     MessageKey.messageType : MessageKey.TextType,
+                    MessageKey.read : false,
                     MessageKey.date : Timestamp(date: Date())
         ] as [String : Any]
 
@@ -249,6 +287,7 @@ final class MessageViewModel : ObservableObject {
                             MessageKey.messageId : messageID,
                             MessageKey.chatRoomId : chatRoomId,
                             MessageKey.userID : currentUser.uid,
+                            MessageKey.read : false,
                             MessageKey.messageType : MessageKey.CodeType,
                             MessageKey.date : Timestamp(date: Date()) ] as [String : Any]
                 
@@ -298,21 +337,22 @@ final class MessageViewModel : ObservableObject {
         guard message.userID == currentUser.uid else {return}
         
         let users = [currentUser,withUser]
-        
+     
         users.forEach { (user) in
             FirebaseReference(.Message).document(user.uid).collection(message.chatRoomId).document(message.id).delete()
         }
-        
+
         if message.type == .code {
             let ref = Storage.storage().reference()
-            
+
             ref.child("sources").child(currentUser.uid).child("\(message.id).txt").delete { (error) in
-                
+
                 if let error = error {
                     self.alert = errorAlert(message: error.localizedDescription)
                     return
                 }
                 
+
                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                       self.messages.remove(value: message)
                   }
@@ -322,6 +362,10 @@ final class MessageViewModel : ObservableObject {
                 self.messages.remove(value: message)
             }
         }
+        
+        let lastMessage = messages.last?.text ?? "削除されました"
+        /// last Message
+        Recent.updateRecentCounter(chatRoomID: userInfo.chatRoomId, lastMessage: lastMessage, currentUser: currentUser)
     }
     
     func removeListner() {

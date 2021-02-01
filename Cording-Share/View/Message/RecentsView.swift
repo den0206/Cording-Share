@@ -13,6 +13,7 @@ struct RecentsView: View {
     
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = RecentsViewModel()
+    @State private var firstLoad = true
     
     var body: some View {
         NavigationView {
@@ -38,8 +39,10 @@ struct RecentsView: View {
                 errorAlert(message: vm.errorMessage)
             })
             .onAppear(perform: {
-            
+                if firstLoad {
                     vm.fetchRecents(userInfo: userInfo)
+                    firstLoad = false
+                }
                  
             })
            

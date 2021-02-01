@@ -50,10 +50,10 @@ struct MessageView: View {
                         
                         LazyVStack {
                             
-                            ForEach(0 ..< vm.messages.count, id : \.self) { i in
-                                let message = vm.messages[i]
+                            ForEach(vm.messages) { message in
+//                                let message = vm.messages[i]
                                 
-                                MessageCell(vm: vm, message:$vm.messages[i], currentUser: userInfo.user, withUser: withUser)
+                                MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
                                             /// pgaintion
@@ -117,7 +117,7 @@ struct MessageView: View {
             
         }
         .onAppear(perform: {
-            vm.addSgatusListner(chatRoomId: chatRoomId, currentUser: userInfo.user)
+            vm.addStausListner(chatRoomId: chatRoomId, currentUser: userInfo.user)
             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
             userInfo.showTab = false
         })
@@ -158,7 +158,7 @@ struct MessageCell : View {
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm : MessageViewModel
     
-    @Binding var message : Message
+    var message : Message
     let currentUser : FBUser
     let withUser : FBUser
     
@@ -251,7 +251,7 @@ struct MessageCell : View {
                 }
                 
                 
-                if message.read {
+                if message.read && isCurrentUser {
                     Text("Read")
                         .font(.caption2)
                         .foregroundColor(.primary)
@@ -309,9 +309,9 @@ struct MessageCell : View {
             if !message.read && !isCurrentUser {
                 
                 print("Reda")
-                vm.updateMessage(message: message, chatRoomId: userInfo.chatRoomId, withUser: withUser)
+                vm.updateMessage(message: message, chatRoomId: userInfo.chatRoomId, users: [currentUser,withUser])
                 
-                message.read = true
+//                message.read = true
             }
             
         })
