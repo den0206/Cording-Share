@@ -29,7 +29,7 @@ final class RecentsViewModel : ObservableObject {
         
 //        recents.removeAll()
         
-        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).order(by: RecentKey.date, descending: false).addSnapshotListener { (snapshot, error) in
+        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
                 self.errorMessage = error.localizedDescription
@@ -59,10 +59,12 @@ final class RecentsViewModel : ObservableObject {
                             recent.withUser = user
             
                             self.recents.append(recent)
+                            self.recents.sort {$0.date.dateValue() > $1.date.dateValue()}
                         case .failure(let error):
                             self.errorMessage = error.localizedDescription
                         }
                     }
+                    
                 case .modified:
                     for i in 0 ..< self.recents.count {
                         
@@ -73,9 +75,13 @@ final class RecentsViewModel : ObservableObject {
                             recent.withUser = tempRecent.withUser
                             
                             self.recents[i] = recent
-                            
+                           
                         }
                     }
+                    
+                    /// sort
+                    self.recents.sort {$0.date.dateValue() > $1.date.dateValue()}
+                    
                 default :
                     print("Default")
                 }

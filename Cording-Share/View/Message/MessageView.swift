@@ -309,7 +309,8 @@ struct MessageCell : View {
             if !message.read && !isCurrentUser {
                 
                 print("Reda")
-                vm.updateMessage(message: message, chatRoomId: userInfo.chatRoomId, users: [currentUser,withUser])
+                print(message.text)
+                vm.updateReadStatus(message: message, chatRoomId: userInfo.chatRoomId, users: [currentUser, withUser])
                 
 //                message.read = true
             }

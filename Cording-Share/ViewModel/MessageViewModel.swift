@@ -17,6 +17,7 @@ final class MessageViewModel : ObservableObject {
             print(messages.count)
         }
     }
+
     //    var lastMessage : Message?
     
     @Published var text = ""
@@ -28,7 +29,7 @@ final class MessageViewModel : ObservableObject {
     
     @Published var reachLast = false
     @Published var lastDoc : DocumentSnapshot?
-    
+
     @Published var alert = Alert(title: Text("")) {
         didSet {
             showAlert = true
@@ -44,6 +45,7 @@ final class MessageViewModel : ObservableObject {
     
     
    
+ 
     //MARK: - fetch
     
     func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
@@ -60,7 +62,6 @@ final class MessageViewModel : ObservableObject {
             ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).order(by: MessageKey.date, descending: true).start(afterDocument: self.lastDoc!).limit(to: self.limit)
             
         }
-        
         
         ref.getDocuments { (snapshot, error) in
             if let error = error {
@@ -82,6 +83,8 @@ final class MessageViewModel : ObservableObject {
                 self.messages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
                 
                 self.lastDoc = snapshot.documents.last
+                
+                self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
             } else {
                 let moreMessages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
                 
@@ -98,47 +101,62 @@ final class MessageViewModel : ObservableObject {
                     }
                     self.messages.insert(contentsOf: moreMessages, at: 0)
                     
+                    let withUser = self.messages.filter({$0.userID != currentUser.uid})
+                    
+                    print(withUser.count)
+                    
                 }
             }
-
-
-            
-            self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
-        
-           
-            
+     
         }
         
     }
     
-    func updateMessage(message : Message,chatRoomId : String,users : [FBUser]) {
+    
+    func updateReadStatus(message : Message,chatRoomId : String,users : [FBUser]) {
         
         if !message.read {
             let value = [MessageKey.read : true]
-            
+        
             users.forEach { (user) in
                 FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(message.id).updateData(value)
             }
-            
-                        
+                
+                
         }
         
     }
     
+   
+    func listenStatus(chatRoomId : String,currentUser : FBUser) {
+        
+        var unReadMessage = self.messages.filter({$0.read != true})
+        
+        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.userID, arrayContainsAny: unReadMessage).addSnapshotListener({ (snapshot, error) in
+            <#code#>
+        })
+    }
     func addStausListner(chatRoomId : String,currentUser : FBUser) {
-        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.read, isNotEqualTo: true).addSnapshotListener({ (snapshot, error) in
+        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.read, isEqualTo: false).addSnapshotListener({ (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
 
             if !snapshot.isEmpty {
                 
+//                _ = self.messages.map{$0.read == false ? false : $0.read}
+
                 snapshot.documentChanges.forEach { (diff) in
-                    
+
                     switch diff.type {
-                    case .added :
-                        print("add")
                     
+                    case .added :
+                        print("Add Remove")
+
                     case .modified :
+                        print("Edit Remove")
+                        
+                    case .removed :
+                        print("Remove Read")
                         let editedMessage = Message(dic: diff.document.data())
                         
                         for i in 0 ..< self.messages.count {
@@ -150,17 +168,19 @@ final class MessageViewModel : ObservableObject {
                             }
                             
                         }
-    
-                    case .removed:
-                     print("remove")
-                    
+
+                    default :
+                        print("Throw Read")
+                        print(diff.type)
+                        print(diff.document.data())
+
                     }
-                    
-                  
-                    
+
                 }
             } else {
-                print("all read")
+                print("All read")
+//                _ = self.messages.map{$0.read == false ? true : $0.read}
+
                 
             }
         })
@@ -168,14 +188,17 @@ final class MessageViewModel : ObservableObject {
     
     func listenNewChat(chatRoomId : String,currentUser : FBUser) {
         
-        
-        var ref :  var ref : Query!
+        var ref : Query!
         
         if messages.count > 0 {
             let lastMessage = messages.last
             let lastTime = lastMessage!.date
+            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime)
+        } else {
+            ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId)
+        }
             
-           newChatlistner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.date, isGreaterThan : lastTime).addSnapshotListener { (snapshot, error) in
+           newChatlistner = ref.addSnapshotListener { (snapshot, error) in
                 
                 if let error = error {
                     self.alert = errorAlert(message: error.localizedDescription)
@@ -211,6 +234,7 @@ final class MessageViewModel : ObservableObject {
                             
                             if editedMessage.id == temp.id {
                                 self.messages[i] = editedMessage
+                                self.messages[i].read = true
                             }
                             
                         }
@@ -222,7 +246,7 @@ final class MessageViewModel : ObservableObject {
                     }
                 }
             }
-        }
+        
  
     }
     
@@ -404,7 +428,7 @@ final class MessageViewModel : ObservableObject {
 
         fullScreen.toggle()
     }
-
+    
 }
 
 
