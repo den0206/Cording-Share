@@ -17,8 +17,8 @@ final class MessageViewModel : ObservableObject {
             print(messages.count)
         }
     }
-
-    //    var lastMessage : Message?
+    
+  
     
     @Published var text = ""
     @Published var codeText = ""
@@ -39,6 +39,7 @@ final class MessageViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var fullScreen = false
     
+    var unReadMessages = [String]()
     var newChatlistner : ListenerRegistration?
     var statusListner : ListenerRegistration?
     let limit = 10
@@ -82,6 +83,8 @@ final class MessageViewModel : ObservableObject {
             if self.lastDoc == nil {
                 self.messages = snapshot.documents.map({Message(dic: $0.data())}).reversed()
                 
+                self.addReadListner(chatRoomId: chatRoomId, currentUser: currentUser)
+                
                 self.lastDoc = snapshot.documents.last
                 
                 self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
@@ -101,9 +104,7 @@ final class MessageViewModel : ObservableObject {
                     }
                     self.messages.insert(contentsOf: moreMessages, at: 0)
                     
-                    let withUser = self.messages.filter({$0.userID != currentUser.uid})
-                    
-                    print(withUser.count)
+                    self.addReadListner(chatRoomId: chatRoomId, currentUser: currentUser,moreMessages: moreMessages)
                     
                 }
             }
@@ -121,70 +122,63 @@ final class MessageViewModel : ObservableObject {
             users.forEach { (user) in
                 FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(message.id).updateData(value)
             }
-                
-                
+        
         }
         
     }
     
    
-    func listenStatus(chatRoomId : String,currentUser : FBUser) {
+    func addReadListner(chatRoomId : String,currentUser : FBUser,moreMessages : ReversedCollection<[Message]>? = nil) {
         
-        var unReadMessage = self.messages.filter({$0.read != true})
-        
-        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.userID, arrayContainsAny: unReadMessage).addSnapshotListener({ (snapshot, error) in
-            <#code#>
-        })
-    }
-    func addStausListner(chatRoomId : String,currentUser : FBUser) {
-        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.read, isEqualTo: false).addSnapshotListener({ (snapshot, error) in
+        if moreMessages == nil {
+            unReadMessages = self.messages.filter({$0.read != true && $0.userID == currentUser.uid}).map({$0.id})
             
+            guard  unReadMessages.count > 0 else {return}
+        } else {
+            
+            let more = moreMessages!.filter({$0.read != true && $0.userID == currentUser.uid}).map({$0.id})
+            
+            guard more.count > 0 else {return}
+            
+            statusListner?.remove()
+            
+            unReadMessages.append(contentsOf: more)
+        }
+       
+       
+        print("Listen")
+        statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.messageId, in: unReadMessages).addSnapshotListener({ (snapshot, error) in
+
             guard let snapshot = snapshot else {return}
-
+            print(snapshot.documents.count)
+            
             if !snapshot.isEmpty {
-                
-//                _ = self.messages.map{$0.read == false ? false : $0.read}
-
                 snapshot.documentChanges.forEach { (diff) in
-
                     switch diff.type {
-                    
-                    case .added :
-                        print("Add Remove")
-
                     case .modified :
-                        print("Edit Remove")
-                        
-                    case .removed :
-                        print("Remove Read")
                         let editedMessage = Message(dic: diff.document.data())
-                        
+
                         for i in 0 ..< self.messages.count {
                             let temp = self.messages[i]
-                            
+
                             if editedMessage.id == temp.id {
                                 self.messages[i] = editedMessage
                                 self.messages[i].read = true
                             }
-                            
-                        }
 
+                        }
                     default :
-                        print("Throw Read")
-                        print(diff.type)
-                        print(diff.document.data())
+                        print("unRead")
 
                     }
 
                 }
             } else {
-                print("All read")
-//                _ = self.messages.map{$0.read == false ? true : $0.read}
-
-                
+                print("Empty")
             }
         })
     }
+   
     
     func listenNewChat(chatRoomId : String,currentUser : FBUser) {
         

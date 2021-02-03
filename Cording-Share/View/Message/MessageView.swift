@@ -117,7 +117,7 @@ struct MessageView: View {
             
         }
         .onAppear(perform: {
-            vm.addStausListner(chatRoomId: chatRoomId, currentUser: userInfo.user)
+
             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
             userInfo.showTab = false
         })
