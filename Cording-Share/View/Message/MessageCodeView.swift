@@ -151,6 +151,9 @@ struct MessageCodeView: View {
         .Loading(isShowing: $vm.loading)
         .foregroundColor(.primary)
         .preferredColorScheme(.dark)
+        .onDisappear {
+            fixOrientation(landscape: false)
+        }
         
       
     }

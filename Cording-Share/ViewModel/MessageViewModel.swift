@@ -18,6 +18,7 @@ final class MessageViewModel : ObservableObject {
         }
     }
     
+    var anchorMessage : Message?
   
     
     @Published var text = ""
@@ -39,6 +40,7 @@ final class MessageViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var fullScreen = false
     
+
     var unReadMessages = [String]()
     var newChatlistner : ListenerRegistration?
     var statusListner : ListenerRegistration?
@@ -52,7 +54,7 @@ final class MessageViewModel : ObservableObject {
     func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
         
         guard !reachLast && !loading else {return}
-        
+
         var ref : Query!
         
         if lastDoc == nil {
@@ -96,17 +98,25 @@ final class MessageViewModel : ObservableObject {
                 }
                 
                 self.lastDoc = snapshot.documents.last
-               
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    
                     if completion != nil {
                         completion!(self.messages[3])
-                        self.loading = false
                     }
+                   
+                   
                     self.messages.insert(contentsOf: moreMessages, at: 0)
-                    
                     self.addReadListner(chatRoomId: chatRoomId, currentUser: currentUser,moreMessages: moreMessages)
                     
+                   
                 }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    self.loading = false
+                }
+                
+                
             }
      
         }
@@ -133,7 +143,6 @@ final class MessageViewModel : ObservableObject {
         if moreMessages == nil {
             unReadMessages = self.messages.filter({$0.read != true && $0.userID == currentUser.uid}).map({$0.id})
             
-            guard  unReadMessages.count > 0 else {return}
         } else {
             
             let more = moreMessages!.filter({$0.read != true && $0.userID == currentUser.uid}).map({$0.id})
@@ -145,6 +154,7 @@ final class MessageViewModel : ObservableObject {
             unReadMessages.append(contentsOf: more)
         }
        
+        guard unReadMessages.count > 0 else {return}
        
         print("Listen")
         statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.messageId, in: unReadMessages).addSnapshotListener({ (snapshot, error) in
@@ -152,30 +162,26 @@ final class MessageViewModel : ObservableObject {
             guard let snapshot = snapshot else {return}
             print(snapshot.documents.count)
             
-            if !snapshot.isEmpty {
-                snapshot.documentChanges.forEach { (diff) in
-                    switch diff.type {
-                    case .modified :
-                        let editedMessage = Message(dic: diff.document.data())
-
-                        for i in 0 ..< self.messages.count {
-                            let temp = self.messages[i]
-
-                            if editedMessage.id == temp.id {
-                                self.messages[i] = editedMessage
-                                self.messages[i].read = true
-                            }
-
+            snapshot.documentChanges.forEach { (diff) in
+                switch diff.type {
+                case .modified :
+                    let editedMessage = Message(dic: diff.document.data())
+                    
+                    for i in 0 ..< self.messages.count {
+                        let temp = self.messages[i]
+                        
+                        if editedMessage.id == temp.id {
+                            self.messages[i] = editedMessage
+                            self.messages[i].read = true
                         }
-                    default :
-                        print("unRead")
-
+                        
                     }
-
+                default :
+                   return
+                    
                 }
-            } else {
-                print("Empty")
             }
+            
         })
     }
    

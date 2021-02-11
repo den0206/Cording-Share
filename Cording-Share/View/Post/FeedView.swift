@@ -15,27 +15,33 @@ struct FeedView: View {
     var body: some View {
         
         NavigationView {
-            ScrollView {
-                LazyVStack {
-                    ForEach(vm.posts)  { post in
-                        
-                        NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
+            
+            GeometryReader { geo in
+                ScrollView {
+                    LazyVStack {
+                        ForEach(vm.posts)  { post in
                             
-                            PostCell(post: post)
-                                .onAppear {
-                                    if post.id == vm.posts.last?.id {
-                                        print(vm.reachLast)
-                                        vm.fetchPost()
+                            NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
+                                
+                                PostCell(post: post)
+                                    .onAppear {
+                                        if post.id == vm.posts.last?.id {
+                                            print(vm.reachLast)
+                                            vm.fetchPost()
+                                        }
+                                        
                                     }
-                                }
+                                    .frame( height: geo.size.height + 45)
+                                    
+                            }
+                            
                         }
                         
                     }
-                    .padding(.top,10)
-                    
                 }
             }
             
+      
             /// navigation Propety
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(true)
@@ -73,75 +79,90 @@ struct PostCell : View {
     
     var body: some View {
         
-        VStack {
         
-            HStack {
-                if !isExpand {
-                post.lang.image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .clipShape(Circle())
+        VStack {
+            
+            Spacer()
+            
+            
+            VStack {
+            
+                HStack {
+                    post.lang.image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                    
+                     Spacer()
+                    
+                    Text(post.tmstring)
+                        .font(.caption2)
+                    
+                }
+                .padding()
+                
+                
+                if isExpand {
+            
+                    ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
+                        .frame( height: 200)
+                        .disabled(true)
+                        .padding()
+            
                 }
                 
-                 Spacer()
+                Text(post.description)
+                    .font(.subheadline)
+                    .foregroundColor(Color.primary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+                    .padding(.trailing, 32)
+                    .padding(.top)
                 
-                Text(post.tmstring)
-                    .font(.caption2)
-                
-            }
-            .padding()
             
+                HStack(spacing :15) {
             
-            if isExpand {
-        
-                ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12)
-                    .frame( height: 150)
-                    .disabled(true)
-                    .padding()
-        
-            }
-            
-            Text(post.description)
-                .font(.subheadline)
-                .foregroundColor(Color.primary)
-                .multilineTextAlignment(.leading)
-                .padding(.trailing, 32)
-                .padding(.top)
-            
-        
-            HStack(spacing :15) {
-        
-                Image(systemName: "chevron.left.slash.chevron.right")
-                    .rotationEffect(.degrees(isExpand ? 0: -180))
-                    .font(.system(size: 18, weight: .regular))
-                    .onTapGesture {
-                        withAnimation(.spring()) {
-                            isExpand.toggle()
+                    Image(systemName: "chevron.left.slash.chevron.right")
+                        .rotationEffect(.degrees(isExpand ? 0: -180))
+                        .font(.system(size: 18, weight: .regular))
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                isExpand.toggle()
+                            }
                         }
-                    }
-        
-                Image(systemName: "paperclip")
-                    .font(.system(size: 18, weight: .regular))
-                    .onTapGesture {
-                        userInfo.copyText(text: post.codeBlock)
-                    }
-        
-                Spacer()
-        
-        
+            
+                    Image(systemName: "paperclip")
+                        .font(.system(size: 18, weight: .regular))
+                        .onTapGesture {
+                            userInfo.copyText(text: post.codeBlock)
+                        }
+            
+                    Spacer()
+            
+            
+                }
+                .padding()
+               
             }
+            .background(Color.primary.opacity(0.2))
+            .clipShape(RoundedRectangle(cornerRadius: 18))
             .padding()
+            .padding(.horizontal,12)
+            .foregroundColor(.primary)
+            .onAppear {
+                withAnimation(Animation.easeInOut(duration: 1.0)) {
+                    isExpand = true
+
+                }
+            }
            
+            Spacer()
+            
+            Divider()
+                .background(Color.primary)
         }
-       
-        .background(Color.primary.opacity(0.2))
-        .clipShape(RoundedRectangle(cornerRadius: 18))
-        .padding()
-        .padding(.horizontal,12)
-        .foregroundColor(.primary)
-      
-        
+ 
     }
 }
 

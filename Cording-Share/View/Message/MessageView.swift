@@ -50,24 +50,29 @@ struct MessageView: View {
                         
                         LazyVStack {
                             
+                          
                             ForEach(vm.messages) { message in
-//                                let message = vm.messages[i]
                                 
                                 MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
+                                           
+                                            
+                                           
                                             /// pgaintion
-                                            if !firstAppear {
-                                              
+                                            if !firstAppear && !vm.loading{
+                                              print("More...")
                                                 vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user) { (message) in
                                                     reader.scrollTo(message.id,anchor : .top)
+                                                    
                                                 }
-                                                
-                                            } else {
+                                            }
+                                            
+                                            if firstAppear {
                                                 reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
                                                 firstAppear = false
                                             }
-                                           
+                                            
                                         }
                                      
                                     }
@@ -79,9 +84,8 @@ struct MessageView: View {
                             /// scroll to bottom get New Chat
                                 print("morer")
                                 reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
-
-
                         }
+                       
                         
                     }
                 }
@@ -201,7 +205,13 @@ struct MessageCell : View {
                         
                         if !isExpanding {
                             
-                            Button(action: {isExpanding = true}) {
+                            Button(action: {
+                                withAnimation(.spring()) {
+                                    isExpanding.toggle()
+
+                                }
+                                
+                            }) {
                                 
                                 TextIconView(text: "Code Preview", image: Image(systemName: "chevron.left.slash.chevron.right"),font: .caption2,size: 20)
                                     .foregroundColor(.primary)
@@ -226,7 +236,12 @@ struct MessageCell : View {
                                     Image(systemName: "arrow.up.left.and.arrow.down.right")
                                 }
                                 
-                                Button(action: {isExpanding = false}) {
+                                Button(action: {
+                                    withAnimation(.spring()) {
+                                        isExpanding.toggle()
+
+                                    }
+                                }) {
                                     Image(systemName: "xmark")
                                 }
                             }
