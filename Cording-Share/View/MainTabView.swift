@@ -16,9 +16,10 @@ struct MainTabView: View {
             ZStack {
                 switch userInfo.tabIndex {
                 case 0 :
-                    AddPostView()
-                case 1 :
                     FeedView()
+                case 1 :
+                    AddPostView()
+
                 case 2 :
                     RecentsView()
                 case 3 :
@@ -58,14 +59,11 @@ struct CustomTab : View {
                 .background(Color.primary)
             HStack {
                 
-                
-                tabButton(function: {index = 0}, systemImageName: "chevron.left.slash.chevron.right", title: " Post", number: 0, index: index)
-                
+                tabButton(function: {index = 0}, systemImageName: "doc.richtext", title: "View", number: 0, index: index)
                 
                 Spacer(minLength : 15)
                 
-                tabButton(function: {index = 1}, systemImageName: "doc.richtext", title: "View", number: 1, index: index)
-                
+                tabButton(function: {index = 1}, systemImageName: "chevron.left.slash.chevron.right", title: " Post", number: 1, index: index)
 
                 Spacer(minLength: 15)
                 
@@ -80,7 +78,6 @@ struct CustomTab : View {
             .padding(.horizontal,25)
         }
         
-//        .background(Color(.systemGroupedBackground))
         
     }
 }

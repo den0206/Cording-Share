@@ -40,7 +40,6 @@ struct FeedView: View {
                     }
                 }
             }
-            
       
             /// navigation Propety
             .navigationBarTitleDisplayMode(.inline)
@@ -49,6 +48,7 @@ struct FeedView: View {
         }
         .onAppear {
             vm.fetchPost()
+            
         }
         .alert(isPresented: $vm.showalert, content: {
             errorAlert(message: vm.errorMessage)

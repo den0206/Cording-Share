@@ -44,7 +44,7 @@ struct MessageCodeView: View {
                         
                         Spacer()
                         
-                        TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
+                        TextIconView(mode: userInfo.mode)
                             .onTapGesture {
                                 showSelectView.toggle()
                             }
@@ -151,10 +151,6 @@ struct MessageCodeView: View {
         .Loading(isShowing: $vm.loading)
         .foregroundColor(.primary)
         .preferredColorScheme(.dark)
-        .onDisappear {
-            fixOrientation(landscape: false)
-        }
-        
       
     }
 }

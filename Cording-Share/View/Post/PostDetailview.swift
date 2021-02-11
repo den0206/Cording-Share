@@ -24,10 +24,14 @@ struct PostDetailview: View {
     
             ZStack {
                 if !vm.fullScreen {
-                    
+                  
                     VStack {
                         HStack {
-                            Button(action: {presentationMode.wrappedValue.dismiss()}) {
+                            Button(action: {
+                                presentationMode.wrappedValue.dismiss()
+                                userInfo.showTab = true
+                                
+                            }) {
                                 Image(systemName: "chevron.left")
                                     .foregroundColor(.primary)
                             }
@@ -49,9 +53,17 @@ struct PostDetailview: View {
                             if vm.post.isCurrentUser {
                                 Spacer()
                                 
-                                CustomDetailButton(title: "Edit", disable: true, action: {print("Edit")})
-                                    
+                                NavigationLink(destination: EditPostView(post: vm.post)) {
+                                    Text("edit")
+                                        .foregroundColor(.white)
+                                        .font(.caption2)
+                                        .frame(width: 50, height: 30)
+                                        .background(Color.green)
+                                        .cornerRadius(8)
+                                        
+                                }
                                 
+                                    
                                 CustomDetailButton(title: "Delete", disable: true, backColor: .red, action: {vm.showDeleteAlert(userInfo: userInfo)})
                             }
                   
@@ -163,19 +175,16 @@ struct PostDetailview: View {
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    showCodeView = true
+                    
+                    withAnimation(.spring()) {
+                        showCodeView = true
+                    }
 
                 }
             }
             .onDisappear {
                 hideKeyBord()
-                
-                withAnimation(.spring()) {
-                    userInfo.showTab = true
-                }
-                
                 showCodeView = false
-                
                 
             }
             

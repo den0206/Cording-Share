@@ -17,7 +17,7 @@ struct EditPostView: View {
     
     var body: some View {
         
-        NavigationView {
+  
             ZStack {
                 
                 if !vm.fullScreen {
@@ -27,7 +27,7 @@ struct EditPostView: View {
                         HStack {
                             
                             Button(action:{presentationMode.wrappedValue.dismiss()}) {
-                                Image(systemName: "xmark")
+                                Image(systemName: "chevron.left")
                                     
                             }
                             Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
@@ -39,14 +39,12 @@ struct EditPostView: View {
                             Spacer()
                             
                             
-                            TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
-                           
+                            TextIconView(mode: post.lang)
+                                .onTapGesture {
+                                    vm.showSelectView = true
+                                }
+                             
                             Spacer()
-                            
-                            Button(action: {vm.showSelectView = true}) {
-                                Image(systemName: "chevron.left.slash.chevron.right")
-                                
-                            }
                             
                             Button(action: {
                                 withAnimation(.spring()) {
@@ -67,7 +65,7 @@ struct EditPostView: View {
                         }
                         
                         
-                        ExampleView(code: $vm.text, lang: userInfo.mode,withImage : false)
+                        ExampleView(code: $vm.text, lang: post.lang,withImage : false)
                             .onAppear {
                                 vm.text = post.codeBlock
                             }
@@ -89,11 +87,11 @@ struct EditPostView: View {
                             HStack {
                                 Spacer()
                                 NavigationLink(destination: AddDescriptionView(vm: vm)) {
-                                    CommitButton(text: $vm.text)
+                                    EditCommitButton(vm: vm)
                                 }
-                                .disabled(vm.text.isEmpty)
+                                .disabled(vm.text.isEmpty || !vm.didChangeStatus)
                                 .padding()
-                                Text(vm.didChangeStatus.description)
+                                
                             }
                           
                         }
@@ -105,7 +103,7 @@ struct EditPostView: View {
                 } else {
                     
                     /// Z1
-                    ExampleView(code: $vm.text,  lang: userInfo.mode,withImage : false)
+                    ExampleView(code: $vm.text,  lang: post.lang,withImage : false)
                         .onAppear {
                             vm.text = post.codeBlock
                         }
@@ -119,9 +117,9 @@ struct EditPostView: View {
                             Spacer()
                             
                             NavigationLink(destination: AddDescriptionView(vm: vm)) {
-                                CommitButton(text: $vm.text)
+                                EditCommitButton(vm: vm)
                             }
-                            .disabled(vm.text.isEmpty)
+                            .disabled(vm.text.isEmpty || !vm.didChangeStatus)
                             .padding()
                             
                             Button(action: {vm.fullScreenMode(userInfo: userInfo)}, label: {
@@ -144,12 +142,26 @@ struct EditPostView: View {
                 vm.editPost = post
             })
             
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarHidden(true)
-        }
-        .preferredColorScheme(.dark)
+           
+        
    
     }
     
 }
 
+//MARK: - Edit Button
+
+struct EditCommitButton :View {
+    
+    @StateObject var vm : AddPostViewModel
+    
+    var body: some View {
+        Text("Commit")
+            .font(.caption2)
+            .foregroundColor(.white)
+            .frame(width: 55, height: 55)
+            .background(vm.text.isEmpty || !vm.didChangeStatus ? Color.gray : Color.green)
+            .opacity(vm.text.isEmpty || !vm.didChangeStatus  ? 0.3 : 1)
+            .clipShape(Circle())
+    }
+}

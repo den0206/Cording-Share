@@ -39,20 +39,10 @@ final class PostDetailViewModel : ObservableObject{
         
         switch fullScreen {
         case true:
-            DispatchQueue.main.async {
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-                UINavigationController.attemptRotationToDeviceOrientation()
-               
-            }
+            fixOrientation(landscape: false)
         case false :
-            
-            DispatchQueue.main.async {
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-                UINavigationController.attemptRotationToDeviceOrientation()
-            
-            }
+            fixOrientation(landscape: true)
+          
         }
         
         fullScreen.toggle()

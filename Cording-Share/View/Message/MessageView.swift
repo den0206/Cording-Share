@@ -36,7 +36,6 @@ struct MessageView: View {
                 /// Z1
                 ScrollView {
                     
-                    
                     if vm.loading {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
@@ -56,9 +55,7 @@ struct MessageView: View {
                                 MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
-                                           
-                                            
-                                           
+                                          
                                             /// pgaintion
                                             if !firstAppear && !vm.loading{
                                               print("More...")
@@ -112,6 +109,7 @@ struct MessageView: View {
                 .animation(.default)
                 .fullScreenCover(isPresented: $showSheet, onDismiss: {
                     vm.codeText = ""
+                    fixOrientation(landscape: false)
                     userInfo.showTab = false
                 }, content: {
                     MessageCodeView(vm: vm).environmentObject(userInfo)
@@ -213,8 +211,17 @@ struct MessageCell : View {
                                 
                             }) {
                                 
-                                TextIconView(text: "Code Preview", image: Image(systemName: "chevron.left.slash.chevron.right"),font: .caption2,size: 20)
-                                    .foregroundColor(.primary)
+                                Label {
+                                    Text("Code Preview")
+                                        .font(.caption2)
+                                } icon: {
+                                    Image(systemName: "chevron.left.slash.chevron.right")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                        .clipShape(Circle())
+                                }
+                                .foregroundColor(.primary)
                             }
                         } else {
                             /// Z1

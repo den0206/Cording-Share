@@ -33,7 +33,7 @@ struct AddPostView: View {
                             Spacer()
                             
                             
-                            TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
+                            TextIconView(mode: userInfo.mode)
                            
                             Spacer()
                             
@@ -225,8 +225,8 @@ struct SideMenu : View {
 //MARK: - Submit Button
 struct CommitButton : View {
     
-    @EnvironmentObject var userInfo : UserInfo
     @Binding var text : String
+
     
     var buttonColor : Color {
         if text.isEmpty {
@@ -245,9 +245,7 @@ struct CommitButton : View {
                     .background(buttonColor)
                     .opacity(text.isEmpty ? 0.3 : 1)
                     .clipShape(Circle())
-            
-            
-       
+ 
                 
     }
 }

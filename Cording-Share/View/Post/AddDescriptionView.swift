@@ -20,7 +20,7 @@ struct AddDescriptionView: View {
             /// Z1
             VStack {
                 
-                TextIconView(text: userInfo.mode.rawValue, image: userInfo.mode.image)
+                TextIconView(mode: userInfo.mode)
                     .padding(.top,5)
              
                 
