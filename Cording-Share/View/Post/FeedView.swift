@@ -21,20 +21,17 @@ struct FeedView: View {
                     LazyVStack {
                         ForEach(vm.posts)  { post in
                             
+                         
                             NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
                                 
                                 PostCell(post: post)
                                     .onAppear {
                                         if post.id == vm.posts.last?.id {
-                                            print(vm.reachLast)
                                             vm.fetchPost()
                                         }
-                                        
                                     }
                                     .frame( height: geo.size.height + 45)
-                                    
                             }
-                            
                         }
                         
                     }
@@ -46,6 +43,7 @@ struct FeedView: View {
             .navigationBarHidden(true)
             
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             vm.fetchPost()
             
@@ -93,6 +91,7 @@ struct PostCell : View {
                         .scaledToFit()
                         .frame(width: 30, height: 30)
                         .clipShape(Circle())
+                        
                     
                      Spacer()
                     
@@ -109,6 +108,8 @@ struct PostCell : View {
                         .frame( height: 200)
                         .disabled(true)
                         .padding()
+                    
+                 
             
                 }
                 
@@ -150,6 +151,7 @@ struct PostCell : View {
             .padding()
             .padding(.horizontal,12)
             .foregroundColor(.primary)
+            .id(post.id)
             .onAppear {
                 withAnimation(Animation.easeInOut(duration: 1.0)) {
                     isExpand = true

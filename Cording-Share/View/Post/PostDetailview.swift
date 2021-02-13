@@ -28,8 +28,9 @@ struct PostDetailview: View {
                     VStack {
                         HStack {
                             Button(action: {
-                                presentationMode.wrappedValue.dismiss()
                                 userInfo.showTab = true
+
+                                presentationMode.wrappedValue.dismiss()
                                 
                             }) {
                                 Image(systemName: "chevron.left")

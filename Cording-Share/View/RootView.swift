@@ -14,6 +14,8 @@ struct RootView : View {
     
     var body: some View {
         
+        #if !targetEnvironment(macCatalyst)
+        
         Group {
             if userInfo.isUserauthenticated == .undifined {
                 ProgressView("Loading...")
@@ -32,6 +34,13 @@ struct RootView : View {
         .onAppear(perform: {
             userInfo.configureStateDidChange()
         })
+        
+        #else
+        //MARK: - MacOS
+        
+        Login_MacView()
+        
+        #endif
         
     }
 }

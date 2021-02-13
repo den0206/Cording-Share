@@ -100,7 +100,7 @@ struct LoginView: View {
             
             Spacer()
         }
-        .background(Color(.systemGroupedBackground).ignoresSafeArea(.all, edges: .all))
+//        .background(Color(.systemGroupedBackground).ignoresSafeArea(.all, edges: .all))
         .Loading(isShowing: $isLoading)
         .onTapGesture(perform: {
             hideKeyBord()

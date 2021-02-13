@@ -32,6 +32,7 @@ struct RecentsView: View {
                     }
                     
                 }
+                .listStyle(PlainListStyle())
                 
                 Spacer()
             }
