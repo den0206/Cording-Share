@@ -14,7 +14,6 @@ struct RootView : View {
     
     var body: some View {
         
-        #if !targetEnvironment(macCatalyst)
         
         Group {
             if userInfo.isUserauthenticated == .undifined {
@@ -25,9 +24,14 @@ struct RootView : View {
                     .padding()
                     .transition(AnyTransition.fade(duration: 0.5))
             }  else if userInfo.isUserauthenticated == .signOut {
-                LoginView()
+                AuthenticationView()
             } else {
-                MainTabView()
+                if !isMacOS {
+                    MainTabView()
+                } else {
+                    MainSideView()
+                }
+               
             }
         }
         .preferredColorScheme(.dark)
@@ -35,12 +39,6 @@ struct RootView : View {
             userInfo.configureStateDidChange()
         })
         
-        #else
-        //MARK: - MacOS
-        
-        Login_MacView()
-        
-        #endif
         
     }
 }

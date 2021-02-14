@@ -20,9 +20,10 @@
 		3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED63259C37B5009E990E /* AddPostView.swift */; };
 		3A77699225A208CE004CC715 /* FBPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77699125A208CE004CC715 /* FBPost.swift */; };
 		3A96DEBC25B3F34B006293FF /* Reachbility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A96DEBB25B3F34B006293FF /* Reachbility.swift */; };
+		3AA5025E25D783E400CEB4C2 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */; };
+		3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5026025D796A300CEB4C2 /* MainSideView.swift */; };
 		3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292C25A9403400CA332B /* PostDetailview.swift */; };
 		3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */; };
-		3AA9DF7525D76D2B0092DDA4 /* Login_MacView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA9DF7425D76D2B0092DDA4 /* Login_MacView.swift */; };
 		3AB5E852259DB508004069E8 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5E851259DB508004069E8 /* CustomError.swift */; };
 		3ABA761425B28A5000B7C42A /* RecentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABA761325B28A5000B7C42A /* RecentsView.swift */; };
 		3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */; };
@@ -84,10 +85,12 @@
 		3A75ED63259C37B5009E990E /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		3A77699125A208CE004CC715 /* FBPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBPost.swift; sourceTree = "<group>"; };
 		3A96DEBB25B3F34B006293FF /* Reachbility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachbility.swift; sourceTree = "<group>"; };
+		3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		3AA5025F25D7891400CEB4C2 /* Cording-ShareRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cording-ShareRelease.entitlements"; sourceTree = "<group>"; };
+		3AA5026025D796A300CEB4C2 /* MainSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSideView.swift; sourceTree = "<group>"; };
 		3AA5292C25A9403400CA332B /* PostDetailview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailview.swift; sourceTree = "<group>"; };
 		3AA5292E25A9418500CA332B /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		3AA9DF4825D767DF0092DDA4 /* Cording-Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cording-Share.entitlements"; sourceTree = "<group>"; };
-		3AA9DF7425D76D2B0092DDA4 /* Login_MacView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_MacView.swift; sourceTree = "<group>"; };
 		3AB5E851259DB508004069E8 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		3ABA761325B28A5000B7C42A /* RecentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsView.swift; sourceTree = "<group>"; };
 		3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -166,6 +169,7 @@
 		3A75ED4A259C3651009E990E /* Cording-Share */ = {
 			isa = PBXGroup;
 			children = (
+				3AA5025F25D7891400CEB4C2 /* Cording-ShareRelease.entitlements */,
 				3AA9DF4825D767DF0092DDA4 /* Cording-Share.entitlements */,
 				3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */,
 				3A75ED62259C37A5009E990E /* Model */,
@@ -246,7 +250,7 @@
 		3AA9DF7325D76CAD0092DDA4 /* MacOS */ = {
 			isa = PBXGroup;
 			children = (
-				3AA9DF7425D76D2B0092DDA4 /* Login_MacView.swift */,
+				3AA5026025D796A300CEB4C2 /* MainSideView.swift */,
 			);
 			path = MacOS;
 			sourceTree = "<group>";
@@ -264,6 +268,7 @@
 		3ABC30F0259C4B790063D1D8 /* Authentification */ = {
 			isa = PBXGroup;
 			children = (
+				3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */,
 				3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */,
 				3ABC30F3259C505E0063D1D8 /* SignUpView.swift */,
 			);
@@ -441,7 +446,7 @@
 				3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
 				3AF4810F25B5675600B3A872 /* Message.swift in Sources */,
-				3AA9DF7525D76D2B0092DDA4 /* Login_MacView.swift in Sources */,
+				3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */,
 				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
 				3A75ED4E259C3651009E990E /* ContentView.swift in Sources */,
 				3A22686F25C4FDDA00F17180 /* CryptoSwift.swift in Sources */,
@@ -471,6 +476,7 @@
 				3AC693D025BBF203000994E6 /* MessageCodeView.swift in Sources */,
 				3ABE4E6E25B40A19006ADCB7 /* RecentsViewModel.swift in Sources */,
 				3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */,
+				3AA5025E25D783E400CEB4C2 /* AuthenticationView.swift in Sources */,
 				3ABC30FC259C56260063D1D8 /* AuthUserViewModel.swift in Sources */,
 				3AFED64F259D9D000048B807 /* RootView.swift in Sources */,
 				3A77699225A208CE004CC715 /* FBPost.swift in Sources */,
@@ -628,7 +634,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Cording-Share/Cording-Share.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Cording-Share/Cording-ShareRelease.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Cording-Share/Preview Content\"";
 				DEVELOPMENT_TEAM = 4KJFNVZ8R6;

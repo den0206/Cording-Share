@@ -228,7 +228,7 @@ struct MessageCell : View {
                             
                             if !showDetail {
                                 ExampleView(code: .constant(message.codeBlock), lang: message.lang!,tintColor : .white)
-                                .frame( height: 150)
+                                    .frame( height: isMacOS ? 300 : 150)
                             }
                             
                             /// Z2

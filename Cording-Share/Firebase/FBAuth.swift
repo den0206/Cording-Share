@@ -100,6 +100,8 @@ struct FBAuth {
             var newError : NSError
             
             if let error = error {
+                
+                print(error.localizedDescription)
                 newError = error as NSError
                 var emailError : EmailAuthError?
                 
