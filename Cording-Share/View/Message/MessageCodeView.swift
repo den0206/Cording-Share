@@ -52,7 +52,7 @@ struct MessageCodeView: View {
                                 /// force load View
                                 vm.text = ""
                             } content: {
-                                SelecteLanguageView()
+                                SelecteLanguageView().environmentObject(userInfo)
 
                             }
 

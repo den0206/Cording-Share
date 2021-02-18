@@ -112,7 +112,12 @@ struct MessageView: View {
                     fixOrientation(landscape: false)
                     userInfo.showTab = false
                 }, content: {
-                    MessageCodeView(vm: vm).environmentObject(userInfo)
+                    
+                    if !isMacOS {
+                        MessageCodeView(vm: vm).environmentObject(userInfo)
+                    } else {
+                       CordingView(vm: vm).environmentObject(userInfo)
+                    }
                     
                 })
             
@@ -136,12 +141,12 @@ struct MessageView: View {
         //MARK: - Navigation Prorety
         .navigationBarTitle(withUser.name)
         .navigationBarBackButtonHidden(true)
-        
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(
-            leading: Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
+            leading: !isMacOS ? Button(action: {presentationMode.wrappedValue.dismiss()}, label: {
                 Image(systemName: "chevron.left")
                     .foregroundColor(.primary)
-            }),
+            }) : nil,
             trailing:
                 WebImage(url: withUser.avaterUrl)
                 .resizable()

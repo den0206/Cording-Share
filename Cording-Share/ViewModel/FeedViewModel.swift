@@ -62,17 +62,6 @@ final class FeedViewModel : ObservableObject {
                 
                 self.posts.append(post)
                 
-//                FBAuth.fecthFBUser(uid: post.userId) { (result) in
-//                    switch result {
-//
-//                    case .success(let user):
-//                        post.user = user
-//                        self.posts.append(post)
-//
-//                    case .failure(let error):
-//                        self.errorMessage = error.localizedDescription
-//                    }
-//                }
             }
             
             self.lastDoc = snapshot.documents.last
@@ -81,19 +70,3 @@ final class FeedViewModel : ObservableObject {
     }
     
 }
-
-//
-//func fetchPosts(userId : String) {
-//    
-//    FBPost.fetchPosts(userId: userId) { (result) in
-//        switch result {
-//        
-//        case .success(let posts):
-//            self.posts = posts
-//        case .failure(let error):
-//            print(error.localizedDescription)
-//            self.errorMessage = error.localizedDescription
-//            self.showalert = true
-//        }
-//    }
-//}

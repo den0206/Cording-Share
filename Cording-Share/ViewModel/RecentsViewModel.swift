@@ -87,35 +87,10 @@ final class RecentsViewModel : ObservableObject {
                 }
             
             }
-
-            
-            
-            
-
-        
         }
         
     }
 }
-
-//            snapshot.documents.forEach { (doc) in
-//                var recent = Recent(dic: doc.data())
-//
-//                let witUserID = recent.withUserId
-//
-//                FBAuth.fecthFBUser(uid: witUserID) { (result) in
-//                    switch result {
-//
-//                    case .success(let user):
-//                        recent.withUser = user
-//
-//                        self.recents.append(recent)
-//                    case .failure(let error):
-//                        self.errorMessage = error.localizedDescription
-//                    }
-//                }
-//
-//            }
 
 
 

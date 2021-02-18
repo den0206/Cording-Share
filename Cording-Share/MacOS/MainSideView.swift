@@ -21,12 +21,10 @@ struct MainSideView: View {
         NavigationView {
             
             SideBar()
-                
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationViewStyle(DoubleColumnNavigationViewStyle())
             
             AllChatsView()
-            
+        
+                .navigationViewStyle(DoubleColumnNavigationViewStyle())
                 .navigationBarTitleDisplayMode(.inline)
 
         }
@@ -40,19 +38,37 @@ struct SideBar : View {
     
     @EnvironmentObject var userInfo : UserInfo
     
+    init() {
+        
+        let bg = UIView()
+        bg.backgroundColor = UIColor.clear
+        UITableView.appearance().backgroundColor = UIColor.clear
+        UITableViewCell.appearance().selectionStyle = .none
+        UITableViewCell.appearance().selectedBackgroundView = bg
+    }
+    
     var body: some View {
         List {
             
             NavigationLink(destination: AllChatsView()) {
                 Label("Message", systemImage: "message")
             }
-     
+
             
             NavigationLink(destination:  UserProfileView(vm : UserProfileViewModel(user: userInfo.user))) {
                 Label("Profile", systemImage: "person.crop.circle")
             }
+            
+            Spacer()
+            
+            NavigationLink(destination: SettingsView()) {
+                Label("settings", systemImage: "gearshape")
+            }
         }
-        .buttonStyle(PlainButtonStyle())
+        .listItemTint(.clear)
+        .listRowBackground(Color.clear)
+        .accentColor(.clear)
+      
     }
 }
 
@@ -107,21 +123,26 @@ struct AllChatsView : View {
         
         NavigationView {
             
-            
-            List(vm.recents) { recent in
-                
-                NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
-                
-                Button(action: {
-                        userInfo.chatRoomId = recent.chatRoomId
-                        userInfo.withUser = recent.withUser
-                        userInfo.MSGPushNav = true}) {
-                    RecentCell(recent: recent)
-                    
+            ScrollView {
+                LazyVStack {
+                    ForEach(vm.recents) { recent in
+                        
+                        NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
+                        
+                        Button(action: {
+                                userInfo.chatRoomId = recent.chatRoomId
+                                userInfo.withUser = recent.withUser
+                                userInfo.MSGPushNav = true}) {
+                            RecentCell(recent: recent)
+                        }
+                        
+                        Divider()
+                    }
                 }
                 
             }
-            .listStyle(SidebarListStyle())
+//            .padding(.top,50)
+        
 
             .onAppear(perform: {
                 if firstLoad {
@@ -130,11 +151,11 @@ struct AllChatsView : View {
                 }
                  
             })
-            
-            .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
         
         }
+        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarHidden(true)
      
      
     }
