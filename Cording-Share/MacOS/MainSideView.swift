@@ -23,14 +23,14 @@ struct MainSideView: View {
             SideBar()
             
             AllChatsView()
-        
+                
                 .navigationViewStyle(DoubleColumnNavigationViewStyle())
                 .navigationBarTitleDisplayMode(.inline)
-
+            
         }
         .foregroundColor(.primary)
         .frame( maxWidth: .infinity, maxHeight: .infinity)
-
+        
     }
 }
 
@@ -125,14 +125,14 @@ struct AllChatsView : View {
             
             ScrollView {
                 LazyVStack {
+                    NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
+
                     ForEach(vm.recents) { recent in
-                        
-                        NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
-                        
                         Button(action: {
                                 userInfo.chatRoomId = recent.chatRoomId
                                 userInfo.withUser = recent.withUser
-                                userInfo.MSGPushNav = true}) {
+                                userInfo.MSGPushNav = true
+                        }) {
                             RecentCell(recent: recent)
                         }
                         
@@ -141,7 +141,7 @@ struct AllChatsView : View {
                 }
                 
             }
-//            .padding(.top,50)
+            .padding(.top,50)
         
 
             .onAppear(perform: {

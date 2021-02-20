@@ -77,23 +77,11 @@ struct SignUpView: View {
                     ValitationText(text: user.validConfirmPasswordText,confirm: !user.passwordMatch(_confirmPass: user.confirmPassword) )
                     
                     
-                    Button(action: {
-                        registerUser()
-                        
-                    }) {
-                        Text("Register")
-                            .foregroundColor(.white)
-                            .padding(.vertical,15)
-                            .frame(width: 200)
-                            .background(Color.green)
-                            .cornerRadius(8)
-                            .opacity(user.isSignupComplete ? 1 : 0.3)
-                    }
-                    .disabled(!user.isSignupComplete)
-                    .padding()
-                    .alert(isPresented: $showAlert, content: {
-                        errorAlert(message: errorMessage)
-                    })
+                    CustomButton(title: "Register", disable: user.isSignupComplete, backColor: .green, action: {registerUser()})
+                        .padding()
+                        .alert(isPresented: $showAlert, content: {
+                            errorAlert(message: errorMessage)
+                        })
                     
                 }
                 
@@ -209,3 +197,4 @@ struct ImagePicker : UIViewControllerRepresentable {
     }
     
 }
+

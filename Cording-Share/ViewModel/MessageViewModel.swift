@@ -153,14 +153,15 @@ final class MessageViewModel : ObservableObject {
             
             unReadMessages.append(contentsOf: more)
         }
-       
+        
+        print("unRead \(unReadMessages.count)")
         guard unReadMessages.count > 0 else {return}
+        
        
         print("Listen")
         statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.messageId, in: unReadMessages).addSnapshotListener({ (snapshot, error) in
 
             guard let snapshot = snapshot else {return}
-            print(snapshot.documents.count)
             
             snapshot.documentChanges.forEach { (diff) in
                 switch diff.type {
@@ -395,6 +396,22 @@ final class MessageViewModel : ObservableObject {
     func removeListner() {
         newChatlistner?.remove()
         statusListner?.remove()
+    }
+    
+    func removeObject() {
+        /// for MacOS
+        text = ""
+        codeText = ""
+        loading = false
+        showHUD = false
+        listenNewChat = false
+        reachLast = false
+        lastDoc = nil
+        showAlert = false
+        unReadMessages = [String]()
+        newChatlistner = nil
+        statusListner = nil
+        messages.removeAll()
     }
     
 //    MARK: - UI

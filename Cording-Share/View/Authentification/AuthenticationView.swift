@@ -13,14 +13,8 @@ struct AuthenticationView: View {
         if isMacOS {
             HStack {
                 LoginView()
-                    .frame( maxWidth: .infinity, maxHeight: .infinity)
                 
-                Divider()
-                
-                VStack {
-                    Spacer()
-                }
-                .frame(width: (getScreenSize.width / 1.8) / 2)
+                LoopBackgroundView()
 
             }
         } else {

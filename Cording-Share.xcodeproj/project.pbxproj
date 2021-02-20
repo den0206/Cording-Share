@@ -10,6 +10,9 @@
 		3A22686F25C4FDDA00F17180 /* CryptoSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22686E25C4FDDA00F17180 /* CryptoSwift.swift */; };
 		3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */; };
 		3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */; };
+		3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */; };
+		3A4CA7C725E0E51100776F89 /* code-1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */; };
+		3A4CA7C825E0E51100776F89 /* code-2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C625E0E4F300776F89 /* code-2.mp4 */; };
 		3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A720C2425B0923A00714CB0 /* UserProfileView.swift */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
@@ -77,6 +80,9 @@
 		3A22686E25C4FDDA00F17180 /* CryptoSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoSwift.swift; sourceTree = "<group>"; };
 		3A282C4425A189F10010FCE2 /* SelecteLanguageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelecteLanguageView.swift; sourceTree = "<group>"; };
 		3A2BA93C259D920D004E7C44 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMovieView.swift; sourceTree = "<group>"; };
+		3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-1.mp4"; sourceTree = "<group>"; };
+		3A4CA7C625E0E4F300776F89 /* code-2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-2.mp4"; sourceTree = "<group>"; };
 		3A720C2425B0923A00714CB0 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cording_ShareApp.swift; sourceTree = "<group>"; };
@@ -143,6 +149,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A4CA7C425E0E4D900776F89 /* Movies */ = {
+			isa = PBXGroup;
+			children = (
+				3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */,
+				3A4CA7C625E0E4F300776F89 /* code-2.mp4 */,
+			);
+			path = Movies;
+			sourceTree = "<group>";
+		};
 		3A720C2625B0924500714CB0 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +196,7 @@
 				3A75ED60259C379B009E990E /* View */,
 				3AA9DF7325D76CAD0092DDA4 /* MacOS */,
 				3AFED615259D936D0048B807 /* Firebase */,
+				3A4CA7C425E0E4D900776F89 /* Movies */,
 				3ABC30F8259C54B10063D1D8 /* Extension */,
 				3A75ED4D259C3651009E990E /* ContentView.swift */,
 				3A75ED4F259C3652009E990E /* Assets.xcassets */,
@@ -277,6 +293,7 @@
 				3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */,
 				3ABC30F1259C4B8D0063D1D8 /* LoginView.swift */,
 				3ABC30F3259C505E0063D1D8 /* SignUpView.swift */,
+				3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */,
 			);
 			path = Authentification;
 			sourceTree = "<group>";
@@ -389,6 +406,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A4CA7C725E0E51100776F89 /* code-1.mp4 in Resources */,
+				3A4CA7C825E0E51100776F89 /* code-2.mp4 in Resources */,
 				3A75ED53259C3652009E990E /* Preview Assets.xcassets in Resources */,
 				3A2BA93D259D920D004E7C44 /* GoogleService-Info.plist in Resources */,
 				3A75ED50259C3652009E990E /* Assets.xcassets in Resources */,
@@ -475,6 +494,7 @@
 				3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */,
 				3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */,
 				3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */,
+				3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */,
 				3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */,
 				3ABE4E7025B40EDB006ADCB7 /* FBMessage.swift in Sources */,
 				3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */,

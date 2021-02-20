@@ -32,7 +32,7 @@ struct MessageView: View {
         VStack {
             
             ZStack {
-            
+                
                 /// Z1
                 ScrollView {
                     
@@ -49,16 +49,16 @@ struct MessageView: View {
                         
                         LazyVStack {
                             
-                          
+                            
                             ForEach(vm.messages) { message in
                                 
                                 MessageCell(vm: vm, message: message, currentUser: userInfo.user, withUser: withUser)
                                     .onAppear {
                                         if message.id == vm.messages.first?.id {
-                                          
+                                            
                                             /// pgaintion
                                             if !firstAppear && !vm.loading{
-                                              print("More...")
+                                                print("More...")
                                                 vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user) { (message) in
                                                     reader.scrollTo(message.id,anchor : .top)
                                                     
@@ -71,18 +71,18 @@ struct MessageView: View {
                                             }
                                             
                                         }
-                                     
+                                        
                                     }
                             }
                             
                         }
-
+                        
                         .onChange(of: vm.listenNewChat) { (value) in
                             /// scroll to bottom get New Chat
-                                print("morer")
-                                reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
+                            print("morer")
+                            reader.scrollTo(vm.messages.last?.id, anchor: .bottom)
                         }
-                       
+                        
                         
                     }
                 }
@@ -116,7 +116,7 @@ struct MessageView: View {
                     if !isMacOS {
                         MessageCodeView(vm: vm).environmentObject(userInfo)
                     } else {
-                       CordingView(vm: vm).environmentObject(userInfo)
+                        CordingView(vm: vm).environmentObject(userInfo)
                     }
                     
                 })
@@ -124,9 +124,8 @@ struct MessageView: View {
             
         }
         .onAppear(perform: {
-
-            vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
-            userInfo.showTab = false
+                vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+                userInfo.showTab = false
         })
         .onDisappear {
             print("remove")
@@ -136,6 +135,15 @@ struct MessageView: View {
         }
         .alert(isPresented: $vm.showAlert, content: {
             vm.alert
+        })
+        .onChange(of: userInfo.chatRoomId, perform: { (_) in
+         
+            if isMacOS {
+                vm.removeObject()
+                firstAppear = true
+                vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+
+            }
         })
         
         //MARK: - Navigation Prorety
@@ -171,7 +179,7 @@ struct MessageCell : View {
     
     @State private var isExpanding = false
     @State private var showDetail = false
-
+    
     var isCurrentUser : Bool {
         return message.userID == currentUser.uid
     }
@@ -197,7 +205,7 @@ struct MessageCell : View {
                     Text(message.text)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-//                        .blur(radius: 3.0)
+                        //                        .blur(radius: 3.0)
                         .padding()
                         .background(isCurrentUser ? Color.green : Color.gray)
                         .clipShape(BubbleShape(myMessage: isCurrentUser))
@@ -211,7 +219,7 @@ struct MessageCell : View {
                             Button(action: {
                                 withAnimation(.spring()) {
                                     isExpanding.toggle()
-
+                                    
                                 }
                                 
                             }) {
@@ -242,7 +250,7 @@ struct MessageCell : View {
                                     withAnimation(Animation.spring()) {
                                         showDetail = true
                                     }
-                                        
+                                    
                                     
                                 }) {
                                     Image(systemName: "arrow.up.left.and.arrow.down.right")
@@ -251,7 +259,7 @@ struct MessageCell : View {
                                 Button(action: {
                                     withAnimation(.spring()) {
                                         isExpanding.toggle()
-
+                                        
                                     }
                                 }) {
                                     Image(systemName: "xmark")
@@ -270,8 +278,8 @@ struct MessageCell : View {
                     .fullScreenCover(isPresented: $showDetail) {
                         
                         /// detail code View
-                       DetailCodeView(message: message, showDetail: $showDetail)
-                        .environmentObject(userInfo)
+                        DetailCodeView(message: message, showDetail: $showDetail)
+                            .environmentObject(userInfo)
                         
                     }
                     
@@ -318,7 +326,7 @@ struct MessageCell : View {
                         Image(systemName: "trash")
                     }
                 }
-             
+                
             }
             
             
@@ -339,7 +347,7 @@ struct MessageCell : View {
                 print(message.text)
                 vm.updateReadStatus(message: message, chatRoomId: userInfo.chatRoomId, users: [currentUser, withUser])
                 
-//                message.read = true
+                //                message.read = true
             }
             
         })
@@ -415,16 +423,16 @@ struct DetailCodeView : View {
                 Button(action: {showDetail = false}) {
                     Image(systemName: "xmark")
                         .foregroundColor(.white)
-                        
+                    
                 }
                 Spacer()
             }
             .padding()
-        
+            
             ExampleView(code: .constant(message.codeBlock), lang: message.lang!)
-           
+            
         }
         .preferredColorScheme(.dark)
-       
+        
     }
 }

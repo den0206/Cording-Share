@@ -54,36 +54,21 @@ struct LoginView: View {
             
             VStack(spacing :10) {
                 
-                Button(action: {loginUser()}) {
-                    Text("Login")
-                        .foregroundColor(.white)
-                        .padding(.vertical,15)
-                        .frame(width: 200)
-                        .background(Color.green)
-                        .cornerRadius(8)
-                        .opacity(user.isLoginComplete ? 1 : 0.3)
-                }
-                .disabled(!user.isLoginComplete)
-                .alert(isPresented: $showAlert) { () -> Alert in
-                    Alert(title: Text("Error"), message: Text(authError?.localizedDescription ?? "UnknownError"), dismissButton: .default(Text("OK")) {
-                        /// reset
-                        if authError == .incorrectPassword {
-                            user.password = ""
-                        } else {
-                            user.email = ""
-                            user.password = ""
-                        }
-                    })
-                }
+                CustomButton(title: "Login", disable: user.isLoginComplete, backColor: .green, action: {loginUser()})
+                    .alert(isPresented: $showAlert) { () -> Alert in
+                        Alert(title: Text("Error"), message: Text(authError?.localizedDescription ?? "UnknownError"), dismissButton: .default(Text("OK")) {
+                            /// reset
+                            if authError == .incorrectPassword {
+                                user.password = ""
+                            } else {
+                                user.email = ""
+                                user.password = ""
+                            }
+                        })
+                    }
+                    
                 
-                Button(action: {sheetType = .signUp}) {
-                    Text("SignUp")
-                        .foregroundColor(.white)
-                        .padding(.vertical,15)
-                        .frame(width: 200)
-                        .background(Color.blue)
-                        .cornerRadius(8)
-                }
+                CustomButton(title: "SignUp", disable: true, backColor: .blue, action: {sheetType = .signUp})
               
                 
             }
