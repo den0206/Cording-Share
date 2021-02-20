@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SignUpView: View {
     
@@ -14,10 +15,17 @@ struct SignUpView: View {
     
     @State private var user = AuthUserViewModel()
     @State private var showPicker = false
+    @State private var filePicker : DocumentPicker?
     
     @State private var errorMessage = ""
     @State private var showAlert = false
     @State private var isLoading = false
+    
+//    init() {
+//        _filePicker = State(initialValue: DocumentPicker({ (img) in
+//            print(img.count)
+//        }))
+//    }
     
     var body: some View {
         
@@ -30,7 +38,14 @@ struct SignUpView: View {
                         .padding(.top,10)
                 }
                 
-                Button(action: {showPicker = true}) {
+                Button(action: {
+                    if !isMacOS {
+                        showPicker = true
+                    } else {
+                        presentDocumentPicker()
+                    }
+                    
+                }) {
                     
                     if user.imageData.count == 0 {
                         
@@ -47,7 +62,10 @@ struct SignUpView: View {
                 .frame(width: 140, height: 140)
                 .padding(.vertical, 15)
                 .sheet(isPresented: $showPicker) {
-                    ImagePicker(image: $user.imageData)
+                    if !isMacOS {
+                        ImagePicker(image: $user.imageData)
+
+                    }
                 }
                 
                 Spacer()
@@ -95,6 +113,11 @@ struct SignUpView: View {
                     .foregroundColor(.primary)
             }))
         }
+        .onAppear {
+            filePicker = DocumentPicker({ (img) in
+                user.imageData = img
+            })
+        }
         .preferredColorScheme(.dark)
         .Loading(isShowing: $isLoading)
         .onTapGesture(perform: {
@@ -131,6 +154,15 @@ struct SignUpView: View {
             isLoading = false
             
         }
+    }
+    
+    func presentDocumentPicker() {
+       
+        let viewController = UIApplication.shared.windows[0].rootViewController!
+        let controller = self.filePicker!.vc
+        viewController.present(controller, animated: true, completion: nil)
+        
+        
     }
 }
 
@@ -198,3 +230,37 @@ struct ImagePicker : UIViewControllerRepresentable {
     
 }
 
+
+
+
+final class DocumentPicker : NSObject, UIDocumentPickerDelegate {
+    
+    let callback : ((Data)) -> ()
+    
+    init(_ callback : @escaping(Data) -> () = { _ in}) {
+        self.callback = callback
+    }
+    
+    lazy var vc : UIDocumentPickerViewController = {
+        let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.image,.jpeg,.png], asCopy: true)
+        vc.allowsMultipleSelection = false
+        vc.modalPresentationStyle = .formSheet
+        vc.delegate = self
+        
+        return vc
+    }()
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if urls.first == nil  {
+            return
+        }
+        
+        let data = try! Data(contentsOf: urls.first!);
+        callback(data)
+        
+    }
+   
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("cancell")
+    }
+}

@@ -46,7 +46,7 @@ struct LoginView: View {
                 
                 Button(action: {self.sheetType = .resetPassword}) {
                     Text("Reset Password")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                 }
             }
             .padding(.vertical)
