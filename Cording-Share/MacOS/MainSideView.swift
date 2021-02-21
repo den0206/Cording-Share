@@ -21,13 +21,13 @@ struct MainSideView: View {
         NavigationView {
             
             SideBar()
-            
-            AllChatsView()
-                
                 .navigationViewStyle(DoubleColumnNavigationViewStyle())
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(true)
+               
             
         }
+        .Loading(isShowing: $userInfo.loading)
         .foregroundColor(.primary)
         .frame( maxWidth: .infinity, maxHeight: .infinity)
         
@@ -59,14 +59,15 @@ struct SideBar : View {
                 Label("Profile", systemImage: "person.crop.circle")
             }
             
-            Spacer()
             
             NavigationLink(destination: SettingsView()) {
-                Label("settings", systemImage: "gearshape")
+                Label("Settings", systemImage: "gearshape")
             }
         }
+        .padding()
+        .padding(.top,20)
         .listItemTint(.clear)
-        .listRowBackground(Color.clear)
+        .listRowBackground(Color.black)
         .accentColor(.clear)
       
     }
@@ -155,7 +156,7 @@ struct AllChatsView : View {
         
         }
         .navigationBarTitleDisplayMode(.inline)
-//        .navigationBarHidden(true)
+        .navigationBarHidden(true)
      
      
     }

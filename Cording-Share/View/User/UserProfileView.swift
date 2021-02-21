@@ -41,7 +41,7 @@ struct UserProfileView: View {
                         }.padding()
                         
                     }
-                  
+                    
                     WebImage(url: vm.user!.avaterUrl)
                         .resizable()
                         .placeholder{
@@ -78,7 +78,7 @@ struct UserProfileView: View {
                             Button(action: {
                                 
                                 vm.startPrivateChat(userInfo: userInfo)
-
+                                
                                 
                             }, label: {
                                 Text("Message")
@@ -99,13 +99,13 @@ struct UserProfileView: View {
                 .padding()
                 
                 .navigationBarHidden(true)
-
+                
                 
             }
-         
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarHidden(true)
-        
+            .padding(.top,20)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarHidden(true)
+            
         }
         
     }

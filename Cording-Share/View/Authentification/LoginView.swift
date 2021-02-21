@@ -24,7 +24,9 @@ struct LoginView: View {
     /// for not internet
     @State private var errorMessage = ""
     @State private var showAlert = false
-    @State private var isLoading = false
+    
+    @Binding var isLoading : Bool
+//    @State private var isLoading = false
     
     var body: some View {
         
@@ -86,7 +88,7 @@ struct LoginView: View {
             Spacer()
         }
 
-        .Loading(isShowing: $isLoading)
+        .Loading(isShowing: !isMacOS ? $isLoading : .constant(false))
         .onTapGesture(perform: {
             hideKeyBord()
         })
@@ -121,12 +123,5 @@ struct LoginView: View {
             
             isLoading = false
         }
-    }
-}
-
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
     }
 }

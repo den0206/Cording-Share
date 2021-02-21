@@ -158,10 +158,11 @@ struct SignUpView: View {
     
     func presentDocumentPicker() {
        
-        let viewController = UIApplication.shared.windows[0].rootViewController!
-        let controller = self.filePicker!.vc
-        viewController.present(controller, animated: true, completion: nil)
+        guard let filePicker = filePicker else {return}
         
+        let viewController = UIApplication.shared.windows[0].rootViewController!
+        let controller = filePicker.vc
+        viewController.present(controller, animated: true, completion: nil)
         
     }
 }
@@ -229,9 +230,6 @@ struct ImagePicker : UIViewControllerRepresentable {
     }
     
 }
-
-
-
 
 final class DocumentPicker : NSObject, UIDocumentPickerDelegate {
     

@@ -14,6 +14,8 @@ struct UserEditView: View {
     @EnvironmentObject var userInfo : UserInfo
     @Environment(\.presentationMode) var presentationMode
     @State private var user = AuthUserViewModel()
+    @State private var filePicker : DocumentPicker?
+
     
     @State private var showPicker = false
     @State private var showAlert = false
@@ -28,9 +30,12 @@ struct UserEditView: View {
             ScrollView {
                 
                 HStack {
-                    Button(action: {presentationMode.wrappedValue.dismiss()}) {
-                        Image(systemName: "arrowshape.turn.up.backward")
-                            .foregroundColor(.primary)
+                    
+                    if !isMacOS {
+                        Button(action: {presentationMode.wrappedValue.dismiss()}) {
+                            Image(systemName: "arrowshape.turn.up.backward")
+                                .foregroundColor(.primary)
+                        }
                     }
                     
                     Spacer()
@@ -38,8 +43,15 @@ struct UserEditView: View {
                 .padding()
                 
                 Spacer().frame(height: 30)
-             
-                Button(action: {showPicker.toggle()}) {
+                
+                Button(action: {
+                    if !isMacOS {
+                        showPicker.toggle()
+                    } else {
+                        presentDocumentPicker()
+                    }
+                    
+                }) {
                     
                     if  user.imageData.count != 0 {
                         Image(uiImage: UIImage(data: user.imageData)!)
@@ -61,7 +73,10 @@ struct UserEditView: View {
                 }
                 .padding(.vertical,10)
                 .sheet(isPresented: $showPicker) {
-                    ImagePicker(image: $user.imageData)
+                    if !isMacOS {
+                        ImagePicker(image: $user.imageData)
+
+                    }
                 }
                 
                 
@@ -92,7 +107,7 @@ struct UserEditView: View {
                     CustomButton(title: "Save", disable: user.didChangeStatus, action: {
                         
                         userInfo.loading = true
-                        
+                        print(userInfo.loading)
                         FBAuth.editUser(currentUser: userInfo.user, vm: user) { (result) in
                             
                             switch result {
@@ -125,6 +140,9 @@ struct UserEditView: View {
             .preferredColorScheme(.dark)
             .onAppear {
                 user.currentUser = userInfo.user
+                filePicker = DocumentPicker({ (img) in
+                    user.imageData = img
+                })
             }
             .alert(isPresented: $showAlert, content: {
                 alert
@@ -151,6 +169,16 @@ struct UserEditView: View {
                 print(error.localizedDescription)
             }
         }
+        
+    }
+    
+    func presentDocumentPicker() {
+       
+        guard let filePicker = filePicker else {return}
+        
+        let viewController = UIApplication.shared.windows[0].rootViewController!
+        let controller = filePicker.vc
+        viewController.present(controller, animated: true, completion: nil)
         
     }
 }

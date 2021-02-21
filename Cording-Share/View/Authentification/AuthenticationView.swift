@@ -8,17 +8,21 @@
 import SwiftUI
 
 struct AuthenticationView: View {
+    
+    @State private var loading = false
+    
     var body: some View {
         
         if isMacOS {
             HStack {
-                LoginView()
+                LoginView(isLoading: $loading)
                 
                 LoopBackgroundView()
 
             }
+            .Loading(isShowing: $loading)
         } else {
-            LoginView()
+            LoginView(isLoading: $loading)
         }
         
      

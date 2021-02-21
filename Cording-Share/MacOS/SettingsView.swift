@@ -8,8 +8,40 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
+    @EnvironmentObject var userInfo : UserInfo
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            
+            Form {
+                Section{
+                    Picker(selection: $userInfo.themeIndex, label: Text("テーマ")) {
+                        ForEach(0 ..< userInfo.themes.count ) { i in
+                            Text("\(userInfo.themes[i].rawValue)")
+                                .foregroundColor(.primary)
+                            
+                        }
+                    }
+                    .pickerStyle(WheelPickerStyle())
+                }
+
+                
+                Section{
+                    
+                    Picker(selection: $userInfo.fontSize, label: Text("文字サイズ"), content: {
+                        ForEach(4 ..< 25, id : \.self) { i in
+                            Text("\(i)")
+                                .foregroundColor(.primary)
+                        }
+                    })
+                    .pickerStyle(WheelPickerStyle())
+                }
+            }
+        
+            .navigationBarHidden(true)
+        }
+        .navigationBarHidden(true)
     }
 }
 
