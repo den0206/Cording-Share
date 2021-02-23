@@ -104,6 +104,7 @@ struct PostCell : View {
                 
                 
                 if isExpand {
+                    
                     ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
                         .frame( height: 200)
                         .disabled(true)

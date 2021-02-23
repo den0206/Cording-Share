@@ -126,6 +126,8 @@ struct MessageView: View {
         .onAppear(perform: {
             vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
             vm.clearRecentCounter(chatRoomID: chatRoomId, currentUser: userInfo.user)
+            
+            
             userInfo.showTab = false
         })
         .onDisappear {
@@ -138,11 +140,12 @@ struct MessageView: View {
             vm.alert
         })
         .onChange(of: userInfo.chatRoomId, perform: { (_) in
-         
+            
             if isMacOS {
                 vm.removeObject()
                 firstAppear = true
                 vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+                vm.clearRecentCounter(chatRoomID: chatRoomId, currentUser: userInfo.user)
 
             }
         })

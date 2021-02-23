@@ -33,7 +33,7 @@ struct UserEditView: View {
                     
                     if !isMacOS {
                         Button(action: {presentationMode.wrappedValue.dismiss()}) {
-                            Image(systemName: "arrowshape.turn.up.backward")
+                            Image(systemName:  "chevron.left")
                                 .foregroundColor(.primary)
                         }
                     }

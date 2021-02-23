@@ -27,35 +27,58 @@ struct UserProfileView: View {
         } else {
             NavigationView {
                 
-                VStack(spacing : 8) {
+                VStack {
                     
-                    if isSheet {
-                        HStack {
-                            
-                            Button(action: {presentationMode.wrappedValue.dismiss()}) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.primary)
+                    Rectangle()
+                        .foregroundColor(.gray)
+                        .edgesIgnoringSafeArea(.top)
+                        .frame( height: 200)
+                        .overlay(
+                            VStack {
+                                HStack {
+                                    if isSheet {
+                                        Button(action: {presentationMode.wrappedValue.dismiss()}) {
+                                            Image(systemName: "chevron.left")
+                                                .foregroundColor(.primary)
+                                        }
+                                        .padding()
+                                        
+                                    }
+                                    
+                                    
+                                    Spacer()
+                                }
+                                Spacer()
                             }
                             
-                            Spacer()
-                        }.padding()
-                        
+                        )
+                    
+                    
+                    VStack {
+                        WebImage(url: vm.user!.avaterUrl)
+                            .resizable()
+                            .placeholder{
+                                Circle().fill(Color.gray)
+                            }
+                            .scaledToFill()
+                            .clipped()
+                            .frame(width: 150, height: 150)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white,lineWidth: 4))
+                            .shadow(color: .primary, radius: 10)
                     }
+                    .offset(y: -100)
+                    .padding(.bottom, -110)
                     
-                    WebImage(url: vm.user!.avaterUrl)
-                        .resizable()
-                        .placeholder{
-                            Circle().fill(Color.gray)
-                        }
-                        .scaledToFill()
-                        .clipped()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
+                    VStack {
+                        Text(vm.user!.name)
+                            .bold()
+                            .font(.title)
+                    }
+                    .padding()
                     
-                    Text(vm.user!.name)
-                        .font(.system(size: 16,weight : .semibold))
-                    
-                    
+                    .padding(.top,20)
+                
                     if vm.user!.isCurrentUser {
                         NavigationLink(destination: UserEditView()) {
                             Text("EditProfile")
@@ -90,19 +113,12 @@ struct UserProfileView: View {
                         }
                         
                     }
-                    
-                    Divider()
-                        .background(Color.primary)
-                    
+          
                     Spacer()
                 }
-                .padding()
-                
                 .navigationBarHidden(true)
-                
-                
+  
             }
-            .padding(.top,20)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(true)
             

@@ -22,13 +22,6 @@ final class RecentsViewModel : ObservableObject {
     
     func fetchRecents(userInfo : UserInfo) {
         
-//        guard Reachabilty.HasConnection() else {
-//            errorMessage = "No Internet"
-//            return
-//        }
-        
-//        recents.removeAll()
-        
         FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
