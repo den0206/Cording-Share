@@ -84,12 +84,27 @@ struct RecentCell : View {
             
             Spacer()
             
-            Text(recent.tmstring)
-                .font(.caption2)
+            VStack(spacing : 10) {
+                
+                if recent.counter > 0 {
+                    
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 30, height: 30)
+                        .overlay(Text("\(recent.counter)"))
+                }
+               
+                
+                Text(recent.tmstring)
+                    .font(.caption2)
+                
+            }
+           
             
         }
         .padding()
         .foregroundColor(.primary)
+        
         
     }
 }

@@ -14,7 +14,6 @@ struct MainSideView: View {
     init() {
         UINavigationBar.appearance().tintColor = .white
     }
-
     var body: some View {
         
         
@@ -64,8 +63,7 @@ struct SideBar : View {
                 Label("Settings", systemImage: "gearshape")
             }
         }
-        .padding()
-        .padding(.top,20)
+        .padding(.top,30)
         .listItemTint(.clear)
         .listRowBackground(Color.black)
         .accentColor(.clear)
@@ -73,39 +71,6 @@ struct SideBar : View {
     }
 }
 
-struct SideTabButton : View {
-    
-    var imageName : String
-    var title : String
-    var index : Int
-    
-    @Binding var selectedIndex : Int
-    
-    var body: some View {
-        
-        Button(action: {withAnimation{selectedIndex = index}}) {
-            
-            VStack(spacing :7) {
-                
-                Image(systemName: imageName)
-                    .font(.system(size: 16,weight : .semibold))
-                    .foregroundColor(selectedIndex == index ? .primary : .gray)
-                
-                Text(title)
-                    .fontWeight(.semibold)
-                    .font(.system(size: 11))
-                    .foregroundColor(selectedIndex == index ? .primary : .gray)
-            }
-            .padding(.vertical,8)
-            .frame(width: 70)
-            .contentShape(Rectangle())
-            .background(Color.primary.opacity(selectedIndex == index ? 0.15 : 0))
-            .cornerRadius(10)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-    
-}
 
 struct MainSideView_Previews: PreviewProvider {
     static var previews: some View {

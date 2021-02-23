@@ -124,8 +124,9 @@ struct MessageView: View {
             
         }
         .onAppear(perform: {
-                vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
-                userInfo.showTab = false
+            vm.loadMessage(chatRoomId: chatRoomId, currentUser: userInfo.user)
+            vm.clearRecentCounter(chatRoomID: chatRoomId, currentUser: userInfo.user)
+            userInfo.showTab = false
         })
         .onDisappear {
             print("remove")

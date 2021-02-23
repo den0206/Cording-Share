@@ -31,6 +31,7 @@ struct FeedView: View {
                                         }
                                     }
                                     .frame( height: geo.size.height + 45)
+                            
                             }
                         }
                         
@@ -103,12 +104,14 @@ struct PostCell : View {
                 
                 
                 if isExpand {
-            
                     ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
                         .frame( height: 200)
                         .disabled(true)
                         .padding()
                     
+//                    Rectangle()
+//                        .frame( height: 200)
+
                  
             
                 }
@@ -149,7 +152,7 @@ struct PostCell : View {
             .background(Color.primary.opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 18))
             .padding()
-            .padding(.horizontal,12)
+            .padding(.horizontal,36)
             .foregroundColor(.primary)
             .id(post.id)
             .onAppear {
@@ -163,6 +166,7 @@ struct PostCell : View {
             
             Divider()
                 .background(Color.primary)
+            
         }
  
     }

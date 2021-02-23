@@ -30,8 +30,13 @@ final class UserInfo : ObservableObject {
     @Published var withUser : FBUser = .init(uid : "", name : "", email : "")
     
     
-    @AppStorage("fontSize") var fontSize : Int = 10
-    @AppStorage("themeIndex") var themeIndex : Int = 8
+    @AppStorage("fontSize") var fontSize : Int = 10 {
+        didSet {self.objectWillChange.send()}
+    }
+    
+    @AppStorage("themeIndex") var themeIndex : Int = 8 {
+        didSet {self.objectWillChange.send()}
+    }
     @AppStorage("modeIndex") var modeIndex : Int = 0
     
     var modes = CodeMode.codeModes

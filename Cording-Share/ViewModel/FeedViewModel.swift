@@ -56,12 +56,18 @@ final class FeedViewModel : ObservableObject {
                 self.reachLast = true
                 return}
             
-            snapshot.documents.forEach { (doc) in
-                let data = doc.data()
-                let post = Post(dic: data)
+            if self.lastDoc == nil {
+                self.posts = snapshot.documents.map({Post(dic: $0.data())})
+
+            } else {
+                let more = snapshot.documents.map({Post(dic: $0.data())})
                 
-                self.posts.append(post)
+                if more.count < self.limit {
+                    self.reachLast = true
+                }
                 
+                self.posts.append(contentsOf: more)
+
             }
             
             self.lastDoc = snapshot.documents.last

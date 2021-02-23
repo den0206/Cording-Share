@@ -18,9 +18,6 @@ final class MessageViewModel : ObservableObject {
         }
     }
     
-    var anchorMessage : Message?
-  
-    
     @Published var text = ""
     @Published var codeText = ""
     
@@ -149,20 +146,18 @@ final class MessageViewModel : ObservableObject {
             
             guard more.count > 0 else {return}
             
-            statusListner?.remove()
             
             unReadMessages.append(contentsOf: more)
+            print(unReadMessages)
         }
         
-        print("unRead \(unReadMessages.count)")
         guard unReadMessages.count > 0 else {return}
-        
        
-        print("Listen")
         statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.messageId, in: unReadMessages).addSnapshotListener({ (snapshot, error) in
 
             guard let snapshot = snapshot else {return}
             
+            print("unRead \(snapshot.documents.count)")
             snapshot.documentChanges.forEach { (diff) in
                 switch diff.type {
                 case .modified :
@@ -338,6 +333,28 @@ final class MessageViewModel : ObservableObject {
     }
     
     
+    func clearRecentCounter(chatRoomID : String, currentUser : FBUser) {
+        FirebaseReference(.Recent).whereField(RecentKey.chatRoomId, isEqualTo: chatRoomID).getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {return}
+            
+            
+            if !snapshot.isEmpty {
+                for recent in snapshot.documents {
+                    let currentRecent = recent.data()
+
+                    if currentRecent[RecentKey.userId] as? String == currentUser.uid {
+
+                        FirebaseReference(.Recent).document(currentRecent[RecentKey.recentID] as! String).updateData([RecentKey.counter : 0])
+                    
+                    }
+
+                }
+            }
+        }
+        
+    }
+    
     //MARK: - delete Message
     
     func showDeleteALert(message : Message, userInfo : UserInfo, withUser : FBUser) {
@@ -447,41 +464,4 @@ final class MessageViewModel : ObservableObject {
     }
     
 }
-
-
-//            snapshot.documentChanges.forEach { (doc) in
-//
-//                switch doc.type {
-//
-//                case .added :
-//                    let message = Message(dic: doc.document.data())
-//
-//                    if !self.messages.contains(message) {
-//
-//                        self.messages.append(message)
-//
-//                        if self.messages.count % self.limit == 0 {
-//                            print("load")
-//                        }
-//
-//                    }
-//                case .modified :
-//                    print("edit")
-//
-//                case .removed :
-//                    let message = Message(dic: doc.document.data())
-//
-//                    if !doc.document.metadata.hasPendingWrites {
-//                        print("delete")
-//                        self.messages.remove(value: message)
-//                    }
-//
-//                default :
-//                    print("NO Message")
-//                }
-//
-//            }
-
-
-
 
