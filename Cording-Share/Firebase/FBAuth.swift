@@ -93,7 +93,7 @@ struct FBAuth {
         }
     }
     
-    static func loginUser(email : String, password : String, completion :@escaping(Result<Bool, EmailAuthError>) -> Void) {
+    static func loginUser(email : String, password : String, completion :@escaping(Result<String, EmailAuthError>) -> Void) {
         
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             
@@ -119,7 +119,8 @@ struct FBAuth {
                 
                 completion(.failure(emailError!))
             } else {
-                completion(.success(true))
+                guard let uid = result?.user.uid else {return}
+                completion(.success(uid))
             }
         }
         

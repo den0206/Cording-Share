@@ -24,9 +24,11 @@ struct LoginView: View {
     /// for not internet
     @State private var errorMessage = ""
     @State private var showAlert = false
+    @AppStorage("fcmToken") var FCMToken : String = ""
+    
     
     @Binding var isLoading : Bool
-//    @State private var isLoading = false
+    //    @State private var isLoading = false
     
     var body: some View {
         
@@ -35,13 +37,13 @@ struct LoginView: View {
             Spacer()
             
             ValitationText(text: user.validEmailText, confirm: !user.validEmailText.isEmpty)
-        
+            
             CustomTextField(text: $user.email, placeholder: "Email", imageName: "envelope")
                 .padding(.bottom,8)
-                
+            
             CustomTextField(text: $user.password, placeholder: "password", imageName: "lock", isSecure: true)
             
-           
+            
             
             HStack {
                 Spacer()
@@ -68,10 +70,10 @@ struct LoginView: View {
                             }
                         })
                     }
-                    
+                
                 
                 CustomButton(title: "SignUp", disable: true, backColor: .blue, action: {sheetType = .signUp})
-              
+                
                 
             }
             .sheet(item: $sheetType) { (item) in
@@ -87,7 +89,7 @@ struct LoginView: View {
             
             Spacer()
         }
-
+        
         .Loading(isShowing: !isMacOS ? $isLoading : .constant(false))
         .onTapGesture(perform: {
             hideKeyBord()
@@ -104,7 +106,7 @@ struct LoginView: View {
             showAlert = true
             return
         }
-       
+        
         
         isLoading = true
         
@@ -112,16 +114,22 @@ struct LoginView: View {
             
             switch result {
             
-            case .success(_):
+            case .success(let uid):
+                updateFCMTOken(uid: uid)
                 print("Success")
-     
+                
             case .failure(let error):
-              
+                
                 authError = error
                 showAlert = true
             }
             
             isLoading = false
         }
+    }
+    
+    private func updateFCMTOken(uid : String) {
+        let value = [Userkey.fcnToken : FCMToken]
+        FirebaseReference(.User).document(uid).setData(value, merge: true)
     }
 }

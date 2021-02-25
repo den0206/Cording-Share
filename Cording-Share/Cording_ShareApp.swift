@@ -32,7 +32,7 @@ struct Cording_ShareApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     
     static var orientationLock = UIInterfaceOrientationMask.portrait
-
+    @AppStorage("fcmToken") var FCMToken : String = ""
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
@@ -70,6 +70,8 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
         print("Firebase registration token: \(String(describing: fcmToken))")
+        guard let fcm = fcmToken else {return}
+        self.FCMToken = fcm
 
     }
 
