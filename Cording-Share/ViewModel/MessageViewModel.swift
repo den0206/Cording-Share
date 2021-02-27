@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Firebase
-import AudioToolbox
 
 
 final class MessageViewModel : ObservableObject {
@@ -212,11 +211,6 @@ final class MessageViewModel : ObservableObject {
                     
                     if !self.messages.contains(message) {
                         
-                        if message.userID != currentUser.uid {
-                            let soundIdRing: SystemSoundID = 1007
-                            AudioServicesPlaySystemSound(soundIdRing)
-                            
-                        }
                         self.messages.append(message)
                         self.listenNewChat.toggle()
                         
@@ -270,12 +264,8 @@ final class MessageViewModel : ObservableObject {
             FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
         }
         
-        
-        /// Send Notification
-        sendNotification(toToken: withUser.fcmToken, text: text)
-        
-        /// last Message
-        Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: text, currentUser: currentUser)
+        /// last Message && Notification
+        Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: text, withUser: withUser)
         
     
         
@@ -320,7 +310,8 @@ final class MessageViewModel : ObservableObject {
                     FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
                 }
                 
-                Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: lastMessage, currentUser: currentUser)
+                //MARK: - Foreground Notification
+                Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: lastMessage, withUser: withUser)
                 //
                 
                 /// reset
@@ -366,6 +357,7 @@ final class MessageViewModel : ObservableObject {
         
         alert = Alert(title: Text("確認"), message: Text("削除しますか？"), primaryButton: .cancel(), secondaryButton: .destructive(Text("削除"), action: {
             
+            
             self.deleteMessage(message: message, userInfo: userInfo, withUser: withUser)
             
             
@@ -410,9 +402,9 @@ final class MessageViewModel : ObservableObject {
             }
         }
         
-        let lastMessage = messages.last?.text ?? "削除されました"
+        let lastMessage =  "削除されました"
         /// last Message
-        Recent.updateRecentCounter(chatRoomID: userInfo.chatRoomId, lastMessage: lastMessage, currentUser: currentUser)
+        Recent.updateRecentCounter(chatRoomID: userInfo.chatRoomId, lastMessage: lastMessage, withUser: withUser,isDelete: true)
     }
     
     func removeListner() {
@@ -469,40 +461,6 @@ final class MessageViewModel : ObservableObject {
     }
     
     
-    //MARK: - SendNotification
-    
-    private func sendNotification(toToken : String, title : String = "New Message", text : String) {
-        
-        let urlString = "https://fcm.googleapis.com/fcm/send"
-        let url = NSURL(string: urlString)!
-        let paramString : [String : Any] = ["to" : toToken,
-                                             "priority": "high",
-                                             "notification" : ["title" : title, "body" : text,"badge" : 12,"sound": "default"],
-                                             "data" : ["user" : "test_id"]]
-        
   
-        
-        let request = NSMutableURLRequest(url: url as URL)
-        request.httpMethod = "POST"
-        request.httpBody = try? JSONSerialization.data(withJSONObject:paramString, options: [.prettyPrinted])
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("key=\(FCMKey.legacyServerKey)", forHTTPHeaderField: "Authorization")
-        print(paramString)
-    
-        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-            
-            do {
-                if let jsonData = data {
-                    if let jsonDataDict  = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: AnyObject] {
-                        NSLog("Received data:\n\(jsonDataDict))")
-                    }
-                }
-            } catch let err as NSError {
-                self.alert = errorAlert(message: err.debugDescription)
-            }
-        }
-        task.resume()
-        
-    }
 }
 

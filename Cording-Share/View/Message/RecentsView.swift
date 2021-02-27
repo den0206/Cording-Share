@@ -20,13 +20,18 @@ struct RecentsView: View {
             
             VStack {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
-        
+                
                 List(vm.recents) { recent in
                     
                     Button(action: {
-                            userInfo.chatRoomId = recent.chatRoomId
-                            userInfo.withUser = recent.withUser
-                            userInfo.MSGPushNav = true}) {
+                        userInfo.chatRoomId = recent.chatRoomId
+                        userInfo.withUser = recent.withUser
+                        userInfo.MSGPushNav = true
+                        
+                        /// update badgeCount
+                        vm.updateBadgCunt(recent: recent)
+                        
+                    }) {
                         RecentCell(recent:recent)
                         
                     }
@@ -44,14 +49,14 @@ struct RecentsView: View {
                     vm.fetchRecents(userInfo: userInfo)
                     firstLoad = false
                     
-                    vm.getBadgeCount(userInfo: userInfo) { (badge) in
-                        print(badge)
+                    FBNotification.getBadgeCount(user: userInfo.user) { (badge) in
+                        UIApplication.shared.applicationIconBadgeNumber = badge
                     }
                 }
-  
-                 
+                
+                
             })
-           
+            
             
             .navigationBarTitle(Text("Messages"))
             .navigationBarTitleDisplayMode(.inline)
@@ -98,13 +103,13 @@ struct RecentCell : View {
                         .frame(width: 30, height: 30)
                         .overlay(Text("\(recent.counter)"))
                 }
-               
+                
                 
                 Text(recent.tmstring)
                     .font(.caption2)
                 
             }
-           
+            
             
         }
         .padding()

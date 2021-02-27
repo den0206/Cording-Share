@@ -84,30 +84,14 @@ final class RecentsViewModel : ObservableObject {
         
     }
     
-    
-    func getBadgeCount(userInfo : UserInfo, completion : @escaping(Int) -> Void) {
+    func updateBadgCunt(recent : Recent) {
+        let counter = recent.counter
         
-        var badgeCount : Int = 0
+        UIApplication.shared.applicationIconBadgeNumber -= counter
         
-        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).getDocuments { (snapshot, error) in
-            
-            guard let snapshot = snapshot else {completion(badgeCount);return}
-            
-            guard !snapshot.isEmpty else {completion(badgeCount);return}
-            
-            snapshot.documents.forEach { (doc) in
-                
-                let data = doc.data()
-                let conter = data[RecentKey.counter] as! Int
-                
-                print(conter)
-                badgeCount += conter
-            }
-            
-            completion(badgeCount)
+        if UIApplication.shared.applicationIconBadgeNumber < 0 {
+            UIApplication.shared.applicationIconBadgeNumber = 0
         }
-        
-        
     }
 }
 

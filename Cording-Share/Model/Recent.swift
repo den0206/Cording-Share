@@ -101,7 +101,9 @@ struct Recent : Identifiable{
     
     }
     
-    static func updateRecentCounter(chatRoomID :String , lastMessage : String,currentUser : FBUser) {
+    //MARK: - Update
+    
+    static func updateRecentCounter(chatRoomID :String , lastMessage : String,withUser : FBUser, isDelete : Bool = false) {
         
         FirebaseReference(.Recent).whereField(RecentKey.chatRoomId, isEqualTo: chatRoomID).getDocuments { (snapshot, error) in
             
@@ -112,7 +114,7 @@ struct Recent : Identifiable{
                 
                 let recent = doc.data()
                 
-                updateRecentToFireStore(recent: recent, currentUser: currentUser, lastMessage: lastMessage)
+                updateRecentToFireStore(recent: recent, withUser: withUser, lastMessage: lastMessage,isDelete: isDelete)
                 
             }
             
@@ -121,21 +123,50 @@ struct Recent : Identifiable{
    
 }
 
-fileprivate func updateRecentToFireStore(recent : Dictionary<String, Any>, currentUser : FBUser,lastMessage : String) {
+fileprivate func updateRecentToFireStore(recent : Dictionary<String, Any>, withUser : FBUser,lastMessage : String, isDelete : Bool) {
     
     let date = Timestamp(date: Date())
     var counter = recent[RecentKey.counter] as! Int
     
+    let uid = recent[RecentKey.userId] as! String
+    
     // except currentUser Counter
-    if recent[RecentKey.userId] as! String != currentUser.uid {
-        counter += 1
+    if uid == withUser.uid {
+        if !isDelete {
+            counter += 1
+        } else {
+            counter -= 1
+             if counter < 0 {
+                counter = 0
+            }
+        }
     }
     
     let values = [RecentKey.lastMessage : lastMessage,
                   RecentKey.counter: counter,
                   RecentKey.date : date] as [String : Any]
     
-    FirebaseReference(.Recent).document(recent[RecentKey.recentID] as! String).updateData(values)
+    FirebaseReference(.Recent).document(recent[RecentKey.recentID] as! String).updateData(values) { (error) in
+        
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        guard !isDelete else {return}
+        
+        if uid == withUser.uid {
+            /// send Notification
+            
+            print("Send Notification")
+            FBNotification.getBadgeCount(user: withUser) { (badge) in
+                
+                FBNotification.sendNotification(toToken: withUser.fcmToken, text: lastMessage, badgCount: badge)
+            }
+            
+            
+        }
+    }
 }
 
 

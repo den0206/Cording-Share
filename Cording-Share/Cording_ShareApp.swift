@@ -68,37 +68,43 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
         print("Firebase registration token: \(String(describing: fcmToken))")
-
+        
     }
-
+    
 }
 
 @available(iOS 10, *)
 extension AppDelegate : UNUserNotificationCenterDelegate {
-   func userNotificationCenter(_ center: UNUserNotificationCenter,
-                               willPresent notification: UNNotification,
-                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-       let userInfo = notification.request.content.userInfo
-
-       if let messageID = userInfo["gcm.message_id"] {
-           print("Message ID: \(messageID)")
-       }
-
-       print(userInfo)
-
-       completionHandler([])
-   }
-
-   func userNotificationCenter(_ center: UNUserNotificationCenter,
-                               didReceive response: UNNotificationResponse,
-                               withCompletionHandler completionHandler: @escaping () -> Void) {
-       let userInfo = response.notification.request.content.userInfo
-       if let messageID = userInfo["gcm.message_id"] {
-           print("Message ID: \(messageID)")
-       }
-
-       print(userInfo)
-
-       completionHandler()
-   }
+    
+    //MARK: - foreground Notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        
+        if let messageID = userInfo["gcm.message_id"] {
+            print("Message ID: \(messageID)")
+        }
+        
+        completionHandler([.banner,.list,.badge, .sound])
+    }
+    
+    //MARK: - background Notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let messageID = userInfo["gcm.message_id"] {
+            print("Message ID: \(messageID)")
+        }
+        
+        print(userInfo,"Tapped")
+        
+        completionHandler()
+    }
+    
+    //MARK: - 通知失敗
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("通知失敗")
+    }
 }

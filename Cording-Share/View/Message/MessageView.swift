@@ -320,7 +320,7 @@ struct MessageCell : View {
                     Image(systemName:"paperclip")
                 }
                 
-                if isCurrentUser {
+                if isCurrentUser && !message.read{
                     Button(action: {
                         /// delete
                         vm.showDeleteALert(message: message, userInfo: userInfo, withUser: withUser)
