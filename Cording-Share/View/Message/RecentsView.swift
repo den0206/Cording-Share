@@ -43,7 +43,12 @@ struct RecentsView: View {
                 if firstLoad {
                     vm.fetchRecents(userInfo: userInfo)
                     firstLoad = false
+                    
+                    vm.getBadgeCount(userInfo: userInfo) { (badge) in
+                        print(badge)
+                    }
                 }
+  
                  
             })
            

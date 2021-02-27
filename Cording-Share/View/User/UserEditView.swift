@@ -162,7 +162,7 @@ struct UserEditView: View {
             
             case .success(let bool):
                 print("Success, \(bool)")
-                self.userInfo.user = FBUser(uid: "", name: "", email: "")
+                self.userInfo.user = FBUser(uid: "", name: "", email: "", fcmToken: "")
                 self.userInfo.isUserauthenticated = .signOut
             case .failure(let error):
                 

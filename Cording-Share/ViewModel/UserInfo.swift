@@ -16,7 +16,7 @@ final class UserInfo : ObservableObject {
     }
     
     @Published var isUserauthenticated : AuthState = .undifined
-    @Published var user : FBUser = .init(uid : "", name : "", email : "")
+    @Published var user : FBUser = .init(uid : "", name : "", email : "", fcmToken: "")
 
     
     @Published var tabIndex = 0
@@ -27,7 +27,7 @@ final class UserInfo : ObservableObject {
     
     @Published var MSGPushNav = false
     @Published var chatRoomId = ""
-    @Published var withUser : FBUser = .init(uid : "", name : "", email : "")
+    @Published var withUser : FBUser = .init(uid : "", name : "", email : "", fcmToken: "")
     
     
     @AppStorage("fontSize") var fontSize : Int = 10 {

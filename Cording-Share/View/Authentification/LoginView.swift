@@ -24,8 +24,6 @@ struct LoginView: View {
     /// for not internet
     @State private var errorMessage = ""
     @State private var showAlert = false
-    @AppStorage("fcmToken") var FCMToken : String = ""
-    
     
     @Binding var isLoading : Bool
     //    @State private var isLoading = false
@@ -115,8 +113,7 @@ struct LoginView: View {
             switch result {
             
             case .success(let uid):
-                updateFCMTOken(uid: uid)
-                print("Success")
+                print("Success\(uid)")
                 
             case .failure(let error):
                 
@@ -127,9 +124,5 @@ struct LoginView: View {
             isLoading = false
         }
     }
-    
-    private func updateFCMTOken(uid : String) {
-        let value = [Userkey.fcnToken : FCMToken]
-        FirebaseReference(.User).document(uid).setData(value, merge: true)
-    }
+ 
 }

@@ -7,11 +7,13 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import FirebaseMessaging
 
 struct SignUpView: View {
     
     @EnvironmentObject var userInfo : UserInfo
     @Environment(\.presentationMode) var presentationMode
+
     
     @State private var user = AuthUserViewModel()
     @State private var showPicker = false
@@ -20,12 +22,6 @@ struct SignUpView: View {
     @State private var errorMessage = ""
     @State private var showAlert = false
     @State private var isLoading = false
-    
-//    init() {
-//        _filePicker = State(initialValue: DocumentPicker({ (img) in
-//            print(img.count)
-//        }))
-//    }
     
     var body: some View {
         

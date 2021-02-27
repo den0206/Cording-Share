@@ -74,6 +74,7 @@ struct UserProfileView: View {
                         Text(vm.user!.name)
                             .bold()
                             .font(.title)
+                        
                     }
                     .padding()
                     
@@ -171,7 +172,7 @@ struct UserProfileView_Previews: PreviewProvider {
     
     
     static var previews: some View {
-        UserProfileView(vm: UserProfileViewModel(user: FBUser(uid: "", name: "", email: "")))
+        UserProfileView(vm: UserProfileViewModel(user: FBUser(uid: "", name: "", email: "", fcmToken: "")))
     }
 }
 

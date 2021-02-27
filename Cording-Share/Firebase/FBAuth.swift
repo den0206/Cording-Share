@@ -7,6 +7,7 @@
 
 
 import FirebaseAuth
+import FirebaseMessaging
 
 struct FBAuth {
     
@@ -45,7 +46,7 @@ struct FBAuth {
     
     //MARK: - Create
     
-    static func createUser(email : String, name : String,password : String,imageData : Data, completion : @escaping(Result<FBUser, Error>) -> Void) {
+    static func createUser(email : String, name : String,password : String,imageData : Data,completion : @escaping(Result<FBUser, Error>) -> Void) {
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             
@@ -68,11 +69,13 @@ struct FBAuth {
                 switch result {
                 
                 case .success(let imageUrl):
+                    let fcm = Messaging.messaging().fcmToken ?? ""
                     
                     let data = [Userkey.userID : uid,
                                 Userkey.name : name,
                                 Userkey.email : email,
-                                Userkey.avatarUrl : imageUrl]
+                                Userkey.avatarUrl : imageUrl,
+                                Userkey.fcmToken : fcm]
                     
                     FirebaseReference(.User).document(uid).setData(data) { (error) in
                         if let error = error {
@@ -120,10 +123,18 @@ struct FBAuth {
                 completion(.failure(emailError!))
             } else {
                 guard let uid = result?.user.uid else {return}
+                updateFCMTOken(uid: uid)
                 completion(.success(uid))
             }
         }
         
+    }
+
+    static func updateFCMTOken(uid : String) {
+        let fcm = Messaging.messaging().fcmToken ?? ""
+        
+        let value = [Userkey.fcmToken : fcm]
+        FirebaseReference(.User).document(uid).setData(value, merge: true)
     }
     
     //MARK: - Edit

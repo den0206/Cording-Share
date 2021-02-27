@@ -27,7 +27,7 @@ final class MessageViewModel : ObservableObject {
     
     @Published var reachLast = false
     @Published var lastDoc : DocumentSnapshot?
-
+    
     @Published var alert = Alert(title: Text("")) {
         didSet {
             showAlert = true
@@ -37,21 +37,21 @@ final class MessageViewModel : ObservableObject {
     @Published var showAlert = false
     @Published var fullScreen = false
     
-
+    
     var unReadMessages = [String]()
     var newChatlistner : ListenerRegistration?
     var statusListner : ListenerRegistration?
     let limit = 10
     
     
-   
- 
+    
+    
     //MARK: - fetch
     
     func loadMessage(chatRoomId : String,currentUser : FBUser, completion : ((Message) -> Void)? = nil) {
         
         guard !reachLast && !loading else {return}
-
+        
         var ref : Query!
         
         if lastDoc == nil {
@@ -101,12 +101,12 @@ final class MessageViewModel : ObservableObject {
                     if completion != nil {
                         completion!(self.messages[3])
                     }
-                   
-                   
+                    
+                    
                     self.messages.insert(contentsOf: moreMessages, at: 0)
                     self.addReadListner(chatRoomId: chatRoomId, currentUser: currentUser,moreMessages: moreMessages)
                     
-                   
+                    
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -115,7 +115,7 @@ final class MessageViewModel : ObservableObject {
                 
                 
             }
-     
+            
         }
         
     }
@@ -125,16 +125,16 @@ final class MessageViewModel : ObservableObject {
         
         if !message.read {
             let value = [MessageKey.read : true]
-        
+            
             users.forEach { (user) in
                 FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(message.id).updateData(value)
             }
-        
+            
         }
         
     }
     
-   
+    
     func addReadListner(chatRoomId : String,currentUser : FBUser,moreMessages : ReversedCollection<[Message]>? = nil) {
         
         if moreMessages == nil {
@@ -152,9 +152,9 @@ final class MessageViewModel : ObservableObject {
         }
         
         guard unReadMessages.count > 0 else {return}
-       
+        
         statusListner = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId).whereField(MessageKey.messageId, in: unReadMessages).addSnapshotListener({ (snapshot, error) in
-
+            
             guard let snapshot = snapshot else {return}
             
             print("unRead \(snapshot.documents.count)")
@@ -173,14 +173,14 @@ final class MessageViewModel : ObservableObject {
                         
                     }
                 default :
-                   return
+                    return
                     
                 }
             }
             
         })
     }
-   
+    
     
     func listenNewChat(chatRoomId : String,currentUser : FBUser) {
         
@@ -193,57 +193,57 @@ final class MessageViewModel : ObservableObject {
         } else {
             ref = FirebaseReference(.Message).document(currentUser.uid).collection(chatRoomId)
         }
+        
+        newChatlistner = ref.addSnapshotListener { (snapshot, error) in
             
-           newChatlistner = ref.addSnapshotListener { (snapshot, error) in
+            if let error = error {
+                self.alert = errorAlert(message: error.localizedDescription)
+                return
+            }
+            
+            guard let snapshot = snapshot else {return}
+            guard !snapshot.isEmpty else { return }
+            
+            snapshot.documentChanges.forEach { (doc) in
+                switch doc.type {
                 
-                if let error = error {
-                    self.alert = errorAlert(message: error.localizedDescription)
-                    return
-                }
-                
-                guard let snapshot = snapshot else {return}
-                guard !snapshot.isEmpty else { return }
-                
-                snapshot.documentChanges.forEach { (doc) in
-                    switch doc.type {
+                case .added:
+                    let message = Message(dic: doc.document.data())
                     
-                    case .added:
-                        let message = Message(dic: doc.document.data())
+                    if !self.messages.contains(message) {
                         
-                        if !self.messages.contains(message) {
-                            
-                            if message.userID != currentUser.uid {
-                                let soundIdRing: SystemSoundID = 1007
-                                AudioServicesPlaySystemSound(soundIdRing)
-                                
-                            }
-                            self.messages.append(message)
-                            self.listenNewChat.toggle()
-
-                        }
-                        
-                    case .modified :
-                        let editedMessage = Message(dic: doc.document.data())
-                        
-                        for i in 0 ..< self.messages.count {
-                            let temp = self.messages[i]
-                            
-                            if editedMessage.id == temp.id {
-                                self.messages[i] = editedMessage
-                                self.messages[i].read = true
-                            }
+                        if message.userID != currentUser.uid {
+                            let soundIdRing: SystemSoundID = 1007
+                            AudioServicesPlaySystemSound(soundIdRing)
                             
                         }
-                    
-                    case .removed :
-                        print("Remove")
-                    default :
-                        print("NO")
+                        self.messages.append(message)
+                        self.listenNewChat.toggle()
+                        
                     }
+                    
+                case .modified :
+                    let editedMessage = Message(dic: doc.document.data())
+                    
+                    for i in 0 ..< self.messages.count {
+                        let temp = self.messages[i]
+                        
+                        if editedMessage.id == temp.id {
+                            self.messages[i] = editedMessage
+                            self.messages[i].read = true
+                        }
+                        
+                    }
+                    
+                case .removed :
+                    print("Remove")
+                default :
+                    print("NO")
                 }
             }
+        }
         
- 
+        
     }
     
     //MARK: - Send
@@ -255,7 +255,7 @@ final class MessageViewModel : ObservableObject {
         
         let messageID = UUID().uuidString
         let users = [currentUser,withUser]
-
+        
         let data = [MessageKey.text : ecrypText,
                     MessageKey.messageId : messageID,
                     MessageKey.chatRoomId : chatRoomId,
@@ -264,18 +264,23 @@ final class MessageViewModel : ObservableObject {
                     MessageKey.read : false,
                     MessageKey.date : Timestamp(date: Date())
         ] as [String : Any]
-
-
+        
+        
         users.forEach { (user) in
             FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
         }
         
         
+        /// Send Notification
+        sendNotification(toToken: withUser.fcmToken, text: text)
+        
         /// last Message
         Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: text, currentUser: currentUser)
-
-        text = ""
+        
     
+        
+        text = ""
+        
     }
     
     func sendCodeMessage(chatRoomId : String,userInfo : UserInfo, withUser : FBUser, completion : @escaping() -> Void) {
@@ -316,7 +321,7 @@ final class MessageViewModel : ObservableObject {
                 }
                 
                 Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: lastMessage, currentUser: currentUser)
-//
+                //
                 
                 /// reset
                 self.codeText = ""
@@ -342,13 +347,13 @@ final class MessageViewModel : ObservableObject {
             if !snapshot.isEmpty {
                 for recent in snapshot.documents {
                     let currentRecent = recent.data()
-
-                    if currentRecent[RecentKey.userId] as? String == currentUser.uid {
-
-                        FirebaseReference(.Recent).document(currentRecent[RecentKey.recentID] as! String).updateData([RecentKey.counter : 0])
                     
+                    if currentRecent[RecentKey.userId] as? String == currentUser.uid {
+                        
+                        FirebaseReference(.Recent).document(currentRecent[RecentKey.recentID] as! String).updateData([RecentKey.counter : 0])
+                        
                     }
-
+                    
                 }
             }
         }
@@ -379,25 +384,25 @@ final class MessageViewModel : ObservableObject {
         guard message.userID == currentUser.uid else {return}
         
         let users = [currentUser,withUser]
-     
+        
         users.forEach { (user) in
             FirebaseReference(.Message).document(user.uid).collection(message.chatRoomId).document(message.id).delete()
         }
-
+        
         if message.type == .code {
             let ref = Storage.storage().reference()
-
+            
             ref.child("sources").child(currentUser.uid).child("\(message.id).txt").delete { (error) in
-
+                
                 if let error = error {
                     self.alert = errorAlert(message: error.localizedDescription)
                     return
                 }
                 
-
-                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                      self.messages.remove(value: message)
-                  }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.messages.remove(value: message)
+                }
             }
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -431,37 +436,73 @@ final class MessageViewModel : ObservableObject {
         messages.removeAll()
     }
     
-//    MARK: - UI
-
+    //    MARK: - UI
+    
     func fullScreenMode(userInfo : UserInfo) {
         
         switch fullScreen {
-
+        
         case true:
             DispatchQueue.main.async {
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
                 UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
                 UINavigationController.attemptRotationToDeviceOrientation()
-
+                
                 withAnimation(.spring()) {
                     userInfo.showTab = true
                 }
-
+                
             }
         case false:
             DispatchQueue.main.async {
                 AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
                 UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
                 UINavigationController.attemptRotationToDeviceOrientation()
-
+                
                 withAnimation(.spring()) {
                     userInfo.showTab = false
                 }
             }
         }
-
+        
         fullScreen.toggle()
     }
     
+    
+    //MARK: - SendNotification
+    
+    private func sendNotification(toToken : String, title : String = "New Message", text : String) {
+        
+        let urlString = "https://fcm.googleapis.com/fcm/send"
+        let url = NSURL(string: urlString)!
+        let paramString : [String : Any] = ["to" : toToken,
+                                             "priority": "high",
+                                             "notification" : ["title" : title, "body" : text,"badge" : 12,"sound": "default"],
+                                             "data" : ["user" : "test_id"]]
+        
+  
+        
+        let request = NSMutableURLRequest(url: url as URL)
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject:paramString, options: [.prettyPrinted])
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("key=\(FCMKey.legacyServerKey)", forHTTPHeaderField: "Authorization")
+        print(paramString)
+    
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            do {
+                if let jsonData = data {
+                    if let jsonDataDict  = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: AnyObject] {
+                        NSLog("Received data:\n\(jsonDataDict))")
+                    }
+                }
+            } catch let err as NSError {
+                self.alert = errorAlert(message: err.debugDescription)
+            }
+        }
+        task.resume()
+        
+    }
 }
 

@@ -83,7 +83,36 @@ final class RecentsViewModel : ObservableObject {
         }
         
     }
+    
+    
+    func getBadgeCount(userInfo : UserInfo, completion : @escaping(Int) -> Void) {
+        
+        var badgeCount : Int = 0
+        
+        FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).getDocuments { (snapshot, error) in
+            
+            guard let snapshot = snapshot else {completion(badgeCount);return}
+            
+            guard !snapshot.isEmpty else {completion(badgeCount);return}
+            
+            snapshot.documents.forEach { (doc) in
+                
+                let data = doc.data()
+                let conter = data[RecentKey.counter] as! Int
+                
+                print(conter)
+                badgeCount += conter
+            }
+            
+            completion(badgeCount)
+        }
+        
+        
+    }
 }
+
+
+
 
 
 
