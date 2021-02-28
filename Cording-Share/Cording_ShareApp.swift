@@ -94,11 +94,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        if let messageID = userInfo["gcm.message_id"] {
-            print("Message ID: \(messageID)")
-        }
         
-        print(userInfo,"Tapped")
+        /// banner 選択時 RecentView 表示
+        NotificationCenter.default.post(name: Notification.Name(FCMKey.receiveNotificatiuon), object: nil, userInfo: userInfo)
         
         completionHandler()
     }

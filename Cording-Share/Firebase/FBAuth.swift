@@ -48,52 +48,74 @@ struct FBAuth {
     
     static func createUser(email : String, name : String,password : String,imageData : Data,completion : @escaping(Result<FBUser, Error>) -> Void) {
         
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+        /// avoid duplicate name
+        FirebaseReference(.User).whereField(Userkey.name, isEqualTo: name).getDocuments { (snapshot, error) in
             
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let _ = result?.user else {
-                completion(.failure(error!))
+            guard let snapshot = snapshot else {
+                completion(.failure(FirestoreError.noDocumentSNapshot))
                 return
             }
             
-            guard let uid = result?.user.uid else {return}
-            
-            let filename =  "Avatars/_" + uid + ".jpeg"
-            
-            saveFileFirestore(data: imageData, fileName: filename) { (result) in
+            /// check exist same name
+            guard snapshot.isEmpty else {
+                completion(.failure(FirestoreError.duplicateName))
+                return
                 
-                switch result {
+            }
+            
+            Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
                 
-                case .success(let imageUrl):
-                    let fcm = Messaging.messaging().fcmToken ?? ""
-                    
-                    let data = [Userkey.userID : uid,
-                                Userkey.name : name,
-                                Userkey.email : email,
-                                Userkey.avatarUrl : imageUrl,
-                                Userkey.fcmToken : fcm]
-                    
-                    FirebaseReference(.User).document(uid).setData(data) { (error) in
-                        if let error = error {
-                            completion(.failure(error))
-                            return
-                        }
-                    }
-                    
-                    guard let user = FBUser(dic: data) else {return}
-                    completion(.success(user))
-                case .failure(let error):
+                if let error = error {
                     completion(.failure(error))
                     return
                 }
+                
+                guard let _ = result?.user else {
+                    completion(.failure(error!))
+                    return
+                }
+                
+                guard let uid = result?.user.uid else {return}
+                
+                let filename =  "Avatars/_" + uid + ".jpeg"
+                
+                saveFileFirestore(data: imageData, fileName: filename) { (result) in
+                    
+                    switch result {
+                    
+                    case .success(let imageUrl):
+                        let fcm = Messaging.messaging().fcmToken ?? ""
+                        
+                        let data = [Userkey.userID : uid,
+                                    Userkey.name : name,
+                                    Userkey.email : email,
+                                    Userkey.avatarUrl : imageUrl,
+                                    Userkey.fcmToken : fcm]
+                        
+                        FirebaseReference(.User).document(uid).setData(data) { (error) in
+                            if let error = error {
+                                completion(.failure(error))
+                                return
+                            }
+                        }
+                        
+                        guard let user = FBUser(dic: data) else {return}
+                        completion(.success(user))
+                    case .failure(let error):
+                        completion(.failure(error))
+                        return
+                    }
+                }
+                
+                
             }
-            
-            
         }
+       
     }
     
     static func loginUser(email : String, password : String, completion :@escaping(Result<String, EmailAuthError>) -> Void) {
@@ -144,44 +166,60 @@ struct FBAuth {
         guard let user = vm.currentUser else {return}
         guard currentUser.uid == user.uid else {return}
         
-        
-        if vm.imageData.count != 0 {
-            let filename =  "Avatars/_" + currentUser.uid + ".jpeg"
+        FirebaseReference(.User).whereField(Userkey.name, isEqualTo: vm.fullname).getDocuments { (snapshot, error) in
             
-            saveFileFirestore(data: vm.imageData, fileName: filename) { (result) in
-                switch result {
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let snapshot = snapshot else {return}
+            guard snapshot.isEmpty else {
+                completion(.failure(FirestoreError.duplicateName))
+                return
+            }
+            
+            if vm.imageData.count != 0 {
+                let filename =  "Avatars/_" + currentUser.uid + ".jpeg"
                 
-                case .success(let imageUrl):
+                saveFileFirestore(data: vm.imageData, fileName: filename) { (result) in
+                    switch result {
                     
-                    FBAuth.updateUser(currentUser: currentUser, vm: vm, imageUrl: imageUrl) { (resultUser) in
+                    case .success(let imageUrl):
                         
-                        switch resultUser {
-                        
-                        case .success(let user):
-                            completion(.success(user))
-                        case .failure(let error):
-                            completion(.failure(error))
+                        FBAuth.updateUser(currentUser: currentUser, vm: vm, imageUrl: imageUrl) { (resultUser) in
+                            
+                            switch resultUser {
+                            
+                            case .success(let user):
+                                completion(.success(user))
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
                         }
+                    case .failure(let error):
+                        completion(.failure(error))
+                        return
                     }
-                case .failure(let error):
-                    completion(.failure(error))
-                    return
                 }
-            }
-        } else {
-            
-            FBAuth.updateUser(currentUser: currentUser, vm: vm, imageUrl: nil) { (resultUser) in
+            } else {
                 
-                switch resultUser {
-                case .success(let user):
-                    completion(.success(user))
-                case .failure(let error):
-                    completion(.failure(error))
+                FBAuth.updateUser(currentUser: currentUser, vm: vm, imageUrl: nil) { (resultUser) in
+                    
+                    switch resultUser {
+                    case .success(let user):
+                        completion(.success(user))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
                 }
+                
             }
-            
+         
+          
         }
-     
+        
+       
         
     }
     

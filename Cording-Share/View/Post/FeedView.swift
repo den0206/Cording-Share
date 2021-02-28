@@ -30,7 +30,7 @@ struct FeedView: View {
                                             vm.fetchPost()
                                         }
                                     }
-                                    .frame( height: geo.size.height + 45)
+                                    .frame( height: geo.size.height + 25)
                             
                             }
                         }
@@ -104,17 +104,17 @@ struct PostCell : View {
                 
                 
                 if isExpand {
-                    
+          
                     ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
                         .frame( height: 200)
                         .disabled(true)
                         .padding()
-                    
+   
 //                    Rectangle()
+//                        .fill(Color.black)
 //                        .frame( height: 200)
+//                        .padding()
 
-                 
-            
                 }
                 
                 Text(post.description)

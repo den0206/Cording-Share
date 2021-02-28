@@ -14,6 +14,7 @@ struct RecentsView: View {
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = RecentsViewModel()
     @State private var firstLoad = true
+    @State private var showSearch = false
     
     var body: some View {
         NavigationView {
@@ -38,6 +39,7 @@ struct RecentsView: View {
                     
                 }
                 .listStyle(PlainListStyle())
+             
                 
                 Spacer()
             }
@@ -57,9 +59,21 @@ struct RecentsView: View {
                 
             })
             
-            
+            //MARK: - Navigation Propery
             .navigationBarTitle(Text("Messages"))
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing:
+                  Button(action: {showSearch = true}) {
+                      Image(systemName: "plus")
+                          .foregroundColor(.primary)
+                  }
+                  .sheet(isPresented: $showSearch) {
+                      /// show Search user
+                      Text("Search")
+                  }
+            )
+
+
         }
     }
 }

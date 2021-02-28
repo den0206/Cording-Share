@@ -117,8 +117,12 @@ struct UserEditView: View {
                                 self.user.currentUser = user
                                 
                             case .failure(let error):
-                                print(error.localizedDescription)
                                 alert = errorAlert(message: error.localizedDescription)
+                                
+                                if error as? FirestoreError == FirestoreError.duplicateName {
+                                    
+                                    user.fullname = user.currentUser?.name ?? ""
+                                }
                             }
                             
                             userInfo.loading = false

@@ -71,6 +71,11 @@ final class MessageViewModel : ObservableObject {
             guard let snapshot = snapshot else {return}
             guard !snapshot.isEmpty else {
                 self.reachLast = true
+                
+                if  self.newChatlistner == nil {
+                    self.listenNewChat(chatRoomId: chatRoomId, currentUser: currentUser)
+                }
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.loading = false
                 }
@@ -266,9 +271,7 @@ final class MessageViewModel : ObservableObject {
         
         /// last Message && Notification
         Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: text, withUser: withUser)
-        
-    
-        
+   
         text = ""
         
     }
@@ -280,8 +283,6 @@ final class MessageViewModel : ObservableObject {
         
         let currentUser = userInfo.user
         let lang = userInfo.mode
-        
-        let lastMessage = "[Code/]"
         
         let messageID = UUID().uuidString
         let users = [currentUser,withUser]
@@ -310,9 +311,10 @@ final class MessageViewModel : ObservableObject {
                     FirebaseReference(.Message).document(user.uid).collection(chatRoomId).document(messageID).setData(data)
                 }
                 
+                let lastMessage = "コードが届きました"
+                
                 //MARK: - Foreground Notification
                 Recent.updateRecentCounter(chatRoomID: chatRoomId, lastMessage: lastMessage, withUser: withUser)
-                //
                 
                 /// reset
                 self.codeText = ""
@@ -330,18 +332,20 @@ final class MessageViewModel : ObservableObject {
     
     
     func clearRecentCounter(chatRoomID : String, currentUser : FBUser) {
+        
+        let value = [RecentKey.counter : 0]
+        
         FirebaseReference(.Recent).whereField(RecentKey.chatRoomId, isEqualTo: chatRoomID).getDocuments { (snapshot, error) in
             
             guard let snapshot = snapshot else {return}
             
-            
             if !snapshot.isEmpty {
                 for recent in snapshot.documents {
-                    let currentRecent = recent.data()
+                    let recent = Recent(dic: recent.data())
                     
-                    if currentRecent[RecentKey.userId] as? String == currentUser.uid {
-                        
-                        FirebaseReference(.Recent).document(currentRecent[RecentKey.recentID] as! String).updateData([RecentKey.counter : 0])
+                    if recent.userId == currentUser.uid {
+                  
+                        FirebaseReference(.Recent).document(recent.id).updateData(value)
                         
                     }
                     
@@ -461,6 +465,6 @@ final class MessageViewModel : ObservableObject {
     }
     
     
-  
+    
 }
 

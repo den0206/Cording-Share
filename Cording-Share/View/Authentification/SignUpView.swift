@@ -139,6 +139,7 @@ struct SignUpView: View {
             switch result {
 
             case .success(let user):
+                presentationMode.wrappedValue.dismiss()
                 self.userInfo.user = user
                 self.userInfo.isUserauthenticated = .signIn
             case .failure(let error):
@@ -146,7 +147,7 @@ struct SignUpView: View {
                 showAlert = true
             }
             
-            presentationMode.wrappedValue.dismiss()
+          
             isLoading = false
             
         }

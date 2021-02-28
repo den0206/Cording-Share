@@ -19,7 +19,6 @@ struct MainTabView: View {
                     FeedView()
                 case 1 :
                     AddPostView()
-
                 case 2 :
                     RecentsView()
                 case 3 :
@@ -39,6 +38,11 @@ struct MainTabView: View {
         .Loading(isShowing: $userInfo.loading)
         .showHUD(isShowing: $userInfo.showHUD)
         .edgesIgnoringSafeArea(.all)
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name(FCMKey.receiveNotificatiuon))) { (notification) in
+            
+            userInfo.tabIndex = 2
+            userInfo.MSGPushNav = false
+        }
     }
 }
 

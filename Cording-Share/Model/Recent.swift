@@ -69,7 +69,7 @@ struct Recent : Identifiable{
             }
             
             for userId in tempMembers {
-                Recent.createRecentTofireStore(userId: userId, currentUID: currentUID, chatRoomId: chatRoomId, users: users)
+                createRecentTofireStore(userId: userId, currentUID: currentUID, chatRoomId: chatRoomId, users: users)
             }
             
             completion(chatRoomId)
@@ -111,8 +111,7 @@ struct Recent : Identifiable{
             guard !snapshot.isEmpty else {return}
         
             snapshot.documents.forEach { (doc) in
-                
-                let recent = doc.data()
+                let recent = Recent(dic: doc.data())
                 
                 updateRecentToFireStore(recent: recent, withUser: withUser, lastMessage: lastMessage,isDelete: isDelete)
                 
@@ -120,53 +119,55 @@ struct Recent : Identifiable{
             
         }
     }
-   
-}
-
-fileprivate func updateRecentToFireStore(recent : Dictionary<String, Any>, withUser : FBUser,lastMessage : String, isDelete : Bool) {
     
-    let date = Timestamp(date: Date())
-    var counter = recent[RecentKey.counter] as! Int
-    
-    let uid = recent[RecentKey.userId] as! String
-    
-    // except currentUser Counter
-    if uid == withUser.uid {
-        if !isDelete {
-            counter += 1
-        } else {
-            counter -= 1
-             if counter < 0 {
-                counter = 0
-            }
-        }
-    }
-    
-    let values = [RecentKey.lastMessage : lastMessage,
-                  RecentKey.counter: counter,
-                  RecentKey.date : date] as [String : Any]
-    
-    FirebaseReference(.Recent).document(recent[RecentKey.recentID] as! String).updateData(values) { (error) in
+    static func updateRecentToFireStore(recent : Recent, withUser : FBUser,lastMessage : String, isDelete : Bool) {
         
-        if let error = error {
-            print(error.localizedDescription)
-            return
-        }
+        let date = Timestamp(date: Date())
+        var counter = recent.counter
         
-        guard !isDelete else {return}
+        let uid = recent.userId
         
+        // except currentUser Counter
         if uid == withUser.uid {
-            /// send Notification
+            if !isDelete {
+                counter += 1
+            } else {
+                counter -= 1
+                 if counter < 0 {
+                    counter = 0
+                }
+            }
+        }
+        
+        let values = [RecentKey.lastMessage : lastMessage,
+                      RecentKey.counter: counter,
+                      RecentKey.date : date] as [String : Any]
+        
+        FirebaseReference(.Recent).document(recent.id).updateData(values) { (error) in
             
-            print("Send Notification")
-            FBNotification.getBadgeCount(user: withUser) { (badge) in
-                
-                FBNotification.sendNotification(toToken: withUser.fcmToken, text: lastMessage, badgCount: badge)
+            if let error = error {
+                print(error.localizedDescription)
+                return
             }
             
+            guard !isDelete else {return}
             
+            if uid == withUser.uid {
+                /// send Notification
+                
+                print("Send Notification")
+                FBNotification.getBadgeCount(user: withUser) { (badge) in
+                    
+                    FBNotification.sendNotification(toToken: withUser.fcmToken, text: lastMessage, badgCount: badge)
+                    
+                    /// remake recent
+                    
+                }
+                
+                
+            }
         }
     }
-}
 
+}
 
