@@ -69,7 +69,7 @@ struct RecentsView: View {
                   }
                   .sheet(isPresented: $showSearch) {
                       /// show Search user
-                      Text("Search")
+                    SearchUserView().environmentObject(userInfo)
                   }
             )
 

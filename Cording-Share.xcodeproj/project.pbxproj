@@ -23,6 +23,7 @@
 		3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED63259C37B5009E990E /* AddPostView.swift */; };
 		3A77699225A208CE004CC715 /* FBPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77699125A208CE004CC715 /* FBPost.swift */; };
 		3A96DEBC25B3F34B006293FF /* Reachbility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A96DEBB25B3F34B006293FF /* Reachbility.swift */; };
+		3A9CA7AB25EBC78200DCDD7F /* SearchUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9CA7AA25EBC78200DCDD7F /* SearchUserView.swift */; };
 		3AA5025E25D783E400CEB4C2 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */; };
 		3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5026025D796A300CEB4C2 /* MainSideView.swift */; };
 		3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5292C25A9403400CA332B /* PostDetailview.swift */; };
@@ -44,6 +45,7 @@
 		3AC4451E25B29C23003822A3 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC4451D25B29C23003822A3 /* MessageView.swift */; };
 		3AC57C5025B5514000775C22 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC57C4F25B5514000775C22 /* MessageViewModel.swift */; };
 		3AC693D025BBF203000994E6 /* MessageCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC693CF25BBF203000994E6 /* MessageCodeView.swift */; };
+		3AC6F15125EE804300729D92 /* SearchUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */; };
 		3ACB27C125D9050000C4F405 /* CordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB27C025D9050000C4F405 /* CordingView.swift */; };
 		3ACB27C325D9097B00C4F405 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB27C225D9097B00C4F405 /* SettingsView.swift */; };
 		3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */; };
@@ -93,6 +95,7 @@
 		3A75ED63259C37B5009E990E /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		3A77699125A208CE004CC715 /* FBPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBPost.swift; sourceTree = "<group>"; };
 		3A96DEBB25B3F34B006293FF /* Reachbility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachbility.swift; sourceTree = "<group>"; };
+		3A9CA7AA25EBC78200DCDD7F /* SearchUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserView.swift; sourceTree = "<group>"; };
 		3AA5025D25D783E400CEB4C2 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		3AA5025F25D7891400CEB4C2 /* Cording-ShareRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cording-ShareRelease.entitlements"; sourceTree = "<group>"; };
 		3AA5026025D796A300CEB4C2 /* MainSideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSideView.swift; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		3AC4451D25B29C23003822A3 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		3AC57C4F25B5514000775C22 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		3AC693CF25BBF203000994E6 /* MessageCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCodeView.swift; sourceTree = "<group>"; };
+		3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserViewModel.swift; sourceTree = "<group>"; };
 		3ACB27C025D9050000C4F405 /* CordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CordingView.swift; sourceTree = "<group>"; };
 		3ACB27C225D9097B00C4F405 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 				3AC316E525B2C8AB00ADD668 /* UserProfileViewModel.swift */,
 				3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */,
 				3AC57C4F25B5514000775C22 /* MessageViewModel.swift */,
+				3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				3ABA761325B28A5000B7C42A /* RecentsView.swift */,
+				3A9CA7AA25EBC78200DCDD7F /* SearchUserView.swift */,
 				3AC4451D25B29C23003822A3 /* MessageView.swift */,
 				3AC693CF25BBF203000994E6 /* MessageCodeView.swift */,
 			);
@@ -470,6 +476,7 @@
 				3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */,
 				3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
+				3A9CA7AB25EBC78200DCDD7F /* SearchUserView.swift in Sources */,
 				3AF4810F25B5675600B3A872 /* Message.swift in Sources */,
 				3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */,
 				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
@@ -481,6 +488,7 @@
 				3AC57C5025B5514000775C22 /* MessageViewModel.swift in Sources */,
 				3ABC30F2259C4B8D0063D1D8 /* LoginView.swift in Sources */,
 				3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */,
+				3AC6F15125EE804300729D92 /* SearchUserViewModel.swift in Sources */,
 				3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */,
 				3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */,
 				3AC0D10825A49FF700B84475 /* Post.swift in Sources */,
