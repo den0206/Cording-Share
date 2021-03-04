@@ -45,7 +45,6 @@ struct UserProfileView: View {
                                         
                                     }
                                     
-                                    
                                     Spacer()
                                 }
                                 Spacer()
@@ -70,10 +69,14 @@ struct UserProfileView: View {
                     .offset(y: -100)
                     .padding(.bottom, -110)
                     
-                    VStack {
+                    VStack(spacing : 4) {
                         Text(vm.user!.name)
                             .bold()
                             .font(.title)
+                        
+                        Text("Search ID")
+                        
+                        Text(vm.user.searchId == "" ? "No SearchID" : vm.user.searchId)
                         
                     }
                     .padding()
@@ -172,7 +175,7 @@ struct UserProfileView_Previews: PreviewProvider {
     
     
     static var previews: some View {
-        UserProfileView(vm: UserProfileViewModel(user: FBUser(uid: "", name: "", email: "", fcmToken: "")))
+        UserProfileView(vm: UserProfileViewModel(user: FBUser(uid: "", name: "", email: "", fcmToken: "", searchId: "")))
     }
 }
 

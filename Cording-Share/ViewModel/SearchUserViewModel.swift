@@ -23,7 +23,7 @@ final class SearchUserViewModel : ObservableObject {
         
         guard seachText != "" else {return}
         
-        FBAuth.srachUserFromName(name: seachText) { (result) in
+        FBAuth.searchUserFromName(name: seachText) { (result) in
             
             self.searchedUser = nil
             
@@ -39,6 +39,29 @@ final class SearchUserViewModel : ObservableObject {
             self.seachText = ""
         }
         
+        
+    }
+    
+    func startPrivateChat(userInfo : UserInfo,completion : @escaping() -> Void) {
+        
+        guard let searchedUser = searchedUser else {return}
+        guard !searchedUser.isCurrentUser else {return}
+        
+        let currentUID = userInfo.user.uid
+        let user2Id = searchedUser.uid
+        
+        Recent.createPrivateChat(currentUID: currentUID, user2ID: user2Id,users: [userInfo.user, searchedUser]) { (chatRoomId) in
+            
+            completion()
+            
+            userInfo.chatRoomId = chatRoomId
+            userInfo.withUser = searchedUser
+            userInfo.tabIndex = 2
+            userInfo.MSGPushNav = true
+            
+            
+
+        }
         
     }
     

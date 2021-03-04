@@ -11,13 +11,20 @@ import SDWebImageSwiftUI
 struct SearchUserView: View {
     
     @EnvironmentObject var userInfo : UserInfo
+    @Environment(\.presentationMode) var presentationMode
     @StateObject var vm = SearchUserViewModel()
     
     var body: some View {
         VStack {
-            
-            SearchField(searchText: $vm.seachText, action: {vm.searchUser()})
-                .padding(.vertical, 8)
+            HStack {
+                
+                Button(action: {presentationMode.wrappedValue.dismiss()}, label: {Image(systemName: "xmark")})
+                    .padding(.leading)
+                
+                SearchField(searchText: $vm.seachText, action: {vm.searchUser()})
+                    .padding(.vertical, 8)
+            }
+           
             
             Divider()
             
@@ -25,7 +32,7 @@ struct SearchUserView: View {
             if vm.searchedUser == nil {
                 Text("No User")
             } else {
-                DetailUserView(user: vm.searchedUser!)
+                DetailUserView(user: vm.searchedUser!, messageAction: messageAction,followAction: followAction)
             }
             
             Spacer()
@@ -35,6 +42,19 @@ struct SearchUserView: View {
         .alert(isPresented: $vm.showAlert) {
             vm.alert
         }
+    }
+    
+    
+    //MARK: - messageAction
+    
+    private func messageAction() {
+        vm.startPrivateChat(userInfo: userInfo) {
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    private func followAction() {
+        print("Follow")
     }
 }
 
@@ -102,6 +122,9 @@ struct SearchField : View {
 struct DetailUserView : View {
     
     let user : FBUser
+
+    var messageAction : (() -> Void?)? = nil
+    var followAction : (() -> Void?)? = nil
     
     var body: some View {
         
@@ -130,17 +153,15 @@ struct DetailUserView : View {
         .padding(.top,20)
         
         if user.isCurrentUser {
-            NavigationLink(destination: UserEditView()) {
-                Text("EditProfile")
-                    .frame(width: 240, height: 40)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-            }
+            Text("このユーザーはあなたです。")
             
         } else {
             HStack {
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Button(action: {
+                    if followAction != nil {
+                        followAction!()
+                    }
+                }, label: {
                     Text("Follow")
                         .frame(width: 150, height: 40)
                         .background(Color.blue)
@@ -149,8 +170,9 @@ struct DetailUserView : View {
                 .cornerRadius(20)
                 
                 Button(action: {
-                    
-                    print("Message")
+                    if messageAction != nil {
+                        messageAction!()
+                    }
                     
                 }, label: {
                     Text("Message")

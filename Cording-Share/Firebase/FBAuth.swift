@@ -8,6 +8,7 @@
 
 import FirebaseAuth
 import FirebaseMessaging
+import Firebase
 
 struct FBAuth {
     
@@ -44,7 +45,7 @@ struct FBAuth {
         
     }
     
-    static func srachUserFromName(name : String, completion : @escaping(Result<FBUser, Error>) -> Void) {
+    static func searchUserFromName(name : String, completion : @escaping(Result<FBUser, Error>) -> Void) {
         
         let ref = FirebaseReference(.User).whereField(Userkey.name, isEqualTo: name)
         
@@ -78,7 +79,7 @@ struct FBAuth {
     
     //MARK: - Create
     
-    static func createUser(email : String, name : String,password : String,imageData : Data,completion : @escaping(Result<FBUser, Error>) -> Void) {
+    static func createUser(email : String, name : String,searchId : String, password : String,imageData : Data,completion : @escaping(Result<FBUser, Error>) -> Void) {
         
         /// avoid duplicate name
         FirebaseReference(.User).whereField(Userkey.name, isEqualTo: name).getDocuments { (snapshot, error) in
@@ -127,6 +128,7 @@ struct FBAuth {
                                     Userkey.name : name,
                                     Userkey.email : email,
                                     Userkey.avatarUrl : imageUrl,
+                                    Userkey.searchID : searchId,
                                     Userkey.fcmToken : fcm]
                         
                         FirebaseReference(.User).document(uid).setData(data) { (error) in
@@ -285,13 +287,24 @@ struct FBAuth {
         }
         
     }
-    static func logOut(completion : @escaping(Result<Bool, Error>) -> Void) {
+    static func logOut(userInfo :UserInfo, completion : @escaping(Result<Bool, Error>) -> Void) {
         
-        do {
-            try Auth.auth().signOut()
-            completion(.success(true))
-        } catch let error {
-            completion(.failure(error))
+        let currentUser = userInfo.user
+        let value = [Userkey.fcmToken : FieldValue.delete()]
+        
+        FirebaseReference(.User).document(currentUser.uid).updateData(value) { (error) in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            do {
+                try Auth.auth().signOut()
+                completion(.success(true))
+            } catch let error {
+                completion(.failure(error))
+            }
         }
     }
     

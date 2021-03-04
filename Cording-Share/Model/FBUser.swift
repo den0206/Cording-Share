@@ -14,6 +14,7 @@ struct FBUser {
     var name : String
     var email : String
     var fcmToken : String
+    let searchId : String
     var avaterUrl : URL?
    
     
@@ -22,11 +23,12 @@ struct FBUser {
         return Auth.auth().currentUser?.uid == uid
     }
     
-    init(uid : String, name : String, email : String,fcmToken : String) {
+    init(uid : String, name : String, email : String,fcmToken : String,searchId : String) {
         self.uid = uid
         self.name = name
         self.email = email
         self.fcmToken = fcmToken
+        self.searchId = searchId
     }
     
     init?(dic : [String : Any]) {
@@ -35,8 +37,9 @@ struct FBUser {
         let name = dic[Userkey.name] as? String ?? ""
         let email = dic[Userkey.email] as? String ?? ""
         let fcmToken = dic[Userkey.fcmToken] as? String ?? ""
+        let searchId = dic[Userkey.searchID] as? String ?? ""
         
-        self.init(uid: uid, name: name, email: email,fcmToken : fcmToken)
+        self.init(uid: uid, name: name, email: email,fcmToken : fcmToken,searchId : searchId)
         
         if let urlString = dic[Userkey.avatarUrl] as? String  {
             

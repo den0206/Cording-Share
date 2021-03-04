@@ -161,12 +161,13 @@ struct UserEditView: View {
     
     private func logOut() {
         
-        FBAuth.logOut { (result) in
+        
+        FBAuth.logOut(userInfo : userInfo) { (result) in
             switch result {
             
             case .success(let bool):
                 print("Success, \(bool)")
-                self.userInfo.user = FBUser(uid: "", name: "", email: "", fcmToken: "")
+                self.userInfo.user = FBUser(uid: "", name: "", email: "", fcmToken: "", searchId: "")
                 self.userInfo.isUserauthenticated = .signOut
             case .failure(let error):
                 
@@ -193,31 +194,3 @@ struct UserEditView_Previews: PreviewProvider {
     }
 }
 
-//NavigationView {
-//
-//    Form {
-//        Section {
-//
-//            Picker(selection: $userInfo.modeIndex, label: Text("Lang"), content: {
-//                ForEach(0 ..< userInfo.modes.count ) { i in
-//                    Text("\(userInfo.modes[i].rawValue)")
-//                }
-//            })
-//
-//
-//            Picker(selection: $userInfo.fontSize, label: Text("Font Size"), content: {
-//                ForEach(4 ..< 25, id : \.self) { i in
-//                    Text("\(i)")
-//                }
-//            })
-//
-//            Picker(selection: $userInfo.themeIndex, label: Text("Code Theme"), content: {
-//                ForEach(0 ..< userInfo.themes.count ) { i in
-//                    Text("\(userInfo.themes[i].rawValue)")
-//
-//                }
-//            })
-//
-//        }
-//    }
-//}

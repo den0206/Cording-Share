@@ -42,6 +42,8 @@ struct FBNotification {
     
     static func sendNotification(toToken : String, title : String = "New Message", text : String,badgCount : Int) {
         
+        guard toToken != "" else {print("No Token"); return}
+        
         let urlString = "https://fcm.googleapis.com/fcm/send"
         let url = NSURL(string: urlString)!
         let paramString : [String : Any] = ["to" : toToken,

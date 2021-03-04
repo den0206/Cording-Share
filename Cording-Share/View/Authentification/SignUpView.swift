@@ -78,6 +78,12 @@ struct SignUpView: View {
                     
                     ValitationText(text: user.validEmailText, confirm: !user.validEmailText.isEmpty)
                     
+                    VStack {
+                        CustomTextField(text: $user.searchID, placeholder: "SearchID", imageName: "magnifyingglass")
+                        
+                        ValitationText(text: user.validSearchText, confirm: !user.validSearchText.isEmpty)
+                    }
+                 
                     
                     CustomTextField(text: $user.password, placeholder: "Password", imageName: "lock",isSecure: true)
                     
@@ -90,7 +96,7 @@ struct SignUpView: View {
                     
                     ValitationText(text: user.validConfirmPasswordText,confirm: !user.passwordMatch(_confirmPass: user.confirmPassword) )
                     
-                    
+
                     CustomButton(title: "Register", disable: user.isSignupComplete, backColor: .green, action: {registerUser()})
                         .padding()
                         .alert(isPresented: $showAlert, content: {
@@ -134,7 +140,7 @@ struct SignUpView: View {
        
         isLoading = true
         
-        FBAuth.createUser(email: user.email, name: user.fullname, password: user.password, imageData: user.imageData) { (result) in
+        FBAuth.createUser(email: user.email, name: user.fullname, searchId: user.searchID, password: user.password, imageData: user.imageData) { (result) in
 
             switch result {
 

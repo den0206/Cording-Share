@@ -14,6 +14,8 @@ struct AuthUserViewModel {
     var fullname = ""
     var password = ""
     var confirmPassword = ""
+    
+    var searchID = ""
     var imageData : Data = .init(count: 0)
     
     var currentUser : FBUser?
@@ -30,13 +32,13 @@ struct AuthUserViewModel {
         
         
         if testMode {
-            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || isEmpty(_field: password){
+            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || isEmpty(_field: password) || isEmpty(_field: searchID) || !isSearchValid(_searchId: searchID){
                 return false
             }
             
             return true
         } else {
-            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || !isPasswordValid(_password: password) {
+            if !selectedImage() || !isEmalValid(_email: email) || isEmpty(_field: fullname) || !passwordMatch(_confirmPass: confirmPassword) || !isPasswordValid(_password: password) || isEmpty(_field: searchID) || !isSearchValid(_searchId: searchID){
                 return false
             }
             
@@ -75,12 +77,22 @@ struct AuthUserViewModel {
     
     
     func isEmalValid(_email : String) -> Bool {
-        let emailRegex = "[A-Z0-9a-z._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        
+//        let emailRegex = "[A-Z0-9a-z._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        
+        let emailRegex = "^([A-Z0-9a-z._+-])+@([A-Za-z0-9.-])+\\.([A-Za-z]{2,})$"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
         return emailTest.evaluate(with: email)
         
     }
     
+    func isSearchValid(_searchId : String) -> Bool {
+        let searchIdRegEx = "[A-Za-z]{4,8}?"
+        let searchIdTest = NSPredicate(format: "SELF MATCHES %@", searchIdRegEx)
+
+        return searchIdTest.evaluate(with: searchID)
+    }
+
     func isPasswordValid(_password : String) -> Bool {
         let passwordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
         let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
@@ -113,6 +125,14 @@ struct AuthUserViewModel {
             return ""
         } else {
             return "Emailの書式を入力してください"
+        }
+    }
+    
+    var validSearchText : String {
+        if isSearchValid(_searchId: searchID) {
+            return ""
+        } else {
+            return "4文字以上,8文字以内,英数字を含めてください"
         }
     }
     
