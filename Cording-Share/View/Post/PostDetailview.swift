@@ -127,8 +127,6 @@ struct PostDetailview: View {
                           
                         }
                         
-                       
-                        
                         Spacer()
 
                     }

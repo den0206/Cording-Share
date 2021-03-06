@@ -9,8 +9,7 @@ import SwiftUI
 
 final class UserProfileViewModel : ObservableObject {
     
-    var user : FBUser!
-    
+    @Published var user : FBUser!
     @Published var buttonEnable = false
     
     init(user : FBUser?) {
@@ -31,7 +30,7 @@ final class UserProfileViewModel : ObservableObject {
           
             self.user?.isFriend = isFriend
             
-            withAnimation(.easeInOut(duration: 1.0)) {
+            withAnimation(.easeInOut(duration: 0.7)) {
                 self.buttonEnable = true
             }
            
@@ -42,6 +41,7 @@ final class UserProfileViewModel : ObservableObject {
         guard !user.isCurrentUser else {return}
         guard let withUser = user else {return}
         
+        print("Csllllllll")
         let currentUser = userInfo.user
         
         switch withUser.isFriend {
@@ -53,6 +53,7 @@ final class UserProfileViewModel : ObservableObject {
                 }
         
                 self.user.isFriend = true
+                
             }
         case true :
             FBfriend.removeFriend(currentUser: currentUser, withUser: withUser) { (error) in

@@ -22,23 +22,43 @@ struct RecentsView: View {
             VStack {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
                 
-                List(vm.recents) { recent in
-                    
-                    Button(action: {
-                        userInfo.chatRoomId = recent.chatRoomId
-                        userInfo.withUser = recent.withUser
-                        userInfo.MSGPushNav = true
-                        
-                        /// update badgeCount
-                        vm.updateBadgCunt(recent: recent)
-                        
-                    }) {
-                        RecentCell(recent:recent)
-                        
+//                if vm.status != .plane {
+//                    Spacer()
+//
+//                    HStack {
+//                        Text(vm.status.errorMessage ?? "UnKnown Error")
+//                            .padding()
+//
+//                        if vm.status == .noInternet {
+//                            RetryButton(action: {
+//                                vm.fetchRecents(userInfo: userInfo)
+//
+//                            })
+//                        }
+//                    }
+//
+//                } else {
+                    List {
+                        ForEach(vm.recents) { recent in
+                            
+                            Button(action: {
+                                userInfo.chatRoomId = recent.chatRoomId
+                                userInfo.withUser = recent.withUser
+                                userInfo.MSGPushNav = true
+                                
+                                /// update badgeCount
+                                vm.updateBadgCunt(recent: recent)
+                                
+                            }) {
+                                RecentCell(recent:recent)
+                                
+                            }
+                            
+                        }
+                        .onDelete(perform: vm.deleteRecents(at:))
                     }
-                    
-                }
-                .listStyle(PlainListStyle())
+                    .listStyle(PlainListStyle())
+//                }
                 
                 
                 Spacer()
@@ -54,7 +74,7 @@ struct RecentsView: View {
                     FBNotification.getBadgeCount(user: userInfo.user) { (badge) in
                         UIApplication.shared.applicationIconBadgeNumber = badge
                     }
-                    
+
                     
                 }
                 

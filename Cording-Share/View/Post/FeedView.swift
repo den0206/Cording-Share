@@ -20,8 +20,7 @@ struct FeedView: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(vm.posts)  { post in
-                            
-                         
+                    
                             NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
                                 
                                 PostCell(post: post)
@@ -30,7 +29,7 @@ struct FeedView: View {
                                             vm.fetchPost()
                                         }
                                     }
-                                    .frame( height: geo.size.height + 25)
+                                    .frame( height: geo.size.height + 45)
                             
                             }
                         }
@@ -105,15 +104,15 @@ struct PostCell : View {
                 
                 if isExpand {
           
-                    ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
-                        .frame( height: 200)
-                        .disabled(true)
-                        .padding()
-   
-//                    Rectangle()
-//                        .fill(Color.black)
+//                    ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
 //                        .frame( height: 200)
+//                        .disabled(true)
 //                        .padding()
+//
+                    Rectangle()
+                        .fill(Color.black)
+                        .frame( height: 200)
+                        .padding()
 
                 }
                 

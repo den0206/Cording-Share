@@ -22,12 +22,16 @@ struct FBNotification {
      
         query.getDocuments { (snapshot, error) in
             
-            guard let snapshot = snapshot else {completion(badgeCount);return}
+            guard let snapshot = snapshot else {
+                completion(badgeCount)
+                return}
             
             guard !snapshot.isEmpty else {
                 print("Counter is 0")
-                completion(badgeCount);
-                return}
+                completion(badgeCount)
+                return
+                
+            }
 
             snapshot.documents.forEach { (doc) in
                 

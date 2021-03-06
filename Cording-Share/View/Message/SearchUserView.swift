@@ -24,6 +24,7 @@ struct SearchUserView: View {
                 SearchField(searchText: $vm.seachText, action: {vm.searchUser(userInfo: userInfo)})
                     .padding(.vertical, 8)
             }
+            .padding(.top, 7)
            
             
             Divider()
@@ -112,6 +113,7 @@ struct SearchField : View {
                         .foregroundColor(.primary)
                 }
                 .disabled(searchText == "" ? true : false)
+                .opacity(searchText == "" ? 0.3 : 1)
                 .padding(.trailing,24)
                 .padding(.leading,0)
                 .transition(.move(edge: .trailing))

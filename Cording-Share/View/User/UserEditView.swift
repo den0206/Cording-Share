@@ -170,8 +170,8 @@ struct UserEditView: View {
                 self.userInfo.user = FBUser(uid: "", name: "", email: "", fcmToken: "", searchId: "")
                 self.userInfo.isUserauthenticated = .signOut
             case .failure(let error):
-                
-                print(error.localizedDescription)
+                print("Error")
+                self.alert = errorAlert(message: error.localizedDescription)
             }
         }
         

@@ -11,6 +11,7 @@ import FirebaseFirestore
 final class RecentsViewModel : ObservableObject {
     
     @Published var recents = [Recent]()
+    @Published var status : Status = .plane
     
     @Published var showALert = false
     @Published var errorMessage = "" {
@@ -21,13 +22,13 @@ final class RecentsViewModel : ObservableObject {
     
     
     func fetchRecents(userInfo : UserInfo) {
-        
+
         guard Reachabilty.HasConnection() else {
-            self.errorMessage = NetworkError.disConnect.localizedDescription
+            self.status = .noInternet
             return
-            
+
         }
-        
+
         FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
@@ -37,7 +38,7 @@ final class RecentsViewModel : ObservableObject {
             
             guard let snapshot = snapshot else {return}
             guard !snapshot.isEmpty else {
-                self.errorMessage = "No Recents"
+                self.status = .empty(.Recent)
                 return
                 
             }
@@ -59,6 +60,8 @@ final class RecentsViewModel : ObservableObject {
             
                             self.recents.append(recent)
                             self.recents.sort {$0.date.dateValue() > $1.date.dateValue()}
+                            
+                            self.status = .plane
                         case .failure(let error):
                             self.errorMessage = error.localizedDescription
                         }
@@ -98,6 +101,14 @@ final class RecentsViewModel : ObservableObject {
         if UIApplication.shared.applicationIconBadgeNumber < 0 {
             UIApplication.shared.applicationIconBadgeNumber = 0
         }
+    }
+    
+    func deleteRecents(at offsets : IndexSet) {
+        self.recents.remove(atOffsets: offsets)
+        let index = offsets[offsets.startIndex]
+        print(index)
+        
+        //MARK: - Delete recents from firestore
     }
 }
 

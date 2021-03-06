@@ -6,17 +6,30 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+
 
 final class FriendsViewModel : ObservableObject {
     
     
     @Published var friends = [FBUser]()
+    @Published var status : Status = .plane
+    
     @Published var showAlert = false
     @Published var alert = Alert(title: Text("")) {
         didSet {
             showAlert = true
         }
     }
+    
+    @Published var pushNav = false
+    @Published var selectedFriend : FBUser? {
+        didSet {
+            pushNav = true
+        }
+    }
+    
+  
     
     var user : FBUser
     
@@ -25,11 +38,15 @@ final class FriendsViewModel : ObservableObject {
         self.user = user
     }
     
-   
+    
     func fetchFriends() {
         
         guard user.isCurrentUser else {return}
         
+        guard Reachabilty.HasConnection() else {
+            status = .noInternet
+            return
+        }
         
         FirebaseReference(.User).document(user.uid).collection(FriendKey.friends).getDocuments { (snapshot, error) in
             
@@ -45,13 +62,46 @@ final class FriendsViewModel : ObservableObject {
             }
             
             guard !snapshot.isEmpty else {
-                self.alert = errorAlert(message: FirestoreError.noFriends.localizedDescription)
+                self.status = .empty(.Friend)
                 return
             }
             
-            self.friends = snapshot.documents.map({FBUser(dic: $0.data())!})
-            print(self.friends.count)
+            snapshot.documents.forEach { (doc) in
+                let data = doc.data()
+                let uid = data[FriendKey.userID] as? String ?? ""
+                
+                FBAuth.fecthFBUser(uid: uid) { (result) in
+                    switch result {
+                    
+                    case .success(let user):
+                        self.friends.append(user)
+                    case .failure(let error):
+                        self.alert = errorAlert(message: error.localizedDescription)
+                    }
+                    
+                    self.status = .plane
+                }
+            }
+            
+            
         }
+    }
+    
+    func deleteFriend(offsets : IndexSet) {
+        
+        guard user.isCurrentUser else {return}
+        let index = offsets[offsets.startIndex]
+        
+        let withUser = self.friends[index]
+        FBfriend.removeFriend(currentUser: user, withUser: withUser) { (error) in
+            
+            if let error = error {
+                self.alert = errorAlert(message: error.localizedDescription)
+            }
+            
+            self.friends.remove(atOffsets: offsets)
+        }
+        
     }
     
     
