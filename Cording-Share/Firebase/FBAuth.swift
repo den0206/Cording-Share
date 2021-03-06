@@ -47,6 +47,10 @@ struct FBAuth {
     
     static func searchUserFromName(name : String, completion : @escaping(Result<FBUser, Error>) -> Void) {
         
+        guard Reachabilty.HasConnection() else {completion(.failure(NetworkError.disConnect))
+            return
+        }
+        
         let ref = FirebaseReference(.User).whereField(Userkey.name, isEqualTo: name)
         
         ref.getDocuments { (snapshot, error) in
@@ -307,9 +311,7 @@ struct FBAuth {
             }
         }
     }
-    
-
-    
+ 
 }
 
 

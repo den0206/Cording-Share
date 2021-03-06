@@ -5,18 +5,73 @@
 //  Created by 酒井ゆうき on 2021/01/16.
 //
 
-import Combine
+import SwiftUI
 
 final class UserProfileViewModel : ObservableObject {
     
-    let user : FBUser!
+    var user : FBUser!
+    
+    @Published var buttonEnable = false
     
     init(user : FBUser?) {
         self.user = user
+        
+    }
+    
+    //MARK: - Friend
+    
+    func checkFriend(userInfo : UserInfo) {
+       
+        guard !user.isCurrentUser else {return}
+        guard let withUser = user else {return}
+
+        let currentUser = userInfo.user
+        
+        FBfriend.checkFriend(currentUser: currentUser, withUser: withUser) { (isFriend) in
+          
+            self.user?.isFriend = isFriend
+            
+            withAnimation(.easeInOut(duration: 1.0)) {
+                self.buttonEnable = true
+            }
+           
+        }
+    }
+    
+    func addfriend(userInfo : UserInfo) {
+        guard !user.isCurrentUser else {return}
+        guard let withUser = user else {return}
+        
+        let currentUser = userInfo.user
+        
+        switch withUser.isFriend {
+        case false :
+            FBfriend.addFriend(currentUser: currentUser, withUser: withUser) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+        
+                self.user.isFriend = true
+            }
+        case true :
+            FBfriend.removeFriend(currentUser: currentUser, withUser: withUser) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                
+     
+                self.user.isFriend = false
+            }
+       
+        }
+        
+        
     }
     
     
-    //MARK: - func
+    //MARK: - Message
     
     func startPrivateChat(userInfo : UserInfo) {
         guard !user.isCurrentUser else {return}

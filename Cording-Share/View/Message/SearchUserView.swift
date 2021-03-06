@@ -21,7 +21,7 @@ struct SearchUserView: View {
                 Button(action: {presentationMode.wrappedValue.dismiss()}, label: {Image(systemName: "xmark")})
                     .padding(.leading)
                 
-                SearchField(searchText: $vm.seachText, action: {vm.searchUser()})
+                SearchField(searchText: $vm.seachText, action: {vm.searchUser(userInfo: userInfo)})
                     .padding(.vertical, 8)
             }
            
@@ -29,10 +29,11 @@ struct SearchUserView: View {
             Divider()
             
             Spacer()
+            
             if vm.searchedUser == nil {
                 Text("No User")
             } else {
-                DetailUserView(user: vm.searchedUser!, messageAction: messageAction,followAction: followAction)
+                DetailUserView(user: $vm.searchedUser, buttonEnable: $vm.buttonEnable,messageAction: messageAction,followAction: followAction)
             }
             
             Spacer()
@@ -42,6 +43,7 @@ struct SearchUserView: View {
         .alert(isPresented: $vm.showAlert) {
             vm.alert
         }
+        .showHUD(isShowing: $vm.showHUD, Text("Add Friends!"))
     }
     
     
@@ -54,7 +56,7 @@ struct SearchUserView: View {
     }
     
     private func followAction() {
-        print("Follow")
+        vm.addFriend(userInfo: userInfo)
     }
 }
 
@@ -79,7 +81,7 @@ struct SearchField : View {
             .padding()
             .background(Color(.systemGray3))
             .cornerRadius(12)
-            .padding(.horizontal)
+            .padding(.trailing)
             .overlay(
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -95,7 +97,8 @@ struct SearchField : View {
                         }
                     }
                 }
-                .padding(.horizontal,32)
+                .padding(.leading,12)
+                .padding(.trailing,32)
                 .foregroundColor(.primary)
             )
             .transition(.move(edge: .trailing))
@@ -120,8 +123,9 @@ struct SearchField : View {
 }
 
 struct DetailUserView : View {
-    
-    let user : FBUser
+
+    @Binding var user : FBUser!
+    @Binding var buttonEnable : Bool
 
     var messageAction : (() -> Void?)? = nil
     var followAction : (() -> Void?)? = nil
@@ -162,12 +166,14 @@ struct DetailUserView : View {
                         followAction!()
                     }
                 }, label: {
-                    Text("Follow")
+                    Text(user.isFriend ? "- Friend" : "+ Friend")
                         .frame(width: 150, height: 40)
-                        .background(Color.blue)
+                        .background(user.isFriend ? Color.red : Color.blue)
                         .foregroundColor(.white)
                 })
                 .cornerRadius(20)
+                .opacity(!buttonEnable ? 0 : 1)
+                .disabled(!buttonEnable)
                 
                 Button(action: {
                     if messageAction != nil {

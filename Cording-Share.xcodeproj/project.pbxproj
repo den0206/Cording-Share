@@ -13,6 +13,7 @@
 		3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */; };
 		3A4CA7C725E0E51100776F89 /* code-1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */; };
 		3A4CA7C825E0E51100776F89 /* code-2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C625E0E4F300776F89 /* code-2.mp4 */; };
+		3A6E0D0425F15C99005BC3CD /* FBFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E0D0325F15C99005BC3CD /* FBFollow.swift */; };
 		3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A720C2425B0923A00714CB0 /* UserProfileView.swift */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
 		3A75ED4E259C3651009E990E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4D259C3651009E990E /* ContentView.swift */; };
@@ -48,7 +49,9 @@
 		3AC6F15125EE804300729D92 /* SearchUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */; };
 		3ACB27C125D9050000C4F405 /* CordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB27C025D9050000C4F405 /* CordingView.swift */; };
 		3ACB27C325D9097B00C4F405 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACB27C225D9097B00C4F405 /* SettingsView.swift */; };
+		3ACC4BC325F31B0D00CBBCDB /* FriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC4BC225F31B0D00CBBCDB /* FriendsViewModel.swift */; };
 		3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */; };
+		3ADC1F6B25F2ABF600FA2114 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC1F6A25F2ABF600FA2114 /* FriendsView.swift */; };
 		3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */; };
 		3AF4810F25B5675600B3A872 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4810E25B5675600B3A872 /* Message.swift */; };
 		3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E381259EFE3A004FB2CF /* FeedView.swift */; };
@@ -85,6 +88,7 @@
 		3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMovieView.swift; sourceTree = "<group>"; };
 		3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-1.mp4"; sourceTree = "<group>"; };
 		3A4CA7C625E0E4F300776F89 /* code-2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-2.mp4"; sourceTree = "<group>"; };
+		3A6E0D0325F15C99005BC3CD /* FBFollow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBFollow.swift; sourceTree = "<group>"; };
 		3A720C2425B0923A00714CB0 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cording_ShareApp.swift; sourceTree = "<group>"; };
@@ -122,7 +126,9 @@
 		3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserViewModel.swift; sourceTree = "<group>"; };
 		3ACB27C025D9050000C4F405 /* CordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CordingView.swift; sourceTree = "<group>"; };
 		3ACB27C225D9097B00C4F405 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3ACC4BC225F31B0D00CBBCDB /* FriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewModel.swift; sourceTree = "<group>"; };
 		3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
+		3ADC1F6A25F2ABF600FA2114 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		3AF4810E25B5675600B3A872 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		3AF9E381259EFE3A004FB2CF /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
@@ -166,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				3A720C2425B0923A00714CB0 /* UserProfileView.swift */,
+				3ADC1F6A25F2ABF600FA2114 /* FriendsView.swift */,
 				3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */,
 			);
 			path = User;
@@ -245,6 +252,7 @@
 				3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */,
 				3AC57C4F25B5514000775C22 /* MessageViewModel.swift */,
 				3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */,
+				3ACC4BC225F31B0D00CBBCDB /* FriendsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -325,6 +333,7 @@
 				3AFED616259D93880048B807 /* FBAuth.swift */,
 				3A77699125A208CE004CC715 /* FBPost.swift */,
 				3ABE4E6F25B40EDB006ADCB7 /* FBNotification.swift */,
+				3A6E0D0325F15C99005BC3CD /* FBFollow.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -475,7 +484,9 @@
 				3AB5E852259DB508004069E8 /* CustomError.swift in Sources */,
 				3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */,
 				3AC316E625B2C8AB00ADD668 /* UserProfileViewModel.swift in Sources */,
+				3ACC4BC325F31B0D00CBBCDB /* FriendsViewModel.swift in Sources */,
 				3ABC30F4259C505E0063D1D8 /* SignUpView.swift in Sources */,
+				3ADC1F6B25F2ABF600FA2114 /* FriendsView.swift in Sources */,
 				3A9CA7AB25EBC78200DCDD7F /* SearchUserView.swift in Sources */,
 				3AF4810F25B5675600B3A872 /* Message.swift in Sources */,
 				3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */,
@@ -505,6 +516,7 @@
 				3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */,
 				3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */,
 				3ABE4E7025B40EDB006ADCB7 /* FBNotification.swift in Sources */,
+				3A6E0D0425F15C99005BC3CD /* FBFollow.swift in Sources */,
 				3AA5292F25A9418500CA332B /* PostDetailViewModel.swift in Sources */,
 				3AA5292D25A9403400CA332B /* PostDetailview.swift in Sources */,
 				3AFED64D259D9A200048B807 /* UserInfo.swift in Sources */,

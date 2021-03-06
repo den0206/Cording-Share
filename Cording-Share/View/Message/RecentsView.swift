@@ -39,7 +39,7 @@ struct RecentsView: View {
                     
                 }
                 .listStyle(PlainListStyle())
-             
+                
                 
                 Spacer()
             }
@@ -54,6 +54,8 @@ struct RecentsView: View {
                     FBNotification.getBadgeCount(user: userInfo.user) { (badge) in
                         UIApplication.shared.applicationIconBadgeNumber = badge
                     }
+                    
+                    
                 }
                 
                 
@@ -63,17 +65,17 @@ struct RecentsView: View {
             .navigationBarTitle(Text("Messages"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing:
-                  Button(action: {showSearch = true}) {
-                      Image(systemName: "plus")
-                          .foregroundColor(.primary)
-                  }
-                  .sheet(isPresented: $showSearch) {
-                      /// show Search user
-                    SearchUserView().environmentObject(userInfo)
-                  }
+                                    Button(action: {showSearch = true}) {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(.primary)
+                                    }
+                                    .sheet(isPresented: $showSearch) {
+                                        /// show Search user
+                                        SearchUserView().environmentObject(userInfo)
+                                    }
             )
-
-
+            
+            
         }
     }
 }

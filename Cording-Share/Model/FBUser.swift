@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-struct FBUser {
+struct FBUser : Hashable {
    
     let uid : String
     var name : String
@@ -16,6 +16,8 @@ struct FBUser {
     var fcmToken : String
     let searchId : String
     var avaterUrl : URL?
+    
+    var isFriend : Bool = false
    
     
     

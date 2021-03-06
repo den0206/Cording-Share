@@ -11,6 +11,11 @@ struct FBNotification {
     
     static func getBadgeCount(user : FBUser, completion : @escaping(Int) -> Void) {
         
+        guard Reachabilty.HasConnection() else {
+            print("no update badge")
+            return
+            
+        }
         var badgeCount : Int = 0
         
         let query = FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: user.uid).whereField(RecentKey.counter, isNotEqualTo: 0)

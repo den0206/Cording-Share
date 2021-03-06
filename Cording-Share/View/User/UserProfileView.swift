@@ -84,23 +84,37 @@ struct UserProfileView: View {
                     .padding(.top,20)
                 
                     if vm.user!.isCurrentUser {
-                        NavigationLink(destination: UserEditView()) {
-                            Text("EditProfile")
-                                .frame(width: 240, height: 40)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(20)
+                        
+                        HStack {
+                            NavigationLink(destination: UserEditView()) {
+                                Text("EditProfile")
+                                    .modifier(ProfileButtonModifier(color: Color.green))
+                                    .cornerRadius(20)
+                            }
+                            
+                            NavigationLink(destination: FriendsView(vm : FriendsViewModel(user: vm.user))) {
+                                
+                                Text("Friends")
+                                    .modifier(ProfileButtonModifier(color: Color.blue))
+                                    .cornerRadius(20)
+                            }
                         }
+                      
+                        
+                        
                         
                     } else {
                         HStack {
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                                Text("Follow")
-                                    .frame(width: 150, height: 40)
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
+                            Button(action: {vm.addfriend(userInfo: userInfo)}, label: {
+                                Text(vm.user.isFriend ? "- Follow" : "+ Friend")
+                                    .modifier(ProfileButtonModifier(color: vm.user.isFriend ? Color.red : Color.blue))
                             })
                             .cornerRadius(20)
+                            .opacity(!vm.buttonEnable ? 0 : 1)
+                            .disabled(!vm.buttonEnable)
+                            .onAppear {
+                                vm.checkFriend(userInfo: userInfo)
+                            }
                             
                             Button(action: {
                                 
@@ -109,9 +123,7 @@ struct UserProfileView: View {
                                 
                             }, label: {
                                 Text("Message")
-                                    .frame(width: 150, height: 40)
-                                    .background(Color.purple)
-                                    .foregroundColor(.white)
+                                    .modifier(ProfileButtonModifier(color: Color.green))
                             })
                             .cornerRadius(20)
                         }
@@ -125,51 +137,27 @@ struct UserProfileView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(true)
+          
             
         }
         
     }
     
-}
-struct ProfileActionButtonView: View {
-    
-    let isCurrentUser : Bool
-    
-    var body: some View {
-        
-        if isCurrentUser {
-            NavigationLink(destination: UserEditView()) {
-                Text("EditProfile")
-                    .frame(width: 240, height: 40)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-            }
-            
-        } else {
-            HStack {
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    Text("Follow")
-                        .frame(width: 150, height: 40)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                })
-                .cornerRadius(20)
-                
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                    Text("Message")
-                        .frame(width: 150, height: 40)
-                        .background(Color.purple)
-                        .foregroundColor(.white)
-                })
-                .cornerRadius(20)
-            }
-            
-        }
-        
-    }
 }
 
+//MARK: - Custom Modifier
+
+struct ProfileButtonModifier : ViewModifier {
+    
+    let color : Color
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 150, height: 40)
+            .background(color)
+            .foregroundColor(.white)
+    }
+}
 
 struct UserProfileView_Previews: PreviewProvider {
     

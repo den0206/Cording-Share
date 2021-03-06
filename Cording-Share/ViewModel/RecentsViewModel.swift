@@ -22,6 +22,12 @@ final class RecentsViewModel : ObservableObject {
     
     func fetchRecents(userInfo : UserInfo) {
         
+        guard Reachabilty.HasConnection() else {
+            self.errorMessage = NetworkError.disConnect.localizedDescription
+            return
+            
+        }
+        
         FirebaseReference(.Recent).whereField(RecentKey.userId, isEqualTo: userInfo.user.uid).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
