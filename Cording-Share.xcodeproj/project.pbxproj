@@ -54,10 +54,15 @@
 		3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */; };
 		3ADC1F6B25F2ABF600FA2114 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADC1F6A25F2ABF600FA2114 /* FriendsView.swift */; };
 		3AEACCE7259DBA1C008F7C5F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */; };
+		3AF0AEE525F4A73F00AADD12 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0AEE425F4A73F00AADD12 /* NewsViewModel.swift */; };
+		3AF0AEEB25F4AB6900AADD12 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0AEEA25F4AB6900AADD12 /* NewsView.swift */; };
 		3AF4810F25B5675600B3A872 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4810E25B5675600B3A872 /* Message.swift */; };
 		3AF9E382259EFE3A004FB2CF /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E381259EFE3A004FB2CF /* FeedView.swift */; };
 		3AF9E384259EFF8E004FB2CF /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E383259EFF8E004FB2CF /* FeedViewModel.swift */; };
 		3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9E385259F0537004FB2CF /* AddPostViewModel.swift */; };
+		3AFA247225F4B75100ED2C13 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFA247125F4B75100ED2C13 /* Article.swift */; };
+		3AFA247425F4BA4D00ED2C13 /* NewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFA247325F4BA4D00ED2C13 /* NewsManager.swift */; };
+		3AFA247725F4BFEF00ED2C13 /* Parma in Frameworks */ = {isa = PBXBuildFile; productRef = 3AFA247625F4BFEF00ED2C13 /* Parma */; };
 		3AFED617259D93880048B807 /* FBAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED616259D93880048B807 /* FBAuth.swift */; };
 		3AFED619259D94180048B807 /* FBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED618259D94180048B807 /* FBUser.swift */; };
 		3AFED61B259D94390048B807 /* Constracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFED61A259D94390048B807 /* Constracts.swift */; };
@@ -132,10 +137,14 @@
 		3AD2CB7A25AAC01300D33D8F /* UserEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEditView.swift; sourceTree = "<group>"; };
 		3ADC1F6A25F2ABF600FA2114 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		3AF0AEE425F4A73F00AADD12 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
+		3AF0AEEA25F4AB6900AADD12 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		3AF4810E25B5675600B3A872 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		3AF9E381259EFE3A004FB2CF /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
 		3AF9E383259EFF8E004FB2CF /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		3AF9E385259F0537004FB2CF /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
+		3AFA247125F4B75100ED2C13 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		3AFA247325F4BA4D00ED2C13 /* NewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsManager.swift; sourceTree = "<group>"; };
 		3AFED616259D93880048B807 /* FBAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAuth.swift; sourceTree = "<group>"; };
 		3AFED618259D94180048B807 /* FBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUser.swift; sourceTree = "<group>"; };
 		3AFED61A259D94390048B807 /* Constracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constracts.swift; sourceTree = "<group>"; };
@@ -153,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFA247725F4BFEF00ED2C13 /* Parma in Frameworks */,
 				3A75ED5D259C3791009E990E /* CodeMirror-SwiftUI in Frameworks */,
 				E53550388AFB7F5516BA183F /* Pods_Cording_Share.framework in Frameworks */,
 			);
@@ -234,6 +244,7 @@
 				3ABC30F0259C4B790063D1D8 /* Authentification */,
 				3AFED64E259D9D000048B807 /* RootView.swift */,
 				3AEACCE6259DBA1C008F7C5F /* MainTabView.swift */,
+				3AF0AEEA25F4AB6900AADD12 /* NewsView.swift */,
 				3AA5292B25A9401B00CA332B /* Post */,
 				3A720C2625B0924500714CB0 /* User */,
 				3ABA761225B28A3600B7C42A /* Message */,
@@ -255,6 +266,7 @@
 				3AC57C4F25B5514000775C22 /* MessageViewModel.swift */,
 				3AC6F15025EE804300729D92 /* SearchUserViewModel.swift */,
 				3ACC4BC225F31B0D00CBBCDB /* FriendsViewModel.swift */,
+				3AF0AEE425F4A73F00AADD12 /* NewsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -266,6 +278,7 @@
 				3AC0D10725A49FF700B84475 /* Post.swift */,
 				3AC316E325B2C4FA00ADD668 /* Recent.swift */,
 				3AF4810E25B5675600B3A872 /* Message.swift */,
+				3AFA247125F4B75100ED2C13 /* Article.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -326,6 +339,7 @@
 				3A96DEBB25B3F34B006293FF /* Reachbility.swift */,
 				3A22686E25C4FDDA00F17180 /* CryptoSwift.swift */,
 				3AAF6B3F25F333C600C4B60F /* Status.swift */,
+				3AFA247325F4BA4D00ED2C13 /* NewsManager.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -379,6 +393,7 @@
 			name = "Cording-Share";
 			packageProductDependencies = (
 				3A75ED5C259C3791009E990E /* CodeMirror-SwiftUI */,
+				3AFA247625F4BFEF00ED2C13 /* Parma */,
 			);
 			productName = "Cording-Share";
 			productReference = 3A75ED48259C3651009E990E /* Cording-Share.app */;
@@ -409,6 +424,7 @@
 			mainGroup = 3A75ED3F259C3651009E990E;
 			packageReferences = (
 				3A75ED5B259C3791009E990E /* XCRemoteSwiftPackageReference "CodeMirror-SwiftUI" */,
+				3AFA247525F4BFEF00ED2C13 /* XCRemoteSwiftPackageReference "Parma" */,
 			);
 			productRefGroup = 3A75ED49259C3651009E990E /* Products */;
 			projectDirPath = "";
@@ -483,6 +499,9 @@
 			files = (
 				3AF9E384259EFF8E004FB2CF /* FeedViewModel.swift in Sources */,
 				3AFED617259D93880048B807 /* FBAuth.swift in Sources */,
+				3AFA247425F4BA4D00ED2C13 /* NewsManager.swift in Sources */,
+				3AFA247225F4B75100ED2C13 /* Article.swift in Sources */,
+				3AF0AEEB25F4AB6900AADD12 /* NewsView.swift in Sources */,
 				3ABA761425B28A5000B7C42A /* RecentsView.swift in Sources */,
 				3AB5E852259DB508004069E8 /* CustomError.swift in Sources */,
 				3A75ED64259C37B5009E990E /* AddPostView.swift in Sources */,
@@ -517,6 +536,7 @@
 				3AFED649259D95E80048B807 /* FirebaseReference.swift in Sources */,
 				3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */,
 				3A282C4525A189F10010FCE2 /* SelecteLanguageView.swift in Sources */,
+				3AF0AEE525F4A73F00AADD12 /* NewsViewModel.swift in Sources */,
 				3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */,
 				3AF9E386259F0537004FB2CF /* AddPostViewModel.swift in Sources */,
 				3ABE4E7025B40EDB006ADCB7 /* FBNotification.swift in Sources */,
@@ -744,6 +764,14 @@
 				minimumVersion = 0.1.5;
 			};
 		};
+		3AFA247525F4BFEF00ED2C13 /* XCRemoteSwiftPackageReference "Parma" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dasautoooo/Parma";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -751,6 +779,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3A75ED5B259C3791009E990E /* XCRemoteSwiftPackageReference "CodeMirror-SwiftUI" */;
 			productName = "CodeMirror-SwiftUI";
+		};
+		3AFA247625F4BFEF00ED2C13 /* Parma */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AFA247525F4BFEF00ED2C13 /* XCRemoteSwiftPackageReference "Parma" */;
+			productName = Parma;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

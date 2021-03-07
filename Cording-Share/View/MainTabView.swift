@@ -16,7 +16,7 @@ struct MainTabView: View {
             ZStack {
                 switch userInfo.tabIndex {
                 case 0 :
-                    FeedView()
+                    NewsView()
                 case 1 :
                     AddPostView()
                 case 2 :

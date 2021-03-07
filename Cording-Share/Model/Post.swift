@@ -93,19 +93,14 @@ struct Post : Identifiable{
 
 extension CodeMode  {
     static var codeModes : [CodeMode] {
-        return [.swift,.c,.go,.html,.java,.javascript,.objc,.perl,.php,.python,.r,.ruby,.rust]
+        return [.swift,.python,.c,.ruby,.go,.java,.javascript,.php,]
     }
     
     var image : Image {
         switch self {
-        case .swift:
-            return Image("Swift")
-        case .python :
-            return Image("Python")
-        case .ruby :
-            return Image("Ruby")
+        
         default:
-            return Image("")
+            return Image(rawValue.capitalized)
         }
     }
     
