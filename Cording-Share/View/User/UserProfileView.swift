@@ -14,6 +14,8 @@ struct UserProfileView: View {
     @EnvironmentObject var userInfo : UserInfo
     
     @StateObject var vm : UserProfileViewModel
+    
+    var isFromMessage : Bool = false
     var isSheet : Bool = false
     
     var body: some View {
@@ -117,8 +119,11 @@ struct UserProfileView: View {
                             }
                             
                             Button(action: {
-                                
-                                vm.startPrivateChat(userInfo: userInfo)
+                                if !isFromMessage {
+                                    vm.startPrivateChat(userInfo: userInfo)
+                                } else {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                                 
                                 
                             }, label: {

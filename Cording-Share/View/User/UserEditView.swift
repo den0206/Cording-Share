@@ -168,7 +168,8 @@ struct UserEditView: View {
             case .success(let bool):
                 print("Success, \(bool)")
                 self.userInfo.user = FBUser(uid: "", name: "", email: "", fcmToken: "", searchId: "")
-                self.userInfo.isUserauthenticated = .signOut
+                self.userInfo.configureStateDidChange()
+//                self.userInfo.isUserauthenticated = .signOut
             case .failure(let error):
                 print("Error")
                 self.alert = errorAlert(message: error.localizedDescription)

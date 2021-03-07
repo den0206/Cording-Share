@@ -13,16 +13,24 @@ final class FeedViewModel : ObservableObject {
     
     @Published var posts = [Post]()
     
+    @Published var pushNav : Bool = false
+    @Published var selectedPost : Post? {
+        didSet {
+            if selectedPost != nil {
+                pushNav = true
+
+            }
+        }
+    }
     @Published var reachLast = false
     @Published var lastDoc : DocumentSnapshot?
     
+    @Published var showalert = false
     @Published var errorMessage = "" {
         didSet {
             showalert = true
         }
     }
-    @Published var showalert = false
-    
     
     let limit = 5
     

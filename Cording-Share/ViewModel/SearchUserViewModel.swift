@@ -13,7 +13,6 @@ final class SearchUserViewModel : ObservableObject {
     @Published var searchedUser : FBUser?
    
     @Published var buttonEnable : Bool = false
-    @Published var showHUD = false
     @Published var showAlert = false
     @Published var alert = Alert(title: Text("")) {
         didSet {
@@ -104,7 +103,6 @@ final class SearchUserViewModel : ObservableObject {
                     return
                 }
                 
-                self.showHUD = true
                 self.searchedUser?.isFriend = true
             }
             

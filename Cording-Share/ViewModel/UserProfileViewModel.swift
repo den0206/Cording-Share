@@ -23,7 +23,8 @@ final class UserProfileViewModel : ObservableObject {
        
         guard !user.isCurrentUser else {return}
         guard let withUser = user else {return}
-
+        
+        print("Check ")
         let currentUser = userInfo.user
         
         FBfriend.checkFriend(currentUser: currentUser, withUser: withUser) { (isFriend) in
@@ -40,8 +41,6 @@ final class UserProfileViewModel : ObservableObject {
     func addfriend(userInfo : UserInfo) {
         guard !user.isCurrentUser else {return}
         guard let withUser = user else {return}
-        
-        print("Csllllllll")
         let currentUser = userInfo.user
         
         switch withUser.isFriend {

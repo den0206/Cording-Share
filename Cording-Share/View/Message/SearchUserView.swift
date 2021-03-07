@@ -44,7 +44,6 @@ struct SearchUserView: View {
         .alert(isPresented: $vm.showAlert) {
             vm.alert
         }
-        .showHUD(isShowing: $vm.showHUD, Text("Add Friends!"))
     }
     
     

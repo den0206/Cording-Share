@@ -15,6 +15,7 @@ final class FriendsViewModel : ObservableObject {
     @Published var friends = [FBUser]()
     @Published var status : Status = .plane
     
+    @Published var friendsListner : ListenerRegistration?
     @Published var showAlert = false
     @Published var alert = Alert(title: Text("")) {
         didSet {
@@ -35,6 +36,7 @@ final class FriendsViewModel : ObservableObject {
     
     init(user : FBUser) {
         UINavigationBar.appearance().tintColor = .white
+        UITableView.appearance().separatorStyle = .none
         self.user = user
     }
     
@@ -48,7 +50,7 @@ final class FriendsViewModel : ObservableObject {
             return
         }
         
-        FirebaseReference(.User).document(user.uid).collection(FriendKey.friends).getDocuments { (snapshot, error) in
+       friendsListner = FirebaseReference(.User).document(user.uid).collection(FriendKey.friends).addSnapshotListener { (snapshot, error) in
             
             if let error = error {
                 self.alert = errorAlert(message: error.localizedDescription)
@@ -66,21 +68,38 @@ final class FriendsViewModel : ObservableObject {
                 return
             }
             
-            snapshot.documents.forEach { (doc) in
-                let data = doc.data()
+            snapshot.documentChanges.forEach { (diff) in
+               
+                let data = diff.document.data()
                 let uid = data[FriendKey.userID] as? String ?? ""
+                switch diff.type {
                 
-                FBAuth.fecthFBUser(uid: uid) { (result) in
-                    switch result {
+                case .added :
+                  
                     
-                    case .success(let user):
-                        self.friends.append(user)
-                    case .failure(let error):
-                        self.alert = errorAlert(message: error.localizedDescription)
+                    FBAuth.fecthFBUser(uid: uid) { (result) in
+                        switch result {
+                        
+                        case .success(let user):
+                            self.friends.append(user)
+                        case .failure(let error):
+                            self.alert = errorAlert(message: error.localizedDescription)
+                        }
+                        
+                        self.status = .plane
                     }
+                case .removed :
                     
-                    self.status = .plane
+                    guard let index = self.friends.map({$0.uid}).firstIndex(of: uid) else {
+                        print("No Index")
+                        return
+                    }
+                    self.friends.remove(at: index)
+                 
+                default :
+                    print("Default")
                 }
+            
             }
             
             

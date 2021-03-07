@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-struct FBUser : Hashable {
+struct FBUser {
    
     let uid : String
     var name : String

@@ -18,19 +18,19 @@ struct FeedView: View {
             
             GeometryReader { geo in
                 ScrollView {
+                    NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: vm.selectedPost!)), isActive: $vm.pushNav, label: {})
                     LazyVStack {
                         ForEach(vm.posts)  { post in
-                    
-                            NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
-                                
-                                PostCell(post: post)
-                                    .onAppear {
-                                        if post.id == vm.posts.last?.id {
-                                            vm.fetchPost()
-                                        }
-                                    }
-                                    .frame( height: geo.size.height + 45)
                             
+                            Button(action: {
+                                vm.selectedPost = post
+                            }) {
+                                PostCell(post: post)
+                            }
+                            .onAppear {
+                                if post.id == vm.posts.last?.id {
+                                    vm.fetchPost()
+                                }
                             }
                         }
                         
@@ -104,15 +104,15 @@ struct PostCell : View {
                 
                 if isExpand {
           
-//                    ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
-//                        .frame( height: 200)
-//                        .disabled(true)
-//                        .padding()
-//
-                    Rectangle()
-                        .fill(Color.black)
+                    ExampleView(code: .constant(post.codeBlock), lang: post.lang, fontSize: 12,withImage : false)
                         .frame( height: 200)
+                        .disabled(true)
                         .padding()
+//
+//                    Rectangle()
+//                        .fill(Color.black)
+//                        .frame( height: 200)
+//                        .padding()
 
                 }
                 
@@ -156,10 +156,10 @@ struct PostCell : View {
             .foregroundColor(.primary)
             .id(post.id)
             .onAppear {
-                withAnimation(Animation.easeInOut(duration: 1.0)) {
-                    isExpand = true
-
-                }
+//                withAnimation(Animation.easeInOut(duration: 1.0)) {
+//                    isExpand = true
+//
+//                }
             }
            
             Spacer()
@@ -173,3 +173,14 @@ struct PostCell : View {
 }
 
 
+//                            NavigationLink(destination: PostDetailview(vm: PostDetailViewModel(post: post))) {
+//
+//                                PostCell(post: post)
+//                                    .onAppear {
+//                                        if post.id == vm.posts.last?.id {
+//                                            vm.fetchPost()
+//                                        }
+//                                    }
+//                                    .frame( height: geo.size.height + 45)
+//
+//                            }

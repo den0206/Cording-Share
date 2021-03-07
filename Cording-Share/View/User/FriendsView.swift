@@ -65,6 +65,13 @@ struct FriendsView : View {
 
             }
         })
+        .onDisappear(perform: {
+            if !vm.pushNav {
+                print("Remove freinds")
+                vm.friendsListner?.remove()
+            }
+        })
+
         
         //MARK: - navigation proprty
         .navigationBarTitleDisplayMode(.inline)

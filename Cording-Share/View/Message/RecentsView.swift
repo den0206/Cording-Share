@@ -22,22 +22,22 @@ struct RecentsView: View {
             VStack {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
                 
-//                if vm.status != .plane {
-//                    Spacer()
-//
-//                    HStack {
-//                        Text(vm.status.errorMessage ?? "UnKnown Error")
-//                            .padding()
-//
-//                        if vm.status == .noInternet {
-//                            RetryButton(action: {
-//                                vm.fetchRecents(userInfo: userInfo)
-//
-//                            })
-//                        }
-//                    }
-//
-//                } else {
+                if vm.status != .plane {
+                    Spacer()
+
+                    HStack {
+                        Text(vm.status.errorMessage ?? "UnKnown Error")
+                            .padding()
+
+                        if vm.status == .noInternet {
+                            RetryButton(action: {
+                                vm.fetchRecents(userInfo: userInfo)
+
+                            })
+                        }
+                    }
+
+                } else {
                     List {
                         ForEach(vm.recents) { recent in
                             
@@ -55,10 +55,10 @@ struct RecentsView: View {
                             }
                             
                         }
-                        .onDelete(perform: vm.deleteRecents(at:))
+//                        .onDelete(perform: vm.deleteRecents(at:))
                     }
                     .listStyle(PlainListStyle())
-//                }
+                }
                 
                 
                 Spacer()
@@ -77,8 +77,6 @@ struct RecentsView: View {
 
                     
                 }
-                
-                
             })
             
             //MARK: - Navigation Propery

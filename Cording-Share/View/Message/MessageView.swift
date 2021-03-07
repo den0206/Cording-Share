@@ -9,11 +9,13 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct MessageView: View {
+    
     @EnvironmentObject var userInfo : UserInfo
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject var vm = MessageViewModel()
     @State private var isEditing = false
+    @State private var showFullscreen = false
     @State private var showSheet = false
     @State private var firstAppear = true
     
@@ -104,10 +106,10 @@ struct MessageView: View {
             MGTextfield(text: $vm.text, editing: $isEditing) {
                 vm.sendTextMessage(chatRoomId: chatRoomId, currentUser: userInfo.user, withUser: withUser)}
                 buttonAction: {
-                    showSheet = true
+                    showFullscreen = true
                 }
                 .animation(.default)
-                .fullScreenCover(isPresented: $showSheet, onDismiss: {
+                .fullScreenCover(isPresented: $showFullscreen, onDismiss: {
                     vm.codeText = ""
                     fixOrientation(landscape: false)
                     userInfo.showTab = false
@@ -160,10 +162,19 @@ struct MessageView: View {
                     .foregroundColor(.primary)
             }) : nil,
             trailing:
-                WebImage(url: withUser.avaterUrl)
-                .resizable()
-                .frame(width: 30, height: 30)
-                .clipShape(Circle())
+                
+                Button(action: {showSheet = true}, label: {
+                     WebImage(url: withUser.avaterUrl)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .clipShape(Circle())
+                })
+                .sheet(isPresented: $showSheet, content: {
+                    UserProfileView(vm: UserProfileViewModel(user: withUser), isFromMessage : true)
+                        .preferredColorScheme(.dark)
+                        .environmentObject(userInfo)
+                })
+               
         )
         
         
