@@ -17,12 +17,7 @@ struct RootView : View {
         
         Group {
             if userInfo.isUserauthenticated == .undifined {
-                ProgressView("Loading...")
-                    .foregroundColor(.green)
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
-                 
-                    .padding()
-                    .transition(AnyTransition.fade(duration: 0.5))
+                GreenProgressView()
             }  else if userInfo.isUserauthenticated == .signOut {
                 AuthenticationView()
             } else {
@@ -31,7 +26,7 @@ struct RootView : View {
                 } else {
                     MainSideView()
                 }
-               
+                
             }
         }
         .preferredColorScheme(.dark)

@@ -7,13 +7,15 @@
 
 import Foundation
 
-struct Article: Codable , Identifiable{
+struct Article: Codable, Identifiable{
     
     let id : String
     let body : String
     let title: String
     let user: qitaUser
+    let url : String
     
+
   
     
 }

@@ -109,7 +109,7 @@ struct tabButton : View {
                         .frame(width: 25, height: 23)
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.gray)
+                        .background(Color.green)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .offset(y: -5)
                 }

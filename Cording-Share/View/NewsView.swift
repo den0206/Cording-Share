@@ -16,40 +16,47 @@ struct NewsView: View {
         
         NavigationView {
             VStack {
-               
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing :15) {
-                        ForEach(userInfo.modes, id : \.self) { lang in
-                            
-                            Button(action: {vm.currentTag = lang}) {
-                                lang.image
-                                    .LogoImageModifier(size: 45)
-                            }
-                  
-                        }
-                        Spacer()
-                    }
-                }
-                .padding()
                 
-                Divider()
-                    .background(Color.white)
-               
+                NewsHeaderView(vm: vm)
                 
                 GeometryReader { geo in
                     ScrollView {
-                        LazyVStack {
-                            
-                            ForEach(vm.articles) { article in
+                        ScrollViewReader { reader in
+                            LazyVStack {
                                 
-                                ArtcleCell(artcle: article, logo: vm.currentTag.image)
+                                ForEach(vm.articles) { article in
+                                    
+                                    Button(action: {
+                                        openUrl(artcle: article)
+                                    }) {
+                                        ArtcleCell(artcle: article, logo: vm.currentTag.image)
+                                    }
+                                    .id(article.id)
+                                    .onAppear(perform: {
+                                        if article.id == vm.articles.last?.id {
+                                            vm.ferchArticles()
+                                        }
+                                    })
                                     .frame( height: geo.size.height)
+                                }
                             }
+                            .onReceive(vm.$scrollTo) { (action) in
+                                guard !vm.articles.isEmpty else {return}
+                                withAnimation {
+                                    switch action {
+                                    case .top :
+                                        reader.scrollTo(vm.articles.first?.id, anchor: .top)
+                                    case .none:
+                                        return
+                                    }
+                                }
+                            }
+                            
                         }
-                        
                     }
                     
                 }
+                .overlay(vm.loading ? GreenProgressView() : nil)
                 
                 Spacer()
             }
@@ -62,7 +69,47 @@ struct NewsView: View {
             .navigationBarHidden(true)
         }
         
+    }
+    
+    private func openUrl(artcle : Article) {
         
+        guard let url = URL(string: artcle.url) else {return}
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+    }
+}
+
+struct NewsHeaderView : View {
+    @EnvironmentObject var userInfo : UserInfo
+    @StateObject var vm : NewsViewModel
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing :15) {
+                ForEach(userInfo.modes, id : \.self) { lang in
+                    
+                    Button(action: {
+                        if vm.currentTag == lang {
+                            vm.scrollTo = .top
+                        } else {
+                            vm.changeTag(lang: lang)
+                        }
+                        
+                        
+                    }) {
+                        lang.image
+                            .LogoImageModifier(size: 45,isFocus : vm.currentTag == lang)
+                        
+                    }
+                    
+                }
+                Spacer()
+            }
+        }
+        .padding()
+        
+        Divider()
+            .background(Color.white)
     }
 }
 
@@ -122,7 +169,6 @@ struct ArtcleCell : View {
             .padding()
             .padding(.horizontal,36)
             .foregroundColor(.primary)
-            .id(artcle.id)
             .onAppear {
                 withAnimation(Animation.easeInOut(duration: 1.0)) {
                     isExpand = true
