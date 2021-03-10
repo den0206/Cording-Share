@@ -40,7 +40,7 @@
 		3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABDF09625AF3DA600D8113F /* EditPostView.swift */; };
 		3ABE4E6E25B40A19006ADCB7 /* RecentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */; };
 		3ABE4E7025B40EDB006ADCB7 /* FBNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE4E6F25B40EDB006ADCB7 /* FBNotification.swift */; };
-		3AC0703D25F7EFE400008972 /* CustomScrView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0703C25F7EFE400008972 /* CustomScrView.swift */; };
+		3AC0703D25F7EFE400008972 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0703C25F7EFE400008972 /* CustomScrollView.swift */; };
 		3AC0D10825A49FF700B84475 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0D10725A49FF700B84475 /* Post.swift */; };
 		3AC2F87625A97EE900AF0032 /* AddDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */; };
 		3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC316E325B2C4FA00ADD668 /* Recent.swift */; };
@@ -124,7 +124,7 @@
 		3ABDF09625AF3DA600D8113F /* EditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPostView.swift; sourceTree = "<group>"; };
 		3ABE4E6D25B40A19006ADCB7 /* RecentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentsViewModel.swift; sourceTree = "<group>"; };
 		3ABE4E6F25B40EDB006ADCB7 /* FBNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBNotification.swift; sourceTree = "<group>"; };
-		3AC0703C25F7EFE400008972 /* CustomScrView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrView.swift; sourceTree = "<group>"; };
+		3AC0703C25F7EFE400008972 /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		3AC0D10725A49FF700B84475 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		3AC2F87525A97EE900AF0032 /* AddDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDescriptionView.swift; sourceTree = "<group>"; };
 		3AC316E325B2C4FA00ADD668 /* Recent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recent.swift; sourceTree = "<group>"; };
@@ -332,7 +332,7 @@
 		3ABC30F8259C54B10063D1D8 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				3AC0703C25F7EFE400008972 /* CustomScrView.swift */,
+				3AC0703C25F7EFE400008972 /* CustomScrollView.swift */,
 				3ABC30F9259C54C50063D1D8 /* CustomView.swift */,
 				3ABC30FD259C56A20063D1D8 /* GlobalExtensions.swift */,
 				3AFED61A259D94390048B807 /* Constracts.swift */,
@@ -530,7 +530,7 @@
 				3ABDF09725AF3DA600D8113F /* EditPostView.swift in Sources */,
 				3AC0D10825A49FF700B84475 /* Post.swift in Sources */,
 				3ACB27C325D9097B00C4F405 /* SettingsView.swift in Sources */,
-				3AC0703D25F7EFE400008972 /* CustomScrView.swift in Sources */,
+				3AC0703D25F7EFE400008972 /* CustomScrollView.swift in Sources */,
 				3AFED64B259D977C0048B807 /* Downloader.swift in Sources */,
 				3A96DEBC25B3F34B006293FF /* Reachbility.swift in Sources */,
 				3AD2CB7B25AAC01300D33D8F /* UserEditView.swift in Sources */,

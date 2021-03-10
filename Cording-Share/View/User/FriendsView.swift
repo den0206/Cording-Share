@@ -23,19 +23,9 @@ struct FriendsView : View {
               
             
             if vm.status != .plane {
-                Spacer()
                 
-                HStack {
-                    Text(vm.status.errorMessage!)
-                        .padding()
-                    
-                    if vm.status == .noInternet {
-                        RetryButton(action: {
-                            vm.fetchFriends()
-                            
-                        })
-                    }
-                }
+                StatusView(status: vm.status, retryAction: {vm.fetchFriends()})
+             
                 
             } else {
                 List{

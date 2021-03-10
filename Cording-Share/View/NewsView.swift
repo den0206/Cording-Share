@@ -10,16 +10,7 @@ import SwiftUI
 struct NewsView: View {
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = NewsViewModel()
-    
-    @State private var minY : CGFloat = 0
-    @State private var startMinY : CGFloat = 0
-    @State private var offsetSelf : CGFloat = 0
-    @State private var headerOpacity : Double = 1
-    @State private var headerSize : CGSize = .zero
-    
-    var showHeader : Bool {
-        return headerOpacity == 1
-    }
+    @StateObject var scVM = CustomScrollViewModel()
     
     
     var body: some View {
@@ -27,55 +18,58 @@ struct NewsView: View {
         NavigationView {
             ZStack(alignment: .top) {
                 
-                ChildSizeReader(size: $headerSize) {
+                ChildSizeReader(size: $scVM.headerSize) {
                     NewsHeaderView(vm: vm)
-                        .opacity(headerOpacity)
-                        .onChange(of: minY) { (y) in
-                            headerAnimatiuon(y)
-                        }
+                        .opacity(scVM.headerOpacity)
+                        .onChange(of: scVM.minY, perform: {scVM.headerAnimation($0)})
                 }
                
-                
-                GeometryReader { geo in
-                    CustomScrollView(offsetChanges: {self.minY = $0.y}) {
-                        ScrollViewReader { reader in
-                            LazyVStack {
-                                
-                                ForEach(vm.articles) { article in
+            
+                if vm.status == .plane {
+                    GeometryReader { geo in
+                        CustomScrollView(offsetChanges: {scVM.minY = $0.y}) {
+                            ScrollViewReader { reader in
+                                LazyVStack {
                                     
-                                    Button(action: {
-                                        openUrl(artcle: article)
-                                    }) {
-                                        ArtcleCell(artcle: article, logo: vm.currentTag.image)
-                                    }
-                                    .id(article.id)
-                                    .onAppear(perform: {
-                                        if article.id == vm.articles.last?.id {
-                                            vm.ferchArticles()
+                                    ForEach(vm.articles) { article in
+                                        
+                                        Button(action: {
+                                            openUrl(artcle: article)
+                                        }) {
+                                            ArtcleCell(artcle: article, logo: vm.currentTag.image)
                                         }
-                                    })
-                                    .frame( height: geo.size.height)
-                                }
-                            }
-                            .onReceive(vm.$scrollTo) { (action) in
-                                guard !vm.articles.isEmpty else {return}
-                                withAnimation {
-                                    switch action {
-                                    case .top :
-                                        reader.scrollTo(vm.articles.first?.id, anchor: .top)
-                                    case .none:
-                                        return
+                                        .id(article.id)
+                                        .onAppear(perform: {
+                                            if article.id == vm.articles.last?.id {
+                                                vm.ferchArticles()
+                                            }
+                                        })
+                                        .frame( height: geo.size.height)
                                     }
                                 }
+                                .onReceive(vm.$scrollTo) { (action) in
+                                    guard !vm.articles.isEmpty else {return}
+                                    withAnimation {
+                                        switch action {
+                                        case .top :
+                                            reader.scrollTo(vm.articles.first?.id, anchor: .top)
+                                        case .none:
+                                            return
+                                        }
+                                    }
+                                }
+                                
                             }
-                            
                         }
+                        
                     }
-                    
+                    .offset(y:scVM.showHeader ? scVM.headerSize.height : 0)
+                    .overlay(vm.loading ? GreenProgressView() : nil)
+                } else {
+                    StatusView(status: vm.status, retryAction: {print("Fetch")})
                 }
-                .offset(y:showHeader ? headerSize.height : 0)
-                .overlay(vm.loading ? GreenProgressView() : nil)
-                
+                   
+            
                 Spacer()
             }
             .onAppear {
@@ -96,51 +90,51 @@ struct NewsView: View {
         
     }
     
-    private func headerAnimatiuon(_ value : CGFloat) {
-        if value == 0 {
-            withAnimation(Animation.easeOut(duration: 0.25)) {
-                headerOpacity = 1
-            }
-            return
-        }
-        
-        DispatchQueue.main.async {
-            
-            if startMinY == 0 {
-                startMinY = minY
-            }
-            
-            let offset = startMinY - minY
-            
-            if offset < 0 {
-                headerOpacity = 1
-                return
-            }
-            
-            if offset > offsetSelf {
-                
-                if headerOpacity != 0 {
-                    withAnimation(Animation.easeOut(duration: 0.25)) {
-                        headerOpacity = 0
-                    }
-                }
-            }
-            
-            if offset < offsetSelf {
-                if headerOpacity != 1 {
-                    withAnimation(Animation.easeOut(duration: 0.7)) {
-                        headerOpacity = 1
-                    }
-                }
-            }
-         
-            
-            offsetSelf = offset
-            
-        }
-        
-    
-    }
+//    private func headerAnimatiuon(_ value : CGFloat) {
+//        if value == 0 {
+//            withAnimation(Animation.easeOut(duration: 0.25)) {
+//                headerOpacity = 1
+//            }
+//            return
+//        }
+//
+//        DispatchQueue.main.async {
+//
+//            if startMinY == 0 {
+//                startMinY = minY
+//            }
+//
+//            let offset = startMinY - minY
+//
+//            if offset < 0 {
+//                headerOpacity = 1
+//                return
+//            }
+//
+//            if offset > offsetSelf {
+//
+//                if headerOpacity != 0 {
+//                    withAnimation(Animation.easeOut(duration: 0.25)) {
+//                        headerOpacity = 0
+//                    }
+//                }
+//            }
+//
+//            if offset < offsetSelf {
+//                if headerOpacity != 1 {
+//                    withAnimation(Animation.easeOut(duration: 0.7)) {
+//                        headerOpacity = 1
+//                    }
+//                }
+//            }
+//
+//
+//            offsetSelf = offset
+//
+//        }
+//
+//
+//    }
 }
 
 struct NewsHeaderView : View {

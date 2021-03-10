@@ -18,6 +18,7 @@ final class NewsViewModel : ObservableObject{
     @Published var currentPage = 1
     @Published var currentTag : CodeMode = .swift
     @Published var loading = false
+    @Published var status : Status = .plane
    
     @Published var scrollTo : ScrollTo? = nil
     
@@ -35,13 +36,14 @@ final class NewsViewModel : ObservableObject{
             switch result {
             case .success(let array):
                 
+                self.status = .plane
+
                 DispatchQueue.main.async {
                     self.articles.append(contentsOf: array)
                     self.currentPage += 1
                 }
-                
             case .failure(let error):
-                print(error.localizedDescription)
+                self.status = .error(error.localizedDescription)
             }
             
             if self.loading {

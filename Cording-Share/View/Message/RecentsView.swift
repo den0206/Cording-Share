@@ -23,19 +23,7 @@ struct RecentsView: View {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
                 
                 if vm.status != .plane {
-                    Spacer()
-
-                    HStack {
-                        Text(vm.status.errorMessage ?? "UnKnown Error")
-                            .padding()
-
-                        if vm.status == .noInternet {
-                            RetryButton(action: {
-                                vm.fetchRecents(userInfo: userInfo)
-
-                            })
-                        }
-                    }
+                    StatusView(status: vm.status, retryAction: {vm.fetchRecents(userInfo: userInfo)})
 
                 } else {
                     List {
