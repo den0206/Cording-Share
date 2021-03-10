@@ -6,21 +6,38 @@
 //
 
 import SwiftUI
-import Parma
 
 struct NewsView: View {
     @EnvironmentObject var userInfo : UserInfo
     @StateObject var vm = NewsViewModel()
     
+    @State private var minY : CGFloat = 0
+    @State private var startMinY : CGFloat = 0
+    @State private var offsetSelf : CGFloat = 0
+    @State private var headerOpacity : Double = 1
+    @State private var headerSize : CGSize = .zero
+    
+    var showHeader : Bool {
+        return headerOpacity == 1
+    }
+    
+    
     var body: some View {
         
         NavigationView {
-            VStack {
+            ZStack(alignment: .top) {
                 
-                NewsHeaderView(vm: vm)
+                ChildSizeReader(size: $headerSize) {
+                    NewsHeaderView(vm: vm)
+                        .opacity(headerOpacity)
+                        .onChange(of: minY) { (y) in
+                            headerAnimatiuon(y)
+                        }
+                }
+               
                 
                 GeometryReader { geo in
-                    ScrollView {
+                    CustomScrollView(offsetChanges: {self.minY = $0.y}) {
                         ScrollViewReader { reader in
                             LazyVStack {
                                 
@@ -56,6 +73,7 @@ struct NewsView: View {
                     }
                     
                 }
+                .offset(y:showHeader ? headerSize.height : 0)
                 .overlay(vm.loading ? GreenProgressView() : nil)
                 
                 Spacer()
@@ -77,6 +95,52 @@ struct NewsView: View {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
         
     }
+    
+    private func headerAnimatiuon(_ value : CGFloat) {
+        if value == 0 {
+            withAnimation(Animation.easeOut(duration: 0.25)) {
+                headerOpacity = 1
+            }
+            return
+        }
+        
+        DispatchQueue.main.async {
+            
+            if startMinY == 0 {
+                startMinY = minY
+            }
+            
+            let offset = startMinY - minY
+            
+            if offset < 0 {
+                headerOpacity = 1
+                return
+            }
+            
+            if offset > offsetSelf {
+                
+                if headerOpacity != 0 {
+                    withAnimation(Animation.easeOut(duration: 0.25)) {
+                        headerOpacity = 0
+                    }
+                }
+            }
+            
+            if offset < offsetSelf {
+                if headerOpacity != 1 {
+                    withAnimation(Animation.easeOut(duration: 0.7)) {
+                        headerOpacity = 1
+                    }
+                }
+            }
+         
+            
+            offsetSelf = offset
+            
+        }
+        
+    
+    }
 }
 
 struct NewsHeaderView : View {
@@ -84,6 +148,8 @@ struct NewsHeaderView : View {
     @StateObject var vm : NewsViewModel
     
     var body: some View {
+        
+       
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing :15) {
                 ForEach(userInfo.modes, id : \.self) { lang in
@@ -99,7 +165,6 @@ struct NewsHeaderView : View {
                     }) {
                         lang.image
                             .LogoImageModifier(size: 45,isFocus : vm.currentTag == lang)
-                        
                     }
                     
                 }
@@ -108,8 +173,7 @@ struct NewsHeaderView : View {
         }
         .padding()
         
-        Divider()
-            .background(Color.white)
+        
     }
 }
 
@@ -172,7 +236,6 @@ struct ArtcleCell : View {
             .onAppear {
                 withAnimation(Animation.easeInOut(duration: 1.0)) {
                     isExpand = true
-                    
                 }
             }
             .onDisappear {
