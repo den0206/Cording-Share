@@ -22,26 +22,32 @@ struct FriendsView : View {
             NavigationLink(destination: UserProfileView(vm: UserProfileViewModel(user: vm.selectedFriend),isSheet : true), isActive: $vm.pushNav, label: {})
               
             
-            if vm.status != .plane {
-                
-                StatusView(status: vm.status, retryAction: {vm.fetchFriends()})
-             
-                
-            } else {
+            if vm.status == .plane {
                 List{
-                    
                     ForEach(vm.friends, id : \.uid) { friend in
                         
                         Button (action: {
                             vm.selectedFriend = friend
                         }) {
                             FriendCell(friend: friend)
-
                         }
+                        .onAppear {
+                            
+                            if friend.uid == vm.friends.last?.uid {
+                                vm.fetchFriends()
+                            }
+                        }
+                       
+                        
                     }
                     .onDelete(perform: vm.deleteFriend(offsets:))
                 }
                 .listStyle(PlainListStyle())
+                
+            } else {
+                
+                StatusView(status: vm.status, retryAction: {vm.fetchFriends()})
+                
                 
             }
             

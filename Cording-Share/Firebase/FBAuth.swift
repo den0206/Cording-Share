@@ -45,6 +45,28 @@ struct FBAuth {
         
     }
     
+    static func convertFriends(uids : [String], completion : @escaping(Result<[FBUser], Error>) -> Void) {
+        
+        var friends = [FBUser]()
+        
+        uids.forEach { (uid) in
+            self.fecthFBUser(uid: uid) { (result) in
+                switch result {
+                
+                case .success(let user):
+                    friends.append(user)
+                    
+                    if friends.count == uids.count {
+                        completion(.success(friends))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+        
+    }
+    
     static func searchUserFromName(name : String, completion : @escaping(Result<FBUser, Error>) -> Void) {
         
 //        guard Reachabilty.HasConnection() else {completion(.failure(NetworkError.disConnect))

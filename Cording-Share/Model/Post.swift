@@ -10,6 +10,10 @@ import SwiftUI
 import CodeMirror_SwiftUI
 import Firebase
 
+protocol FBType {
+    init(dic: [String : Any])
+}
+
 struct Post : Identifiable{
     
     let id : String

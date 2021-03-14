@@ -115,7 +115,10 @@ struct UserProfileView: View {
                             .opacity(!vm.buttonEnable ? 0 : 1)
                             .disabled(!vm.buttonEnable)
                             .onAppear {
-                                vm.checkFriend(userInfo: userInfo)
+                                if !vm.didAppear {
+                                    vm.checkFriend(userInfo: userInfo)
+                                    vm.didAppear = true
+                                }
                             }
                             
                             Button(action: {

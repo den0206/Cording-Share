@@ -11,6 +11,7 @@ final class UserProfileViewModel : ObservableObject {
     
     @Published var user : FBUser!
     @Published var buttonEnable = false
+    @Published var didAppear = false
     
     init(user : FBUser?) {
         self.user = user

@@ -19,7 +19,7 @@ final class NewsViewModel : ObservableObject{
     @Published var currentTag : CodeMode = .swift
     @Published var loading = false
     @Published var status : Status = .plane
-   
+    
     @Published var scrollTo : ScrollTo? = nil
     
     var manager = NewsManager()
@@ -28,7 +28,7 @@ final class NewsViewModel : ObservableObject{
     func ferchArticles() {
         
         if currentPage == 1 {
-            loading = true
+            self.status = .loading
         }
         
         manager.fetchNews(lang: currentTag, currentPage: currentPage, per_page: limit) { (result) in
@@ -36,26 +36,22 @@ final class NewsViewModel : ObservableObject{
             switch result {
             case .success(let array):
                 
-                self.status = .plane
-
                 DispatchQueue.main.async {
+                    self.status = .plane
                     self.articles.append(contentsOf: array)
                     self.currentPage += 1
                 }
             case .failure(let error):
-                self.status = .error(error.localizedDescription)
-            }
-            
-            if self.loading {
                 DispatchQueue.main.async {
-                    self.loading = false
-
+                    self.status = .error(error.localizedDescription)
                 }
             }
+            
+            
         }
     }
     
-  
+    
     
     func changeTag(lang : CodeMode) {
         currentTag = lang
@@ -65,7 +61,7 @@ final class NewsViewModel : ObservableObject{
         ferchArticles()
     }
     
-   
+    
     
 }
 

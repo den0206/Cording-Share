@@ -64,7 +64,7 @@ struct NewsView: View {
                         
                     }
                     .offset(y:scVM.showHeader ? scVM.headerSize.height : 0)
-                    .overlay(vm.loading ? GreenProgressView() : nil)
+//                    .overlay(vm.loading ? GreenProgressView() : nil)
                 } else {
                     StatusView(status: vm.status, retryAction: {print("Fetch")})
                 }
@@ -89,52 +89,6 @@ struct NewsView: View {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
         
     }
-    
-//    private func headerAnimatiuon(_ value : CGFloat) {
-//        if value == 0 {
-//            withAnimation(Animation.easeOut(duration: 0.25)) {
-//                headerOpacity = 1
-//            }
-//            return
-//        }
-//
-//        DispatchQueue.main.async {
-//
-//            if startMinY == 0 {
-//                startMinY = minY
-//            }
-//
-//            let offset = startMinY - minY
-//
-//            if offset < 0 {
-//                headerOpacity = 1
-//                return
-//            }
-//
-//            if offset > offsetSelf {
-//
-//                if headerOpacity != 0 {
-//                    withAnimation(Animation.easeOut(duration: 0.25)) {
-//                        headerOpacity = 0
-//                    }
-//                }
-//            }
-//
-//            if offset < offsetSelf {
-//                if headerOpacity != 1 {
-//                    withAnimation(Animation.easeOut(duration: 0.7)) {
-//                        headerOpacity = 1
-//                    }
-//                }
-//            }
-//
-//
-//            offsetSelf = offset
-//
-//        }
-//
-//
-//    }
 }
 
 struct NewsHeaderView : View {

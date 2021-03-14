@@ -24,7 +24,7 @@ final class RecentsViewModel : ObservableObject {
     func fetchRecents(userInfo : UserInfo) {
 
         guard Reachabilty.HasConnection() else {
-            self.status = .noInternet
+            self.status = .error(NetworkError.disConnect.localizedDescription)
             return
 
         }

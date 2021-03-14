@@ -13,6 +13,7 @@
 		3A4CA7C125E0E40300776F89 /* LoopMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */; };
 		3A4CA7C725E0E51100776F89 /* code-1.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */; };
 		3A4CA7C825E0E51100776F89 /* code-2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A4CA7C625E0E4F300776F89 /* code-2.mp4 */; };
+		3A55086525FC50A900C4CE84 /* FBCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A55086425FC50A900C4CE84 /* FBCommon.swift */; };
 		3A6E0D0425F15C99005BC3CD /* FBFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6E0D0325F15C99005BC3CD /* FBFollow.swift */; };
 		3A720C2525B0923A00714CB0 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A720C2425B0923A00714CB0 /* UserProfileView.swift */; };
 		3A75ED4C259C3651009E990E /* Cording_ShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A75ED4B259C3651009E990E /* Cording_ShareApp.swift */; };
@@ -95,6 +96,7 @@
 		3A4CA7C025E0E40300776F89 /* LoopMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopMovieView.swift; sourceTree = "<group>"; };
 		3A4CA7C525E0E4ED00776F89 /* code-1.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-1.mp4"; sourceTree = "<group>"; };
 		3A4CA7C625E0E4F300776F89 /* code-2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "code-2.mp4"; sourceTree = "<group>"; };
+		3A55086425FC50A900C4CE84 /* FBCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBCommon.swift; sourceTree = "<group>"; };
 		3A6E0D0325F15C99005BC3CD /* FBFollow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBFollow.swift; sourceTree = "<group>"; };
 		3A720C2425B0923A00714CB0 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		3A75ED48259C3651009E990E /* Cording-Share.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cording-Share.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -354,6 +356,7 @@
 				3A77699125A208CE004CC715 /* FBPost.swift */,
 				3ABE4E6F25B40EDB006ADCB7 /* FBNotification.swift */,
 				3A6E0D0325F15C99005BC3CD /* FBFollow.swift */,
+				3A55086425FC50A900C4CE84 /* FBCommon.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				3AA5026125D796A300CEB4C2 /* MainSideView.swift in Sources */,
 				3ABC30FE259C56A20063D1D8 /* GlobalExtensions.swift in Sources */,
 				3A75ED4E259C3651009E990E /* ContentView.swift in Sources */,
+				3A55086525FC50A900C4CE84 /* FBCommon.swift in Sources */,
 				3A22686F25C4FDDA00F17180 /* CryptoSwift.swift in Sources */,
 				3AC316E425B2C4FA00ADD668 /* Recent.swift in Sources */,
 				3ABC30FA259C54C50063D1D8 /* CustomView.swift in Sources */,
