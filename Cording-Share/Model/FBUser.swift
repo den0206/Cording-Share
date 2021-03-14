@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-struct FBUser {
+struct FBUser : Equatable{
    
     let uid : String
     var name : String
@@ -19,11 +19,14 @@ struct FBUser {
     
     var isFriend : Bool = false
    
-    
-    
     var isCurrentUser : Bool {
         return Auth.auth().currentUser?.uid == uid
     }
+
+    static func currentUID() -> String? {
+        return Auth.auth().currentUser?.uid
+    }
+ 
     
     init(uid : String, name : String, email : String,fcmToken : String,searchId : String) {
         self.uid = uid

@@ -112,7 +112,7 @@ struct AllChatsView : View {
 
             .onAppear(perform: {
                 if firstLoad {
-                    vm.fetchRecents(userInfo: userInfo)
+                    vm.fetchRecents()
                     firstLoad = false
                 }
                  

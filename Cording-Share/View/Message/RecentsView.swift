@@ -22,10 +22,7 @@ struct RecentsView: View {
             VStack {
                 NavigationLink(destination: MessageView(), isActive: $userInfo.MSGPushNav, label: {})
                 
-                if vm.status != .plane {
-                    StatusView(status: vm.status, retryAction: {vm.fetchRecents(userInfo: userInfo)})
-
-                } else {
+                if vm.status == .plane {
                     List {
                         ForEach(vm.recents) { recent in
                             
@@ -39,30 +36,35 @@ struct RecentsView: View {
                                 
                             }) {
                                 RecentCell(recent:recent)
-                                
+                            }
+                            .onAppear {
+                                if recent.id == vm.recents.last?.id {
+                                    vm.fetchRecents()
+                                }
                             }
                             
                         }
-//                        .onDelete(perform: vm.deleteRecents(at:))
+                        //                        .onDelete(perform: vm.deleteRecents(at:))
                     }
                     .listStyle(PlainListStyle())
+                } else {
+                    StatusView(status: vm.status, retryAction: {vm.fetchRecents()})
+                 
                 }
                 
                 
                 Spacer()
             }
-            .alert(isPresented: $vm.showALert, content: {
-                errorAlert(message: vm.errorMessage)
-            })
             .onAppear(perform: {
                 if firstLoad {
-                    vm.fetchRecents(userInfo: userInfo)
+                    vm.addListner()
+                    vm.fetchRecents()
                     firstLoad = false
                     
                     FBNotification.getBadgeCount(user: userInfo.user) { (badge) in
                         UIApplication.shared.applicationIconBadgeNumber = badge
                     }
-
+                    
                     
                 }
             })

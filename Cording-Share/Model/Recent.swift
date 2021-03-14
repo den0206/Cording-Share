@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Firebase
 
-struct Recent : Identifiable{
+struct Recent : Identifiable, Equatable{
     
     var id : String
     var userId : String
